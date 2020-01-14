@@ -1,8 +1,3 @@
+exports.up = tbl => {};
 
-exports.up = function(knex) {
-  
-};
-
-exports.down = function(knex) {
-  
-};
+exports.down = tbl => {};

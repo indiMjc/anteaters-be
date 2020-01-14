@@ -138,7 +138,7 @@ exports.up = tbl => {
 				.references('id')
 				.inTable('users')
 				.onDelete('SET NULL')
-				.onUpdate('SET NULL');
+				.onUpdate('CASCADE');
 		});
 };
 

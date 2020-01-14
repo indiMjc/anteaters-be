@@ -20,8 +20,8 @@ exports.seed = function(knex) {
 				name: 'Plant Purpose',
 				description:
 					'An app that helps users remember their schedule for plant care.',
-				stakeholder_id: 4,
-				project_manager_id: 3
+				stakeholder_id: null,
+				project_manager_id: null
 			}
 		]);
 	});

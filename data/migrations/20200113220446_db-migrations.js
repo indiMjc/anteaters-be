@@ -69,7 +69,7 @@ exports.up = tbl => {
 				.onDelete('CASCADE')
 				.onUpdate('CASCADE');
 
-			tbl.integer('user_id')
+			tbl.integer('dev_id')
 				.unsigned()
 				.references('id')
 				.inTable('users')
@@ -121,7 +121,7 @@ exports.up = tbl => {
 
 			tbl.text('reply', 1000).notNullable();
 
-			tbl.timestamp('submitted_at')
+			tbl.timestamp('created_at')
 				.notNullable()
 				.defaultTo(knex.fn.now());
 

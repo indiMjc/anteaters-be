@@ -11,7 +11,7 @@ exports.seed = function(knex) {
 				resolved: false,
 				in_progress: true,
 				created_at: Date.now(),
-				submitted_by_id: 2,
+				submitted_by: 2,
 				project_id: 1
 			},
 			{
@@ -21,10 +21,10 @@ exports.seed = function(knex) {
 				description:
 					'A console.log accidentally got left in during development and is recording user passwords on login.  Needs immediate fix for security.',
 				urgency: 'high',
-				resolved: false,
-				in_progress: true,
+				resolved: true,
+				in_progress: false,
 				created_at: Date.now(),
-				submitted_by_id: 1,
+				submitted_by: 1,
 				project_id: 2
 			},
 			{
@@ -35,9 +35,9 @@ exports.seed = function(knex) {
 					'Add ability for users to view all plants that we track that are growable in their growth zone.',
 				urgency: 'low',
 				resolved: false,
-				in_progress: true,
+				in_progress: false,
 				created_at: Date.now(),
-				submitted_by_id: 1,
+				submitted_by: 1,
 				project_id: 3
 			}
 		]);

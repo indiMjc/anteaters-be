@@ -6,35 +6,40 @@ exports.seed = function(knex) {
 				email: 'indimjc1@gmail.com',
 				username: 'indimjc',
 				password: 'password',
-				role: 'admin'
+				role: 'admin',
+				approved: true
 			},
 			{
 				id: 2,
 				email: 'bernard@gmail.com',
 				username: 'bernard',
 				password: 'password',
-				role: 'developer'
+				role: 'developer',
+				approved: false
 			},
 			{
 				id: 3,
 				email: 'jackson@gmail.com',
 				username: 'jackson',
 				password: 'password',
-				role: 'project manager'
+				role: 'project manager',
+				approved: true
 			},
 			{
 				id: 4,
 				email: 'jen@gmail.com',
 				username: 'jen',
 				password: 'password',
-				role: 'stakeholder'
+				role: 'stakeholder',
+				approved: true
 			},
 			{
 				id: 5,
 				email: 'april@gmail.com',
 				username: 'april',
 				password: 'password',
-				role: 'user'
+				role: 'user',
+				approved: true
 			}
 		]);
 	});

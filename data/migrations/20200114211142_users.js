@@ -15,7 +15,7 @@ exports.up = tbl => {
 
 		tbl.boolean('approved')
 			.notNullable()
-			.defaultTo(false);
+			.defaultTo(0);
 	});
 };
 

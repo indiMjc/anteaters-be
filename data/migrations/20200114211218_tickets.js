@@ -15,11 +15,11 @@ exports.up = tbl => {
 
 		tbl.boolean('resolved')
 			.notNullable()
-			.defaultTo(false);
+			.defaultTo(0);
 
 		tbl.boolean('in_progress')
 			.notNullable()
-			.defaultTo(false);
+			.defaultTo(0);
 
 		tbl.timestamp('created_at', { useTz: true })
 			.notNullable()

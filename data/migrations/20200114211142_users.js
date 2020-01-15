@@ -12,6 +12,10 @@ exports.up = tbl => {
 		tbl.string('password', 128).notNullable();
 
 		tbl.string('role', 128).notNullable();
+
+		tbl.boolean('approved')
+			.notNullable()
+			.defaultTo(false);
 	});
 };
 

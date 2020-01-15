@@ -96,9 +96,8 @@ exports.up = tbl => {
 				.notNullable()
 				.defaultTo(false);
 
-			tbl.timestamp('created_at')
-				.notNullable()
-				.defaultTo(knex.fn.now());
+			tbl.timestamp('created_at').notNullable();
+			// .defaultTo(knex.fn.now());
 
 			tbl.integer('submitted_by')
 				.unsigned()
@@ -121,9 +120,8 @@ exports.up = tbl => {
 
 			tbl.text('reply', 1000).notNullable();
 
-			tbl.timestamp('created_at')
-				.notNullable()
-				.defaultTo(knex.fn.now());
+			tbl.timestamp('created_at').notNullable();
+			// .defaultTo(knex.fn.now());
 
 			tbl.integer('ticket_id')
 				.notNullable()

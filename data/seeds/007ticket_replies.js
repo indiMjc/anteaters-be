@@ -1,6 +1,6 @@
 exports.seed = function(knex) {
-	return knex('ticket replies').then(function() {
-		return knex('ticket replies').insert([
+	return knex('ticket_replies').then(function() {
+		return knex('ticket_replies').insert([
 			{
 				id: 1,
 				reply:

@@ -1,6 +1,5 @@
 const knexfile = require('../../knexfile');
 const knex = require('knex')(knexfile.development);
-const date = knex.fn.now();
 
 exports.up = tbl => {
 	return tbl.schema
@@ -102,7 +101,7 @@ exports.up = tbl => {
 
 			tbl.timestamp('created_at', { useTz: true })
 				.notNullable()
-				.defaultTo(knex.fn.now(date));
+				.defaultTo(knex.fn.now());
 
 			tbl.integer('submitted_by')
 				.unsigned()
@@ -127,7 +126,7 @@ exports.up = tbl => {
 
 			tbl.timestamp('created_at', { useTz: true })
 				.notNullable()
-				.defaultTo(knex.fn.now(date));
+				.defaultTo(knex.fn.now());
 
 			tbl.integer('ticket_id')
 				.notNullable()

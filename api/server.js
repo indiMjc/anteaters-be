@@ -4,8 +4,12 @@ const cors = require('cors');
 
 const server = express();
 
-server.arguments(helmet());
-server.arguments(cors());
-server.arguments(express.json());
+server.use(helmet());
+server.use(cors());
+server.use(express.json());
+
+server.use('/', (__, res) => {
+	res.send('Server up');
+});
 
 module.exports = server;

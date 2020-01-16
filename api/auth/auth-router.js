@@ -19,7 +19,6 @@ const signToken = user => {
 };
 
 const login = (req, res) => {
-	console.log('request body', req.body);
 	let { username, password } = req.body || req;
 
 	Users.findBy({ username })

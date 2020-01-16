@@ -31,7 +31,6 @@ router.post('/login', (req, res) => {
 					message: `Welcome, ${user.username}`
 				});
 			} else {
-				console.log('user ->\n', user);
 				res.status(401).json({ message: 'Invalid credentials' });
 			}
 		})

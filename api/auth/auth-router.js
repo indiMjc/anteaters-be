@@ -42,7 +42,6 @@ const login = (req, res) => {
 };
 
 router.post('/login', (req, res) => {
-	console.log('login');
 	login(req, res);
 });
 

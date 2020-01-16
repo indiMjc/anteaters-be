@@ -24,6 +24,20 @@ exports.seed = function(knex) {
 				created_at: Date.now(),
 				ticket_id: 3,
 				submitted_by: 1
+			},
+			{
+				id: 4,
+				reply: 'Total accident, wont let it happen again.',
+				created_at: Date.now(),
+				ticket_id: 2,
+				submitted_by: 1
+			},
+			{
+				id: 5,
+				reply: 'Whoopesies.',
+				created_at: Date.now(),
+				ticket_id: 2,
+				submitted_by: 2
 			}
 		]);
 	});

@@ -6,7 +6,7 @@ const Users = require('../models/users-model');
 
 const signToken = user => {
 	const payload = {
-		username: user.password
+		username: user.username
 	};
 
 	const secret = process.env.JWT_SECRET;
@@ -31,6 +31,7 @@ router.post('/login', (req, res) => {
 					message: `Welcome, ${user.username}`
 				});
 			} else {
+				console.log('user ->\n', user);
 				res.status(401).json({ message: 'Invalid credentials' });
 			}
 		})
@@ -54,3 +55,5 @@ router.post('/register', (req, res) => {
 			res.status(500).json({ error: 'Error while registering new user' });
 		});
 });
+
+module.exports = router;

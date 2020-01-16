@@ -18,8 +18,9 @@ const signToken = user => {
 	return jwt.sign(payload, secret, options);
 };
 
-router.post('/login', (req, res) => {
-	let { username, password } = req.body;
+const login = (req, res) => {
+	console.log('request body', req.body);
+	let { username, password } = req.body || req;
 
 	Users.findBy({ username })
 		.then(user => {
@@ -38,16 +39,23 @@ router.post('/login', (req, res) => {
 			console.log(err);
 			res.status(500).json({ error: 'Error while logging in' });
 		});
+};
+
+router.post('/login', (req, res) => {
+	console.log('login');
+	login(req, res);
 });
 
 router.post('/register', (req, res) => {
 	let user = req.body;
 	const hash = bcrypt.hashSync(user.password, 6);
+	const pw = user.password;
 	user.password = hash;
 
 	Users.add(user)
 		.then(saved => {
-			res.status(201).json(saved);
+			saved.password = pw;
+			login(saved, res);
 		})
 		.catch(err => {
 			console.log(err);

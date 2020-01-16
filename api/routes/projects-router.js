@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const restricted = require('../auth/auth-middleware');
 
-const Projects = require('../models/projects.model');
+const Projects = require('../models/projects-model');
 
 router.get('/:id', restricted, (req, res) => {
 	Projects.findProjectById(req.params.id)

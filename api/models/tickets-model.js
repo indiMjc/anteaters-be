@@ -1,6 +1,6 @@
 const db = require('../../data/dbConfig');
 
-const findByProjectId = id => {
+const findByProject = id => {
 	return db
 		.select('tickets.*', 'users.username as author')
 		.from('tickets')
@@ -10,4 +10,8 @@ const findByProjectId = id => {
 		.orderBy('tickets.created_at', 'desc');
 };
 
-module.exports = { findByProjectId };
+const findRepliesByTicket = id => {
+	return db('ticket_replies').where({ ticket_id: id });
+};
+
+module.exports = { findByProject, findRepliesByTicket };

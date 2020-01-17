@@ -4,4 +4,10 @@ const findProjectById = id => {
 	return db('projects').where({ id });
 };
 
-module.exports = { findProjectById };
+const findProjectBy = filter => {
+	return db('projects')
+		.where(filter)
+		.first();
+};
+
+module.exports = { findProjectById, findProjectBy };

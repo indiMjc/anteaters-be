@@ -19,4 +19,19 @@ router.get('/:id', restricted, (req, res) => {
 		});
 });
 
+router.get('/search/:query', restricted, (req, res) => {
+	console.log('params', req.params.query);
+	Projects.findProjectBy({ lowercase_name: req.params.query })
+		.then(project => {
+			project && delete project.lowercase_name;
+			project
+				? res.status(200).json(project)
+				: res.status(401).json({ message: 'No project by that name' });
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ error: 'Error while searching for project' });
+		});
+});
+
 module.exports = router;

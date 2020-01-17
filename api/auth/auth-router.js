@@ -18,6 +18,22 @@ const signToken = user => {
 	return jwt.sign(payload, secret, options);
 };
 
+const validateNewUser = (req, res, next) => {
+	const { email, username, password, role } = req.body;
+	!email && res.status(400).json({ message: 'Email required' });
+	!username && res.status(400).json({ message: 'Username required' });
+	!password && res.status(400).json({ message: 'Password required' });
+	!role && res.status(400).json({ message: 'Role required' });
+	next();
+};
+
+const validateLogin = (req, res, next) => {
+	const { username, password } = req.body;
+	!username && res.status(400).json({ message: 'Username required' });
+	!password && res.status(400).json({ message: 'Password required' });
+	next();
+};
+
 const login = (req, res) => {
 	let { username, password } = req.body || req;
 
@@ -40,11 +56,11 @@ const login = (req, res) => {
 		});
 };
 
-router.post('/login', (req, res) => {
+router.post('/login', validateLogin, (req, res) => {
 	login(req, res);
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', validateNewUser, (req, res) => {
 	let user = req.body;
 	const hash = bcrypt.hashSync(user.password, 6);
 	const pw = user.password;

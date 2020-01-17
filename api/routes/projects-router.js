@@ -4,6 +4,7 @@ const restricted = require('../auth/auth-middleware');
 
 const Projects = require('../models/projects-model');
 
+// Get project by ID
 router.get('/:id', restricted, (req, res) => {
 	Projects.findProjectById(req.params.id)
 		.then(project => {
@@ -19,8 +20,8 @@ router.get('/:id', restricted, (req, res) => {
 		});
 });
 
+// Search for project by name, use String.prototype.toLowerCase() on FE
 router.get('/search/:query', restricted, (req, res) => {
-	console.log('params', req.params.query);
 	Projects.findProjectBy({ lowercase_name: req.params.query })
 		.then(project => {
 			project && delete project.lowercase_name;

@@ -7,7 +7,7 @@ const authRouter = require('../api/auth/auth-router');
 const ticketsRouter = require('../api/routes/tickets-router');
 const projectsRouter = require('../api/routes/projects-router');
 
-const logger = (req, res, next) => {
+const logger = (req, __, next) => {
 	const date = new Date(Date.now());
 	console.log(
 		`${req.method} to ${

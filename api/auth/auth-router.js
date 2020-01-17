@@ -28,16 +28,17 @@ const validateNewUser = (req, res, next) => {
 };
 
 const validateLogin = (req, res, next) => {
-	const { username, password } = req.body;
-	!username && res.status(400).json({ message: 'Username required' });
+	const { lowercase_username, password } = req.body;
+	!lowercase_username &&
+		res.status(400).json({ message: 'Username required' });
 	!password && res.status(400).json({ message: 'Password required' });
 	next();
 };
 
 const login = (req, res) => {
-	let { username, password } = req.body || req;
+	let { lowercase_username, password } = req.body || req;
 
-	Users.findBy({ username })
+	Users.findBy({ lowercase_username })
 		.then(user => {
 			if (user && bcrypt.compareSync(password, user.password)) {
 				const token = signToken(user);

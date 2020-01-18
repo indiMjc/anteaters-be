@@ -9,9 +9,9 @@ exports.up = tbl => {
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 
-		tbl.integer('dev_id')
+		tbl.integer('dev_username')
 			.unsigned()
-			.references('id')
+			.references('username')
 			.inTable('users')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');

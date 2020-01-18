@@ -4,7 +4,7 @@ const findByProject = project_id => {
 	return db
 		.select('tickets.*', 'users.username as author')
 		.from('tickets')
-		.join('users', 'users.id', 'tickets.submitted_by')
+		.join('users', 'users.username', 'tickets.submitted_by')
 		.join('projects', 'projects.id', 'tickets.project_id')
 		.where({ project_id })
 		.orderBy('tickets.created_at', 'desc');
@@ -19,7 +19,7 @@ const findTicket = async ticket_id => {
 			.select('ticket_replies.reply', 'ticket_replies.created_at', 'ticket_replies.submitted_by')
 			.from('ticket_replies')
 			.where({ ticket_id }),
-			
+
 		db
 			.select('ticket_devs.dev_username as username')
 			.from('ticket_devs')
@@ -34,5 +34,10 @@ const findTicket = async ticket_id => {
 		}
 	);
 };
+
+// const findUserTickets = async submitted_by => {
+// 	return db
+// 		.select()
+// }
 
 module.exports = { findByProject, findTicket };

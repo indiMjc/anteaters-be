@@ -11,7 +11,7 @@ exports.seed = function(knex) {
 				resolved: false,
 				in_progress: true,
 				created_at: Date.now(),
-				submitted_by: 2,
+				submitted_by: 'Jackson',
 				project_id: 1
 			},
 			{
@@ -24,7 +24,7 @@ exports.seed = function(knex) {
 				resolved: true,
 				in_progress: false,
 				created_at: Date.now(),
-				submitted_by: 1,
+				submitted_by: 'Mike',
 				project_id: 2
 			},
 			{
@@ -37,7 +37,7 @@ exports.seed = function(knex) {
 				resolved: false,
 				in_progress: false,
 				created_at: Date.now(),
-				submitted_by: 1,
+				submitted_by: 'Mike',
 				project_id: 3
 			}
 		]);

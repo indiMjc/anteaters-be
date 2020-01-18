@@ -7,9 +7,11 @@ const findById = id => {
 };
 
 const add = async user => {
-	const [id] = await db('users').insert(user);
+	const id = await db('users')
+		.insert(user)
+		.returning('id');
 
-	return findById(id).first();
+	return findById(id[0]).first();
 };
 
 const findBy = filter => {

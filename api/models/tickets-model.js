@@ -1,17 +1,28 @@
 const db = require('../../data/dbConfig');
 
-const findByProject = id => {
+const findByProject = project_id => {
 	return db
 		.select('tickets.*', 'users.username as author')
 		.from('tickets')
 		.join('users', 'users.id', 'tickets.submitted_by')
 		.join('projects', 'projects.id', 'tickets.project_id')
-		.where({ project_id: id })
+		.where({ project_id })
 		.orderBy('tickets.created_at', 'desc');
 };
 
-const findRepliesByTicket = id => {
-	return db('ticket_replies').where({ ticket_id: id });
+// prettier-ignore
+const findTicket = async ticket_id => {
+	const [ticket, replies, devs] = await Promise.all([
+		db('tickets').where({ id: ticket_id }).first(),
+		db('ticket_replies').where({ ticket_id }),
+		db('ticket_devs').where({ ticket_id })
+	]);
+
+	return ticket && {
+			...ticket,
+			replies,
+			devs
+		};
 };
 
-module.exports = { findByProject, findRepliesByTicket };
+module.exports = { findByProject, findTicket };

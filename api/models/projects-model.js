@@ -1,7 +1,15 @@
 const db = require('../../data/dbConfig');
 
 const findProjectById = id => {
-	return db('projects').where({ id });
+	return db('projects')
+		.where({ id })
+		.first();
 };
 
-module.exports = { findProjectById };
+const findProjectBy = filter => {
+	return db('projects')
+		.where(filter)
+		.first();
+};
+
+module.exports = { findProjectById, findProjectBy };

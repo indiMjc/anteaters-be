@@ -2,16 +2,16 @@ exports.up = tbl => {
 	return tbl.schema.createTable('ticket_devs', tbl => {
 		tbl.increments();
 
-		tbl.integer('project_id')
+		tbl.integer('ticket_id')
 			.unsigned()
 			.references('id')
-			.inTable('projects')
+			.inTable('tickets')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 
-		tbl.integer('dev_id')
+		tbl.integer('dev_username')
 			.unsigned()
-			.references('id')
+			.references('username')
 			.inTable('users')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');

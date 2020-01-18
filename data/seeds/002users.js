@@ -3,43 +3,43 @@ exports.seed = function(knex) {
 		return knex('users').insert([
 			{
 				id: 1,
-				email: 'indimjc1@gmail.com',
-				username: 'indimjc',
+				email: 'indimjc@gmail.com',
+				username: 'Mike',
+				lowercase_username: 'mike',
 				password: 'password',
-				role: 'admin',
-				approved: true
+				role: 'admin'
 			},
 			{
 				id: 2,
 				email: 'bernard@gmail.com',
-				username: 'bernard',
+				username: 'Bernard',
+				lowercase_username: 'bernard',
 				password: 'password',
-				role: 'developer',
-				approved: false
+				role: 'developer'
 			},
 			{
 				id: 3,
 				email: 'jackson@gmail.com',
-				username: 'jackson',
+				username: 'Jackson',
+				lowercase_username: 'jackson',
 				password: 'password',
-				role: 'project manager',
-				approved: true
+				role: 'project manager'
 			},
 			{
 				id: 4,
 				email: 'jen@gmail.com',
-				username: 'jen',
+				username: 'Jen',
+				lowercase_username: 'jen',
 				password: 'password',
-				role: 'stakeholder',
-				approved: true
+				role: 'stakeholder'
 			},
 			{
 				id: 5,
 				email: 'april@gmail.com',
-				username: 'april',
+				username: 'April',
+				lowercase_username: 'april',
 				password: 'password',
-				role: 'user',
-				approved: true
+				role: 'user'
 			}
 		]);
 	});

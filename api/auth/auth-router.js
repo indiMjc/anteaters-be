@@ -18,11 +18,27 @@ const signToken = user => {
 	return jwt.sign(payload, secret, options);
 };
 
-const login = (req, res) => {
-	console.log('request body', req.body);
-	let { username, password } = req.body || req;
+const validateNewUser = (req, res, next) => {
+	const { email, username, password, role } = req.body;
+	!email && res.status(400).json({ message: 'Email required' });
+	!username && res.status(400).json({ message: 'Username required' });
+	!password && res.status(400).json({ message: 'Password required' });
+	!role && res.status(400).json({ message: 'Role required' });
+	next();
+};
 
-	Users.findBy({ username })
+const validateLogin = (req, res, next) => {
+	const { lowercase_username, password } = req.body;
+	!lowercase_username &&
+		res.status(400).json({ message: 'Username required' });
+	!password && res.status(400).json({ message: 'Password required' });
+	next();
+};
+
+const login = (req, res) => {
+	let { lowercase_username, password } = req.body || req;
+
+	Users.findBy({ lowercase_username })
 		.then(user => {
 			if (user && bcrypt.compareSync(password, user.password)) {
 				const token = signToken(user);
@@ -41,11 +57,11 @@ const login = (req, res) => {
 		});
 };
 
-router.post('/login', (req, res) => {
+router.post('/login', validateLogin, (req, res) => {
 	login(req, res);
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', validateNewUser, (req, res) => {
 	let user = req.body;
 	const hash = bcrypt.hashSync(user.password, 6);
 	const pw = user.password;

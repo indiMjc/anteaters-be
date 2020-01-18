@@ -1,5 +1,7 @@
 const db = require('../../data/dbConfig');
 
+const Users = require('./users-model');
+
 const findByProject = id => {
 	return db
 		.select('tickets.*', 'users.username as author')
@@ -20,21 +22,27 @@ const findTicketById = id => {
 		.first();
 };
 
-const findTicketWithReplies = id => {
-	return findTicketById(id).then(ticket => {
-		return db('ticket_replies')
-			.where({ ticket_id: id })
-			.then(replies => {
-				return {
-					...ticket,
-					replies
-				};
-			});
-	});
+// prettier-ignore
+const findTicket = async ticket_id => {
+	const ticket = await db('tickets').where({ id: ticket_id }).first();
+	const replies = await db('ticket_replies').where({ ticket_id });
+	const devIds = await db('ticket_devs').where({ ticket_id });
+
+	return ticket && {
+		...ticket,
+		replies,
+		devIds
+	};
+};
+
+const findById = id => {
+	return db('users')
+		.where({ id })
+		.first();
 };
 
 const findTicketDevs = ticket_id => {
 	return db('ticket_devs').where({ ticket_id });
 };
 
-module.exports = { findByProject, findRepliesByTicket, findTicketWithReplies, findTicketDevs };
+module.exports = { findByProject, findRepliesByTicket, findTicket, findTicketDevs };

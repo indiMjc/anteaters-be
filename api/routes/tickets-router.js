@@ -17,7 +17,7 @@ router.get('/:id/replies', restricted, (req, res) => {
 });
 
 router.get('/:id/with_replies', restricted, (req, res) => {
-	Tickets.findTicketWithReplies(req.params.id).then(ticket => {
+	Tickets.findTicket(req.params.id).then(ticket => {
 		res.status(200).json(ticket);
 	});
 });

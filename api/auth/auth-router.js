@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const Users = require('../models/users-model');
 
+const auth = require('../middleware/validateUsers');
+
 const signToken = user => {
 	const payload = {
 		username: user.username
@@ -16,23 +18,6 @@ const signToken = user => {
 	};
 
 	return jwt.sign(payload, secret, options);
-};
-
-const validateNewUser = (req, res, next) => {
-	const { email, username, password, role } = req.body;
-	!email && res.status(400).json({ message: 'Email required' });
-	!username && res.status(400).json({ message: 'Username required' });
-	!password && res.status(400).json({ message: 'Password required' });
-	!role && res.status(400).json({ message: 'Role required' });
-	next();
-};
-
-const validateLogin = (req, res, next) => {
-	const { lowercase_username, password } = req.body;
-	!lowercase_username &&
-		res.status(400).json({ message: 'Username required' });
-	!password && res.status(400).json({ message: 'Password required' });
-	next();
 };
 
 const login = (req, res) => {
@@ -57,11 +42,11 @@ const login = (req, res) => {
 		});
 };
 
-router.post('/login', validateLogin, (req, res) => {
+router.post('/login', auth.validateLogin, (req, res) => {
 	login(req, res);
 });
 
-router.post('/register', validateNewUser, (req, res) => {
+router.post('/register', auth.validateNewUser, (req, res) => {
 	let user = req.body;
 	const hash = bcrypt.hashSync(user.password, 6);
 	const pw = user.password;

@@ -1,7 +1,9 @@
 const db = require('../../data/dbConfig');
 
 const findProjectById = id => {
-	return db('projects').where({ id });
+	return db('projects')
+		.where({ id })
+		.first();
 };
 
 const findProjectBy = filter => {

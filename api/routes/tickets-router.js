@@ -18,6 +18,11 @@ router.get('/by_project/:id', restricted, (req, res) => {
 	});
 });
 
-// GET all tickets for particular user by ID
+// GET all tickets for particular user by username
+router.get('/submitted_by/:username', restricted, (req, res) => {
+	Tickets.findUserTickets(req.params.username).then(tickets => {
+		res.status(200).json(tickets);
+	});
+});
 
 module.exports = router;

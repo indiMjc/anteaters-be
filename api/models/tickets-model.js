@@ -35,9 +35,12 @@ const findTicket = async ticket_id => {
 	);
 };
 
-// const findUserTickets = async submitted_by => {
-// 	return db
-// 		.select()
-// }
+const findUserTickets = submitted_by => {
+	return db
+		.select('tickets.*')
+		.from('tickets')
+		.join('users', 'tickets.submitted_by', 'username')
+		.where({ submitted_by });
+};
 
-module.exports = { findByProject, findTicket };
+module.exports = { findByProject, findTicket, findUserTickets };

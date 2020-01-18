@@ -33,4 +33,8 @@ const findTicketWithReplies = id => {
 	});
 };
 
-module.exports = { findByProject, findRepliesByTicket, findTicketWithReplies };
+const findTicketDevs = ticket_id => {
+	return db('ticket_devs').where({ ticket_id });
+};
+
+module.exports = { findByProject, findRepliesByTicket, findTicketWithReplies, findTicketDevs };

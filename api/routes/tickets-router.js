@@ -22,4 +22,10 @@ router.get('/:id/with_replies', restricted, (req, res) => {
 	});
 });
 
+router.get('/:id/ticket_devs', restricted, (req, res) => {
+	Tickets.findTicketDevs(req.params.id).then(devs => {
+		res.status(200).json(devs);
+	});
+});
+
 module.exports = router;

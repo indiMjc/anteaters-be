@@ -10,6 +10,7 @@ const findProjectBy = filter => {
 const findProject = async id => {
 	const [project, devs] = await Promise.all([
 		db('projects').where({ id }).first(),
+		
 		db
 			.select('project_devs.dev_username as username')
 			.from('project_devs')

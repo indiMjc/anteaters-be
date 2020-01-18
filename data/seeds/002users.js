@@ -3,7 +3,7 @@ exports.seed = function(knex) {
 		return knex('users').insert([
 			{
 				id: 1,
-				email: 'indimjc@gmail.com',
+				email: 'mike@gmail.com',
 				username: 'Mike',
 				lowercase_username: 'mike',
 				password: 'password',
@@ -27,7 +27,7 @@ exports.seed = function(knex) {
 				username: 'Jackson',
 				lowercase_username: 'jackson',
 				password: 'password',
-				role: 'project manager',
+				role: 'user',
 				isAdmin: false,
 				superUser: false
 			},
@@ -37,7 +37,7 @@ exports.seed = function(knex) {
 				username: 'Jen',
 				lowercase_username: 'jen',
 				password: 'password',
-				role: 'stakeholder',
+				role: 'developer',
 				isAdmin: true,
 				superUser: false
 			},

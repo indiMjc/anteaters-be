@@ -10,7 +10,6 @@ exports.up = tbl => {
 			.onUpdate('CASCADE');
 
 		tbl.integer('dev_username')
-			.unsigned()
 			.references('username')
 			.inTable('users')
 			.onDelete('CASCADE')

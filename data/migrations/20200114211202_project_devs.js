@@ -12,7 +12,6 @@ exports.up = tbl => {
 
 		tbl.integer('dev_username')
 			.notNullable()
-			.unsigned()
 			.references('username')
 			.inTable('users')
 			.onDelete('CASCADE')

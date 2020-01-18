@@ -43,4 +43,10 @@ const findUserTickets = submitted_by => {
 		.where({ submitted_by });
 };
 
-module.exports = { findByProject, findTicket, findUserTickets };
+const editTicket = (id, changes) => {
+	return db('tickets')
+		.where({ id })
+		.update(changes);
+};
+
+module.exports = { findByProject, findTicket, findUserTickets, editTicket };

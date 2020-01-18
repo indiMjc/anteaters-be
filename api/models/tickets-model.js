@@ -43,10 +43,14 @@ const findUserTickets = submitted_by => {
 		.where({ submitted_by });
 };
 
-const editTicket = (id, changes) => {
-	return db('tickets')
+const editTicket = async (id, changes) => {
+	await db('tickets')
 		.where({ id })
 		.update(changes);
+
+	return db('tickets')
+		.where({ id })
+		.first();
 };
 
 module.exports = { findByProject, findTicket, findUserTickets, editTicket };

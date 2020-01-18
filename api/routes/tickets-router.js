@@ -31,9 +31,8 @@ router.get('/submitted_by/:username', restricted, (req, res) => {
 router.put('/edit/:id', restricted, restrictUsers.validateEditCredentials, (req, res) => {
 	const { id } = req.params;
 	Tickets.editTicket(id, req.body)
-		.then(() => {
-			res.send('success');
-			console.log('success');
+		.then(ticket => {
+			res.status(200).json(ticket);
 		})
 		.catch(err => {
 			console.log(err);

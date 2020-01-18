@@ -17,6 +17,14 @@ exports.up = tbl => {
 		tbl.string('password', 128).notNullable();
 
 		tbl.string('role', 128).notNullable();
+
+		tbl.boolean('isAdmin')
+			.notNullable()
+			.defaultTo(false);
+
+		tbl.boolean('superUser')
+			.notNullable()
+			.defaultTo(false);
 	});
 };
 

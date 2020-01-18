@@ -21,7 +21,7 @@ const validateEditCredentials = (req, res, next) => {
 	!credentials && res.status(400).json({ message: 'Could not find credentials' });
 	return credentials === 'isAdmin'
 		? next()
-		: credentials === 'superuser'
+		: credentials === 'superUser'
 			? next()
 			: credentials === submitted_by
 				? next()

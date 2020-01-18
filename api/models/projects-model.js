@@ -1,15 +1,26 @@
 const db = require('../../data/dbConfig');
 
-const findProjectById = id => {
-	return db('projects')
-		.where({ id })
-		.first();
-};
-
 const findProjectBy = filter => {
 	return db('projects')
 		.where(filter)
 		.first();
 };
 
-module.exports = { findProjectById, findProjectBy };
+// prettier-ignore
+const findProject = async id => {
+	const [project, devs] = await Promise.all([
+		db('projects').where({ id }).first(),
+		
+		db
+			.select('project_devs.dev_username as username')
+			.from('project_devs')
+			.where({ project_id: id })
+	]);
+
+	return project && {
+			...project,
+			devs
+		};
+};
+
+module.exports = { findProjectBy, findProject };

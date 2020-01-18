@@ -12,16 +12,14 @@ exports.up = tbl => {
 
 		tbl.text('description', 1000).notNullable();
 
-		tbl.integer('stakeholder_id')
-			.unsigned()
-			.references('id')
+		tbl.integer('stakeholder')
+			.references('username')
 			.inTable('users')
 			.onDelete('SET NULL')
 			.onUpdate('CASCADE');
 
-		tbl.integer('project_manager_id')
-			.unsigned()
-			.references('id')
+		tbl.integer('project_manager')
+			.references('username')
 			.inTable('users')
 			.onDelete('SET NULL')
 			.onUpdate('CASCADE');

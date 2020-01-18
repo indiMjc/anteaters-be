@@ -15,7 +15,10 @@ const findTicket = async ticket_id => {
 	const [ticket, replies, devs] = await Promise.all([
 		db('tickets').where({ id: ticket_id }).first(),
 		db('ticket_replies').where({ ticket_id }),
-		db('ticket_devs').where({ ticket_id })
+		db
+			.select('ticket_devs.dev_username')
+			.from('ticket_devs')
+			.where({ ticket_id })
 	]);
 
 	return ticket && {

@@ -22,7 +22,7 @@ const signToken = user => {
 };
 
 router.post('/login', auth.validateLogin, (req, res) => {
-	let { lowercase_username, password } = req.body || req;
+	let { lowercase_username, password } = req.body;
 
 	Users.findBy({ lowercase_username })
 		.then(user => {

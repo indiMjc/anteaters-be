@@ -8,7 +8,8 @@ const auth = require('../middleware/validateUsers');
 
 const signToken = user => {
 	const payload = {
-		username: user.username
+		username: user.username,
+		role: user.role
 	};
 
 	const secret = process.env.JWT_SECRET;
@@ -20,7 +21,7 @@ const signToken = user => {
 	return jwt.sign(payload, secret, options);
 };
 
-const login = (req, res) => {
+router.post('/login', auth.validateLogin, (req, res) => {
 	let { lowercase_username, password } = req.body || req;
 
 	Users.findBy({ lowercase_username })
@@ -40,22 +41,20 @@ const login = (req, res) => {
 			console.log(err);
 			res.status(500).json({ error: 'Error while logging in' });
 		});
-};
-
-router.post('/login', auth.validateLogin, (req, res) => {
-	login(req, res);
 });
 
 router.post('/register', auth.validateNewUser, (req, res) => {
 	let user = req.body;
 	const hash = bcrypt.hashSync(user.password, 6);
-	const pw = user.password;
 	user.password = hash;
 
 	Users.add(user)
 		.then(saved => {
-			saved.password = pw;
-			login(saved, res);
+			const token = signToken(saved);
+			res.status(200).json({
+				token,
+				message: `Welcome, ${saved.username}`
+			});
 		})
 		.catch(err => {
 			console.log(err);

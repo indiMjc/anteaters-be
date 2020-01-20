@@ -1,1 +1,1 @@
-<a href="https://github.com/indiMjc/anteaters-be/tree/master/data" target="_blank">API documentation</a>
+<a href="https://github.com/indiMjc/anteaters-be/blob/master/data/api-docs.md" target="_blank">API documentation</a>

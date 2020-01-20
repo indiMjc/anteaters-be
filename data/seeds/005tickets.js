@@ -35,6 +35,19 @@ exports.seed = function(knex) {
 					'Add ability for users to view all plants that we track that are growable in their growth zone.',
 				urgency: 'low',
 				is_resolved: false,
+				in_progress: true,
+				created_at: Date.now(),
+				submitted_by: 'April',
+				project_id: 3
+			},
+			{
+				id: 4,
+				title: 'Memoize functional components',
+				category: 'Refactor',
+				description:
+					'Due to the number of forms on the dashboard, too many components are rerendering during form input.  We should optimize that with memoization',
+				urgency: 'low',
+				is_resolved: true,
 				in_progress: false,
 				created_at: Date.now(),
 				submitted_by: 'Mike',

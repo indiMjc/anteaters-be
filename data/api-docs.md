@@ -15,7 +15,7 @@
     | GET    | **`/submitted_by/:username`** | Fetch all tickets posted by given user with specified `username`                                    |
     | PUT    | **`/edit/:id`**               | Edit and return ticket with given `ticket_id` **if user is a superuser, admin or author of ticket** |
     - ### DB access
-        - **`findByProject(project_id)`**:  returns all tickets associated with given `project_id`:  if tickets exist, returns an array of all tickets associated with project with given `project_id.  **Ex:**
+        - **`findByProject(project_id)`**:  returns all tickets associated with given `project_id`:  if tickets exist, returns an array of all tickets associated with project with given `project_id`.  **Ex:**
             ```
             [
                 {

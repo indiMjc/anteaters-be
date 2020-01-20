@@ -12,15 +12,14 @@ exports.up = tbl => {
 			.defaultTo(knex.fn.now());
 
 		tbl.integer('ticket_id')
-			.notNullable()
 			.unsigned()
+			.notNullable()
 			.references('id')
 			.inTable('tickets')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 
 		tbl.integer('submitted_by')
-			.unsigned()
 			.references('username')
 			.inTable('users')
 			.onDelete('SET NULL')

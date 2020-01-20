@@ -8,7 +8,7 @@ exports.seed = function(knex) {
 				description:
 					'Form validation needs to be implemented to ensure that users are not submitting null fields on non nullable columns.',
 				urgency: 'medium',
-				resolved: false,
+				is_resolved: false,
 				in_progress: true,
 				created_at: Date.now(),
 				submitted_by: 'Jackson',
@@ -21,7 +21,7 @@ exports.seed = function(knex) {
 				description:
 					'A console.log accidentally got left in during development and is recording user passwords on login.  Needs immediate fix for security.',
 				urgency: 'high',
-				resolved: true,
+				is_resolved: true,
 				in_progress: false,
 				created_at: Date.now(),
 				submitted_by: 'Mike',
@@ -34,7 +34,7 @@ exports.seed = function(knex) {
 				description:
 					'Add ability for users to view all plants that we track that are growable in their growth zone.',
 				urgency: 'low',
-				resolved: false,
+				is_resolved: false,
 				in_progress: false,
 				created_at: Date.now(),
 				submitted_by: 'Mike',

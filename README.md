@@ -1,7 +1,0 @@
-## Routes
-
-### Users
-
-### Tickets
-
-### Projects

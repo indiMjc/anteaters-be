@@ -11,9 +11,9 @@ exports.up = tbl => {
 
 		tbl.text('description', 1000).notNullable();
 
-		tbl.string('urgency', 128).notNullable();
+		tbl.string('urgency', 6).notNullable();
 
-		tbl.boolean('resolved')
+		tbl.boolean('is_resolved')
 			.notNullable()
 			.defaultTo(0);
 
@@ -26,15 +26,14 @@ exports.up = tbl => {
 			.defaultTo(knex.fn.now());
 
 		tbl.integer('submitted_by')
-			.unsigned()
 			.references('username')
 			.inTable('users')
 			.onDelete('SET NULL')
 			.onUpdate('CASCADE');
 
 		tbl.integer('project_id')
-			.notNullable()
 			.unsigned()
+			.notNullable()
 			.references('id')
 			.inTable('projects')
 			.onDelete('CASCADE')

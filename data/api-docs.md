@@ -12,7 +12,7 @@
 
 -  ### **users**
 
-   <a href="http://example.com/" target="_blank">Users migration file</a>
+   <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211142_users.js" target="_blank">Users migration file</a>
 
    | Field                 | Type | Default | Metadata                        |
    | --------------------- | ---- | ------- | ------------------------------- |
@@ -28,7 +28,7 @@
 
 -  ### **projects**
 
-   <a href="http://example.com/" target="_blank">Projects migration file</a>
+   <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211150_projects.js" target="_blank">Projects migration file</a>
 
    | Field             | Type | Default | Metadata                            | Foreign key (references) |
    | ----------------- | ---- | ------- | ----------------------------------- | ------------------------ |
@@ -40,7 +40,7 @@
 
 -  ### project_devs
 
-   <a href="http://example.com/" target="_blank">Project devs migration file</a>
+   <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211202_project_devs.js" target="_blank">Project devs migration file</a>
 
    | Field           | Type | Default | Metadata                          | Foreign key (references) |
    | --------------- | ---- | ------- | --------------------------------- | ------------------------ |
@@ -50,7 +50,7 @@
 
 -  ### **ticket_devs**
 
-   <a href="http://example.com/" target="_blank">Ticket devs migration file</a>
+   <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211213_ticket_devs.js" target="_blank">Ticket devs migration file</a>
 
    | Field           | Type | Default | Metadata                         | Foreign key (references) |
    | --------------- | ---- | ------- | -------------------------------- | ------------------------ |
@@ -60,7 +60,7 @@
 
 -  ### **tickets**
 
-   <a href="http://example.com/" target="_blank">Tickets migration file</a>
+   <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211218_tickets.js" target="_blank">Tickets migration file</a>
 
    | Field          | Type      | Default         | Metadata                                | Foreign key (references) |
    | -------------- | --------- | --------------- | --------------------------------------- | ------------------------ |
@@ -77,7 +77,7 @@
 
 -  ### **ticket_replies**
 
-   <a href="http://example.com/" target="_blank">Ticket replies migration file</a>
+   <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211228_ticket_replies.js" target="_blank">Ticket replies migration file</a>
 
    | Field         | Type      | Default         | Metadata                          | Foreign key (references) |
    | ------------- | --------- | --------------- | --------------------------------- | ------------------------ |

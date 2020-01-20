@@ -9,7 +9,8 @@ exports.seed = function(knex) {
 				password: 'password',
 				role: 'developer',
 				isAdmin: true,
-				superUser: true
+				superUser: true,
+				isLocked: false
 			},
 			{
 				id: 2,
@@ -19,7 +20,8 @@ exports.seed = function(knex) {
 				password: 'password',
 				role: 'developer',
 				isAdmin: true,
-				superUser: true
+				superUser: true,
+				isLocked: false
 			},
 			{
 				id: 3,
@@ -29,7 +31,8 @@ exports.seed = function(knex) {
 				password: 'password',
 				role: 'user',
 				isAdmin: false,
-				superUser: false
+				superUser: false,
+				isLocked: false
 			},
 			{
 				id: 4,
@@ -39,7 +42,8 @@ exports.seed = function(knex) {
 				password: 'password',
 				role: 'developer',
 				isAdmin: true,
-				superUser: false
+				superUser: false,
+				isLocked: false
 			},
 			{
 				id: 5,
@@ -49,7 +53,8 @@ exports.seed = function(knex) {
 				password: 'password',
 				role: 'user',
 				isAdmin: false,
-				superUser: false
+				superUser: false,
+				isLocked: false
 			}
 		]);
 	});

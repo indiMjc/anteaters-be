@@ -1,11 +1,11 @@
 ## Todo:
 
--  api docs
--  middleware that checks if admin
--  middleware that checks if superuser
--  middleware that checks if me
--  add uid to token payload
--  whitelist jwt algorithms
+-  [ ] api docs
+-  [ ] middleware that checks if admin
+-  [ ] middleware that checks if superuser
+-  [ ] middleware that checks if me
+-  [ ] add uid to token payload
+-  [ ] whitelist jwt algorithms
 
 ## FE notes:
 
@@ -33,3 +33,8 @@
 
 -  password recovery
 -  separate auth api with 'audience' key/value stored in token
+-  account deletion
+
+## Misc:
+
+-  `username` foreign keys on `ticket_replies` and `ticket` tables are nullable to preserve data if a user deletes their account. schema is set to `.onDelete('SET NULL')`

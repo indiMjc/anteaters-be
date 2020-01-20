@@ -4,12 +4,14 @@ exports.up = tbl => {
 
 		tbl.integer('ticket_id')
 			.unsigned()
+			.notNullable()
 			.references('id')
 			.inTable('tickets')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 
 		tbl.integer('dev_username')
+			.notNullable()
 			.references('username')
 			.inTable('users')
 			.onDelete('CASCADE')

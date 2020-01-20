@@ -18,11 +18,15 @@ exports.up = tbl => {
 
 		tbl.string('role', 128).notNullable();
 
+		tbl.boolean('superUser')
+			.notNullable()
+			.defaultTo(false);
+
 		tbl.boolean('isAdmin')
 			.notNullable()
 			.defaultTo(false);
 
-		tbl.boolean('superUser')
+		tbl.boolean('isLocked')
 			.notNullable()
 			.defaultTo(false);
 	});

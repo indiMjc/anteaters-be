@@ -5,12 +5,12 @@
 -  [ ] middleware that checks if superuser
 -  [ ] middleware that checks if me
 -  [ ] add uid to token payload
--  [ ] whitelist jwt algorithms
+-  [ ] whitelist jwt algorithms, hardcode into `verify()`
 
 ## FE notes:
 
 -  store token in memory and get new token if page is refreshed
--  persist on login: token, uid and user role (uid and role in token)
+-  persist on login: token, uid and isAdmin || superUser (uid and role in token)
 -  decode jwt with `JSON.parse(atob(token.split('.')[1]))`
 -  when registering and logging in, convert username to lowercase
 -  when searching for project by name, convert to lowercase
@@ -18,6 +18,10 @@
 -  project_devs references username in users instead of ID
 -  submitted_by fields reference username in users instead of ID
 -  persist user type in session storage for middleware functions
+
+## BE notes:
+
+-  `username` foreign keys on `ticket_replies` and `ticket` tables are nullable to preserve data if a user deletes their account. schema is set to `.onDelete('SET NULL')`
 
 ## Permissions:
 
@@ -31,10 +35,8 @@
 
 ## Stretch goals:
 
--  password recovery
--  separate auth api with 'audience' key/value stored in token
--  account deletion
-
-## Misc:
-
--  `username` foreign keys on `ticket_replies` and `ticket` tables are nullable to preserve data if a user deletes their account. schema is set to `.onDelete('SET NULL')`
+-  BE: password recovery
+-  BE: separate auth api with 'audience' key/value stored in token
+-  BE: account deletion
+-  BE: implement refresh tokens
+-  BE: jwt whitelist table

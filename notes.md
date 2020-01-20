@@ -1,11 +1,11 @@
 ## Todo:
 
--  api docs
--  middleware that checks if admin
--  middleware that checks if superuser
--  middleware that checks if me
--  add uid to token payload
--  whitelist jwt algorithms
+-  [ ] api docs
+-  [ ] middleware that checks if admin
+-  [ ] middleware that checks if superuser
+-  [ ] middleware that checks if me
+-  [ ] add uid to token payload
+-  [ ] whitelist jwt algorithms
 
 ## FE notes:
 

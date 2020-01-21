@@ -6,6 +6,8 @@
 -  [ ] middleware that checks if me
 -  [ ] add uid to token payload
 -  [ ] whitelist jwt algorithms, hardcode into `verify()`
+-  [ ] update docs:
+   -  remove lowercase names from projects
 
 ## FE notes:
 

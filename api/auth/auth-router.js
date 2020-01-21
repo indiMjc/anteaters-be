@@ -22,9 +22,9 @@ const signToken = user => {
 };
 
 router.post('/login', auth.validateLogin, (req, res) => {
-	let { lowercase_username, password } = req.body;
+	let { username, password } = req.body;
 
-	Users.findBy({ lowercase_username })
+	Users.findByUsername(username)
 		.then(user => {
 			if (user && bcrypt.compareSync(password, user.password)) {
 				const token = signToken(user);

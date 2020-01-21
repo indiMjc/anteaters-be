@@ -8,8 +8,8 @@ const validateNewUser = (req, res, next) => {
 };
 
 const validateLogin = (req, res, next) => {
-	const { lowercase_username, password } = req.body;
-	!lowercase_username && res.status(400).json({ message: 'Username required' });
+	const { username, password } = req.body;
+	!username && res.status(400).json({ message: 'Username required' });
 	!password && res.status(400).json({ message: 'Password required' });
 	next();
 };

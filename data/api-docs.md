@@ -87,6 +87,10 @@
         
 -  ## Projects
     - ### Endpoints
+    | Method | URL _(base:_ `/projects`)     | Description                                                                                         |
+    |:------:| :---------------------------: | :-------------------------------------------------------------------------------------------------: |
+    | GET    | **`/name_search/:name`**      | Fetch project with specified `name` with associated developers                                      |
+    | GET    | **`/id_search/:name`**        | Fetch project with specified `id` with associated developers                                        |
     - ### DB access functions
 
 # **Schema**
@@ -102,7 +106,6 @@
    | \* id                 | int  | auto    | Primary key                     |
    | \* email              | str  |         | User email                      |
    | \* username           | str  |         | Username                        |
-   | \* lowercase_username | str  |         | Lowercase username (for search) |
    | \* password           | str  |         | User password                   |
    | \* role               | str  |         | User role                       |
    | \* superUser          | bool | false   | Super user permission           |
@@ -116,7 +119,6 @@
    | Field             | Type | Default | Metadata                            | Foreign key (references) |
    | :---------------: | :--: | :-----: | :---------------------------------: | :----------------------: |
    | \* id             | int  | auto    | Primary key                         |                          |
-   | \* lowercase_name | str  |         | Lowercase project name (for search) |                          |
    | \* description    | str  |         | Project description                 |                          |
    | stakeholder       | str  |         | Project stakeholder/owner           | `username` in `users`    |
    | project_manager   | str  |         | Project manager/team lead           | `username` in `users`    |

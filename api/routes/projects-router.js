@@ -5,8 +5,8 @@ const restricted = require('../auth/auth-middleware');
 const Projects = require('../models/projects-model');
 
 // Search for project by name, case insensitive
-router.get('/search/:query', restricted, (req, res) => {
-	Projects.findProjectByName(req.params.query)
+router.get('/name_search/:name', restricted, (req, res) => {
+	Projects.findProjectByName(req.params.name)
 		.then(project => {
 			project
 				? res.status(200).json(project)
@@ -19,8 +19,8 @@ router.get('/search/:query', restricted, (req, res) => {
 });
 
 // GET projects with array of assigned devs
-router.get('/:id', restricted, (req, res) => {
-	Projects.findProject(req.params.id)
+router.get('/id_search/:id', restricted, (req, res) => {
+	Projects.findProjectById(req.params.id)
 		.then(project => {
 			project
 				? res.status(200).json(project)

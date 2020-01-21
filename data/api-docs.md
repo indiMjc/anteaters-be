@@ -2,14 +2,27 @@
 # **Routes**
 ### _(_**all** _endpoints require authentication)_
 
+-  ## Login and register
+    - ### Endpoints
+    | Method | URL _(base:_ `/auth`)    | Description                                              |
+    |:-------| :----------------------: | -------------------------------------------------------: |
+    | POST   | **`/login`**             | User login, returns username and token                   |
+    | POST   | **`/register`**          | User registration, returns new user's username and token |
+    - ### DB access functions
+        _**See:**_ **`findByUsername()`** _and_ **`add()`** _in "Users" section below_
+
 -  ## Users
     - ### Endpoints
     - ### DB access functions
+        - **`findById(id)`**:  returns user with corresponding `id` if user exists
+        - **`findByUsername(username)`**:  returns user with corresponding `username` if user exists
+        - **`findByEmail(email)`**:  returns user with corresponding `email` if user exists
+        - **`add(user)`**: adds user to database and returns new user
 
 -  ## Tickets
     - ### Endpoints
     | Method | URL _(base:_ `/tickets`)      | Description                                                                                         |
-    |:------:| :---------------------------: | :-------------------------------------------------------------------------------------------------: |
+    |:-------| :---------------------------: | --------------------------------------------------------------------------------------------------: |
     | GET    | **`/:id`**                    | Fetch ticket with specified `ticket_id`, gets associated replies and devs                           |
     | GET    | **`/by_project/:id`**         | Fetch all tickets associated with given project that has specified `project_id`                     |
     | GET    | **`/submitted_by/:username`** | Fetch all tickets posted by given user with specified `username`                                    |
@@ -88,7 +101,7 @@
 -  ## Projects
     - ### Endpoints
     | Method | URL _(base:_ `/projects`)     | Description                                                                                         |
-    |:------:| :---------------------------: | :-------------------------------------------------------------------------------------------------: |
+    |:-------| :---------------------------: | --------------------------------------------------------------------------------------------------: |
     | GET    | **`/name_search/:name`**      | Fetch project with specified `name` with associated developers                                      |
     | GET    | **`/id_search/:name`**        | Fetch project with specified `id` with associated developers                                        |
     - ### DB access functions
@@ -102,7 +115,7 @@
    <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211142_users.js" target="_blank">Users migration file</a>
 
    | Field                 | Type | Default | Metadata                        |
-   | :-------------------: | :--: | :-----: | :-----------------------------: |
+   | :-------------------- | :--: | :-----: | ------------------------------: |
    | \* id                 | int  | auto    | Primary key                     |
    | \* email              | str  |         | User email                      |
    | \* username           | str  |         | Username                        |
@@ -117,7 +130,7 @@
    <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211150_projects.js" target="_blank">Projects migration file</a>
 
    | Field             | Type | Default | Metadata                            | Foreign key (references) |
-   | :---------------: | :--: | :-----: | :---------------------------------: | :----------------------: |
+   | :---------------- | :--: | :-----: | :---------------------------------: | -----------------------: |
    | \* id             | int  | auto    | Primary key                         |                          |
    | \* description    | str  |         | Project description                 |                          |
    | stakeholder       | str  |         | Project stakeholder/owner           | `username` in `users`    |
@@ -128,7 +141,7 @@
    <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211202_project_devs.js" target="_blank">Project devs migration file</a>
 
    | Field           | Type | Default | Metadata                          | Foreign key (references) |
-   | :-------------: | :--: | :-----: | :-------------------------------: | :----------------------: |
+   | :-------------- | :--: | :-----: | :-------------------------------: | -----------------------: |
    | \* id           | int  | auto    | Primary key                       |                          |
    | \* dev_username | str  |         | Developer working on this project | `username` in `users`    |
    | \* project_id   | str  |         | Project ID                        | `id` in `projects`       |
@@ -138,7 +151,7 @@
    <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211213_ticket_devs.js" target="_blank">Ticket devs migration file</a>
 
    | Field           | Type | Default | Metadata                         | Foreign key (references) |
-   | :-------------: | :--: | :-----: | :------------------------------: | :----------------------: |
+   | :-------------- | :--: | :-----: | :------------------------------: | -----------------------: |
    | \* id           | int  | auto    | Primary key                      |                          |
    | \* ticket_id    | int  |         | Ticket ID                        | `id` in `tickets`        |
    | \* dev_username | str  |         | Developer working on this ticket | `username` in `users`    |
@@ -148,7 +161,7 @@
    <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211218_tickets.js" target="_blank">Tickets migration file</a>
 
    | Field          | Type      | Default         | Metadata                                | Foreign key (references) |
-   | :------------: | :-------: | :-------------: | :-------------------------------------: | :----------------------: |
+   | :------------- | :-------: | :-------------: | :-------------------------------------: | -----------------------: |
    | \* id          | int       | auto            | Primary key                             |                          |
    | \* title       | str       |                 | Ticket title                            |                          |
    | \* category    | str       |                 | Ticket category                         |                          |
@@ -165,7 +178,7 @@
    <a href="https://github.com/indiMjc/anteaters-be/blob/master/data/migrations/20200114211228_ticket_replies.js" target="_blank">Ticket replies migration file</a>
 
    | Field         | Type      | Default         | Metadata                          | Foreign key (references) |
-   | :-----------: | :-------: | :-------------: | :-------------------------------: | :----------------------: |
+   | :------------ | :-------: | :-------------: | :-------------------------------: | -----------------------: |
    | \* id         | int       | auto            | Primary key                       |                          |
    | \* reply      | str       |                 | Ticket reply                      |                          |
    | \* created_at | timestamp | `knex.fn.now()` | Time and date reply was submitted |                          |

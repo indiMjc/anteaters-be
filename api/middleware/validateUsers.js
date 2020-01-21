@@ -25,7 +25,7 @@ const validateNewUser = async (req, res, next) => {
 	}
 	catch (err) {
 		console.log(err)
-		res.status(500).json({ error: 'Error while checking for uniqueness' })
+		res.status(500).json({ errMessage: 'Error while checking for uniqueness', err })
 	}	
 };
 

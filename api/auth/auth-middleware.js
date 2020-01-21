@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 		jwt.verify(authorization, secret, (err, decodedToken) => {
 			if (err) {
 				console.log(err);
-				res.status(401).json({ message: 'Invalid Token' });
+				res.status(401).json({ errMessage: 'Invalid Token', err });
 			} else {
 				req.token = decodedToken;
 				next();

@@ -33,7 +33,7 @@ const findTicket = async ticket_id => {
 	}
 	catch (err) {
 		console.log(err);
-		return res.status(500).json({ error: 'Error while querying db for ticket by ID' })
+		return res.status(500).json({ errMessage: 'Error while querying db for ticket by ID' })
 	}
 };
 

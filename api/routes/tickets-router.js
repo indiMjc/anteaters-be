@@ -36,7 +36,7 @@ router.put('/edit/:id', restricted, restrictUsers.validateEditCredentials, (req,
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ message: 'Edit ticket failed' });
+			res.status(500).json({ errMessage: 'Edit ticket failed', err });
 		});
 });
 

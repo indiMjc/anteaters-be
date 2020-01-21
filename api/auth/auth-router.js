@@ -46,7 +46,7 @@ router.post('/login', auth.validateLogin, async (req, res) => {
 			handleValidateToken(user, password, res);
 		} catch (err) {
 			console.log(err);
-			res.status(500).json({ error: 'Error while logging in' });
+			res.status(500).json({ errMessage: 'Error while logging in', err });
 		}
 	} else {
 		try {
@@ -54,7 +54,7 @@ router.post('/login', auth.validateLogin, async (req, res) => {
 			handleValidateToken(user_2, password, res);
 		} catch (err_1) {
 			console.log(err_1);
-			res.status(500).json({ error: 'Error while logging in' });
+			res.status(500).json({ errMessage: 'Error while logging in', err_1 });
 		}
 	}
 });
@@ -75,7 +75,7 @@ router.post('/register', auth.validateNewUser, (req, res) => {
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ error: 'Error while registering new user' });
+			res.status(500).json({ errMessage: 'Error while registering new user', err });
 		});
 });
 

@@ -12,7 +12,7 @@ const signToken = user => {
 		role: user.role
 	};
 
-	const secret = process.env.JWT_SECRET;
+	const secret = process.env.JWT_SECRET + user.password;
 
 	const options = {
 		expiresIn: '24h'
@@ -26,8 +26,9 @@ const handleValidateToken = (user, password, res) => {
 		const token = signToken(user);
 
 		res.status(200).json({
-			token,
-			message: `Welcome back, ${user.username}`
+			uid: user.id,
+			message: `Welcome back, ${user.username}`,
+			token
 		});
 	} else {
 		res.status(401).json({ message: 'Invalid credentials' });

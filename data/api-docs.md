@@ -4,10 +4,10 @@
 
 -  ## Login and register
     - ### Endpoints
-    | Method | URL _(base:_ `/auth`)    | Description                                              |
-    |:-------| :----------------------: | -------------------------------------------------------: |
-    | POST   | **`/login`**             | User login, returns username and token                   |
-    | POST   | **`/register`**          | User registration, returns new user's username and token |
+    | Method | URL _(base:_ `/auth`)    | Description                                                        |
+    |:-------| :----------------------: | -----------------------------------------------------------------: |
+    | POST   | **`/login`**             | User login (accepts username OR email), returns username and token |
+    | POST   | **`/register`**          | User registration, returns new user's username and token           |
     - ### DB access functions
         _**See:**_ **`findByUsername()`** _and_ **`add()`** _in "Users" section below_
 

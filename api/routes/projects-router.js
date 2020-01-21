@@ -4,11 +4,10 @@ const restricted = require('../auth/auth-middleware');
 
 const Projects = require('../models/projects-model');
 
-// Search for project by name, use String.prototype.toLowerCase() on FE
+// Search for project by name, case insensitive
 router.get('/search/:query', restricted, (req, res) => {
-	Projects.findProjectBy({ lowercase_name: req.params.query })
+	Projects.findProjectByName(req.params.query)
 		.then(project => {
-			project && delete project.lowercase_name;
 			project
 				? res.status(200).json(project)
 				: res.status(401).json({ message: 'No project by that name' });

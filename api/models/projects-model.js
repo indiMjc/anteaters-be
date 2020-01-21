@@ -1,8 +1,8 @@
 const db = require('../../data/dbConfig');
 
-const findProjectBy = filter => {
+const findProjectByName = name => {
 	return db('projects')
-		.where(filter)
+		.where(db.raw('LOWER(??)', ['projects.name']), name)
 		.first();
 };
 
@@ -23,4 +23,4 @@ const findProject = async id => {
 		};
 };
 
-module.exports = { findProjectBy, findProject };
+module.exports = { findProjectByName, findProject };

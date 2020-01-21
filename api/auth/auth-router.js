@@ -9,7 +9,9 @@ const auth = require('../middleware/validateUsers');
 const signToken = user => {
 	const payload = {
 		username: user.username,
-		role: user.role
+		role: user.role,
+		isAdmin: user.isAdmin,
+		superUser: user.superUser
 	};
 
 	const secret = process.env.JWT_SECRET + user.password;
@@ -68,6 +70,7 @@ router.post('/register', auth.validateNewUser, (req, res) => {
 		.then(saved => {
 			const token = signToken(saved);
 			res.status(200).json({
+				uid: saved.id,
 				token,
 				message: `Welcome, ${saved.username}`
 			});

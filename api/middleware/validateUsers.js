@@ -32,18 +32,18 @@ const validateLogin = (req, res, next) => {
 
 // prettier-ignore
 const validateEditCredentials = (req, res, next) => {
-	const { credentials, submitted_by } = req.body;
-	delete req.body.credentials;
+		const { credentials, isAdmin, superUser } = req.token
 
-	!credentials && res.status(400).json({ message: 'Could not find credentials' });
+		!credentials || !user || !superUser && 
+			res.status(400).json({ message: 'Could not find credentials' });
 
-	return credentials === 'isAdmin'
-		? next()
-		: credentials === 'superUser'
+		return isAdmin
 			? next()
-			: credentials === submitted_by
+			: superUser
 				? next()
-				: res.status(400).json({ message: 'Invalid credentials' });
-};
+				: user === req.body.submitted_by
+					? next()
+					: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
+	};
 
 module.exports = { validateNewUser, validateLogin, validateEditCredentials };

@@ -6,8 +6,8 @@ module.exports = async (req, res, next) => {
 	const { authorization, uid } = req.headers;
 
 	if (authorization) {
-		const dbUser = await Users.findById(uid);
-		const secret = process.env.JWT_SECRET + dbUser.password;
+		const user = await Users.findById(uid);
+		const secret = process.env.JWT_SECRET + user.password;
 
 		jwt.verify(authorization, secret, (err, decodedToken) => {
 			if (err) {

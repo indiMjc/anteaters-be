@@ -7,7 +7,7 @@ const validateNewUser = async (req, res, next) => {
 	const [checkEmail, checkUsername] = await Promise.all([
 		Users.findByEmail(email.toLowerCase()),
 		Users.findByUsername(username.toLowerCase())
-	])
+	]);
 
 	// form field validation
 	!email && res.status(400).json({ message: 'Email required' });
@@ -20,7 +20,7 @@ const validateNewUser = async (req, res, next) => {
 		? res.status(400).json({ message: 'This email address is already registered' })
 		: checkUsername
 			? res.status(400).json({ message: 'This username is taken, please try another' })
-			: next()
+			: next();
 };
 
 const validateLogin = (req, res, next) => {
@@ -36,7 +36,7 @@ const validateEditCredentials = (req, res, next) => {
 	delete req.body.credentials;
 
 	!credentials && res.status(400).json({ message: 'Could not find credentials' });
-	
+
 	return credentials === 'isAdmin'
 		? next()
 		: credentials === 'superUser'

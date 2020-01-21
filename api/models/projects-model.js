@@ -17,19 +17,25 @@ const findProjectByName = async name => {
 
 // prettier-ignore
 const findProjectById = async id => {
-	const [project, devs] = await Promise.all([
-		db('projects').where({ id }).first(),
-		
-		db
-			.select('project_devs.dev_username as username')
-			.from('project_devs')
-			.where({ project_id: id })
-	]);
+	try {		
+		const [project, devs] = await Promise.all([
+			db('projects').where({ id }).first(),
+			
+			db
+				.select('project_devs.dev_username as username')
+				.from('project_devs')
+				.where({ project_id: id })
+		]);
 
-	return project && {
-			...project,
-			devs
+		return project && {
+				...project,
+				devs
 		};
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Error while querying db for project by ID' })
+	}
 };
 
 module.exports = { findProjectByName, findProjectById };

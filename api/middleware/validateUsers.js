@@ -4,23 +4,29 @@ const Users = require('../models/users-model');
 const validateNewUser = async (req, res, next) => {
 	const { email, username, password, role } = req.body;
 
-	const [checkEmail, checkUsername] = await Promise.all([
-		Users.findByEmail(email.toLowerCase()),
-		Users.findByUsername(username.toLowerCase())
-	]);
-
 	// form field validation
 	!email && res.status(400).json({ message: 'Email required' });
 	!username && res.status(400).json({ message: 'Username required' });
 	!password && res.status(400).json({ message: 'Password required' });
 	!role && res.status(400).json({ message: 'Role required' });
-	
+
 	// check for uniqueness
-	checkEmail
-		? res.status(400).json({ message: 'This email address is already registered' })
-		: checkUsername
-			? res.status(400).json({ message: 'This username is taken, please try another' })
-			: next();
+	try {
+		const [checkEmail, checkUsername] = await Promise.all([
+			Users.findByEmail(email.toLowerCase()),
+			Users.findByUsername(username.toLowerCase())
+		]);
+		
+		checkEmail
+			? res.status(400).json({ message: 'This email address is already registered' })
+			: checkUsername
+				? res.status(400).json({ message: 'This username is taken, please try another' })
+				: next();
+	}
+	catch (err) {
+		console.log(err)
+		res.status(500).json({ error: 'Error while checking for uniqueness' })
+	}	
 };
 
 const validateLogin = (req, res, next) => {

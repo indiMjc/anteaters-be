@@ -21,8 +21,7 @@ const findProjectById = async id => {
 		const [project, devs] = await Promise.all([
 			db('projects').where({ id }).first(),
 			
-			db
-				.select('project_devs.dev_username as username')
+			db.select('dev_username as username')
 				.from('project_devs')
 				.where({ project_id: id })
 		]);
@@ -34,7 +33,7 @@ const findProjectById = async id => {
 	}
 	catch (err) {
 		console.log(err);
-		return res.status(500).json({ errMessage: 'Error while querying db for project by ID', err })
+		res.status(500).json({ errMessage: 'Error while querying db for project by ID', err })
 	}
 };
 

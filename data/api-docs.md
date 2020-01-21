@@ -32,30 +32,28 @@
             ```
             [
                 {
-                    id: 3,
-                    title: "New feature idea",
-                    category: "new feature suggestion",
-                    description: "Add ability for users to view all plants that we track that are growable in their growth zone.",
-                    urgency: "low",
-                    is_resolved: 0,
-                    in_progress: 1,
-                    created_at: 1579504663022,
-                    submitted_by: "April",
-                    project_id: 3,
-                    author: "April"
+                    "id": 3,
+                    "title": "New feature idea",
+                    "category": "new feature suggestion",
+                    "description": "Add ability for users to view all plants that we track that are growable in their growth zone.",
+                    "urgency": "low",
+                    "is_resolved": 0,
+                    "in_progress": 1,
+                    "created_at": 1579572651699,
+                    "submitted_by": "April",
+                    "project_id": 3
                 },
                 {
-                    id: 4,
-                    title: "Memoize functional components",
-                    category: "Refactor",
-                    description: "Due to the number of forms on the dashboard, too many components are rerendering during form input.  We should optimize that with memoization",
-                    urgency: "low",
-                    is_resolved: 1,
-                    in_progress: 0,
-                    created_at: 1579504663022,
-                    submitted_by: "Mike",
-                    project_id: 3,
-                    author: "Mike"
+                    "id": 4,
+                    "title": "Memoize functional components",
+                    "category": "Refactor",
+                    "description": "Due to the number of forms on the dashboard, too many components are rerendering during form input.  We should optimize that with memoization",
+                    "urgency": "low",
+                    "is_resolved": 1,
+                    "in_progress": 0,
+                    "created_at": 1579572651699,
+                    "submitted_by": "Mike",
+                    "project_id": 3
                 }
             ]
         - **`findTicket(ticket_id)`**:  if ticket exists, returns ticket with given `ticket_id`.  All associated replies and developers attached as an array.  **Ex:**

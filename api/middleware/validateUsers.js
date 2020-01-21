@@ -38,16 +38,16 @@ const validateLogin = (req, res, next) => {
 
 // prettier-ignore
 const validateEditCredentials = (req, res, next) => {
-		const { credentials, isAdmin, superUser } = req.token
+		const { username, isAdmin, superUser } = req.token
 
-		!credentials || !user || !superUser && 
+		!username || !isAdmin || !superUser && 
 			res.status(400).json({ message: 'Could not find credentials' });
 
-		return isAdmin
+		return username === req.body.submitted_by
 			? next()
 			: superUser
 				? next()
-				: user === req.body.submitted_by
+				: isAdmin
 					? next()
 					: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
 	};

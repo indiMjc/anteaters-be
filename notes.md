@@ -8,6 +8,7 @@
 -  [ ] whitelist jwt algorithms, hardcode into `verify()`
 -  [ ] update docs:
    -  remove lowercase names from projects
+   -  remove lowercase names from users
 
 ## FE notes:
 

@@ -9,7 +9,9 @@ const auth = require('../middleware/validateUsers');
 const signToken = user => {
 	const payload = {
 		username: user.username,
-		role: user.role
+		role: user.role,
+		isAdmin: user.isAdmin,
+		superUser: user.superUser
 	};
 
 	const secret = process.env.JWT_SECRET + user.password;
@@ -35,27 +37,25 @@ const handleValidateToken = (user, password, res) => {
 	}
 };
 
-router.post('/login', auth.validateLogin, (req, res) => {
+router.post('/login', auth.validateLogin, async (req, res) => {
 	let { username, password } = req.body;
 
-	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(req.username)) {
-		return Users.findByUsername(username)
-			.then(user => {
-				handleValidateToken(user, password, res);
-			})
-			.catch(err => {
-				console.log(err);
-				res.status(500).json({ error: 'Error while logging in' });
-			});
+	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {
+		try {
+			const user = await Users.findByUsername(username);
+			handleValidateToken(user, password, res);
+		} catch (err) {
+			console.log(err);
+			res.status(500).json({ error: 'Error while logging in' });
+		}
 	} else {
-		return Users.findByEmail(username)
-			.then(user => {
-				handleValidateToken(user, password, res);
-			})
-			.catch(err => {
-				console.log(err);
-				res.status(500).json({ error: 'Error while logging in' });
-			});
+		try {
+			const user_2 = await Users.findByEmail(username);
+			handleValidateToken(user_2, password, res);
+		} catch (err_1) {
+			console.log(err_1);
+			res.status(500).json({ error: 'Error while logging in' });
+		}
 	}
 });
 
@@ -68,6 +68,7 @@ router.post('/register', auth.validateNewUser, (req, res) => {
 		.then(saved => {
 			const token = signToken(saved);
 			res.status(200).json({
+				uid: saved.id,
 				token,
 				message: `Welcome, ${saved.username}`
 			});

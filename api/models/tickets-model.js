@@ -12,27 +12,29 @@ const findByProject = project_id => {
 
 // prettier-ignore
 const findTicket = async ticket_id => {
-	const [ticket, replies, devs] = await Promise.all([
-		db('tickets').where({ id: ticket_id }).first(),
+	try {		
+		const [ticket, replies, devs] = await Promise.all([
+			db('tickets').where({ id: ticket_id }).first(),
 
-		db
-			.select('ticket_replies.reply', 'ticket_replies.created_at', 'ticket_replies.submitted_by')
-			.from('ticket_replies')
-			.where({ ticket_id }),
+			db.select('ticket_replies.reply', 'ticket_replies.created_at', 'ticket_replies.submitted_by')
+				.from('ticket_replies')
+				.where({ ticket_id }),
 
-		db
-			.select('ticket_devs.dev_username as username')
-			.from('ticket_devs')
-			.where({ ticket_id })
-	]);
+			db.select('ticket_devs.dev_username as username')
+				.from('ticket_devs')
+				.where({ ticket_id })
+		]);
 
-	return (
-		ticket && {
-			...ticket,
-			replies,
-			devs
+		return ticket && {
+				...ticket,
+				replies,
+				devs
 		}
-	);
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Error while querying db for ticket by ID' })
+	}
 };
 
 const findUserTickets = submitted_by => {

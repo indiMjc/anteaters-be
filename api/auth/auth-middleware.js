@@ -1,10 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
-	const { authorization } = req.headers;
+const Users = require('../models/users-model');
+
+module.exports = async (req, res, next) => {
+	const { authorization, uid } = req.headers;
 
 	if (authorization) {
-		const secret = process.env.JWT_SECRET;
+		const dbUser = await Users.findById(uid);
+		const secret = process.env.JWT_SECRET + dbUser.password;
 
 		jwt.verify(authorization, secret, (err, decodedToken) => {
 			if (err) {

@@ -6,6 +6,10 @@
 -  [ ] middleware that checks if me
 -  [ ] add uid to token payload
 -  [ ] whitelist jwt algorithms, hardcode into `verify()`
+-  [ ] update docs:
+   -  remove lowercase names from projects
+   -  remove lowercase names from users
+-  [ ] store credentials (isAdmin, superUser) in JWT and use the decoded token on the back end to verify user type when needed
 
 ## FE notes:
 

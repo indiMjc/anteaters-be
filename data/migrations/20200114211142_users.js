@@ -10,10 +10,6 @@ exports.up = tbl => {
 			.notNullable()
 			.unique();
 
-		tbl.string('lowercase_username', 128)
-			.notNullable()
-			.unique();
-
 		tbl.string('password', 128).notNullable();
 
 		tbl.string('role', 128).notNullable();

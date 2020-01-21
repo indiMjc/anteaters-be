@@ -3,8 +3,7 @@ exports.seed = function(knex) {
 		return knex('projects').insert([
 			{
 				id: 1,
-				name: 'Bug Bully',
-				lowercase_name: 'bug bully',
+				name: 'Anteaters',
 				description: 'Bug and issue tracking for software developers.',
 				stakeholder: 'Jackson',
 				project_manager: 'April'
@@ -12,7 +11,6 @@ exports.seed = function(knex) {
 			{
 				id: 2,
 				name: 'DevShop24',
-				lowercase_name: 'devshop24',
 				description: 'A platform for freelance software developers.',
 				stakeholder: 'Jackson',
 				project_manager: null
@@ -20,7 +18,6 @@ exports.seed = function(knex) {
 			{
 				id: 3,
 				name: 'Plant Purpose',
-				lowercase_name: 'plant purpose',
 				description: 'An app that helps users remember their schedule for plant care.',
 				stakeholder: null,
 				project_manager: 'April'

@@ -11,8 +11,7 @@
     - ### DB access functions
         _**See:**_ **`findByUsername()`** _and_ **`add()`** _in "Users" section below_
 
--  ## Users
-    - ### Endpoints
+-  ## Auth
     - ### DB access functions
         - **`findById(id)`**:  returns user with corresponding `id` if user exists
         - **`findByUsername(username)`**:  returns user with corresponding `username` if user exists
@@ -26,36 +25,34 @@
     | GET    | **`/:id`**                    | Fetch ticket with specified `ticket_id`, gets associated replies and devs                           |
     | GET    | **`/by_project/:id`**         | Fetch all tickets associated with given project that has specified `project_id`                     |
     | GET    | **`/submitted_by/:username`** | Fetch all tickets posted by given user with specified `username`                                    |
-    | PUT    | **`/edit/:id`**               | Edit and return ticket with given `ticket_id` **if user is a superuser, admin or author of ticket** |
+    | PUT    | **`/:id`**               | Edit and return ticket with given `ticket_id` **if user is a superuser, admin or author of ticket** |
     - ### DB access functions
         - **`findByProject(project_id)`**:  returns all tickets associated with given `project_id`:  if tickets exist, returns an array of all tickets associated with project with given `project_id`.  **Ex:**
             ```
             [
                 {
-                    id: 3,
-                    title: "New feature idea",
-                    category: "new feature suggestion",
-                    description: "Add ability for users to view all plants that we track that are growable in their growth zone.",
-                    urgency: "low",
-                    is_resolved: 0,
-                    in_progress: 1,
-                    created_at: 1579504663022,
-                    submitted_by: "April",
-                    project_id: 3,
-                    author: "April"
+                    "id": 3,
+                    "title": "New feature idea",
+                    "category": "new feature suggestion",
+                    "description": "Add ability for users to view all plants that we track that are growable in their growth zone.",
+                    "urgency": "low",
+                    "is_resolved": 0,
+                    "in_progress": 1,
+                    "created_at": 1579572651699,
+                    "submitted_by": "April",
+                    "project_id": 3
                 },
                 {
-                    id: 4,
-                    title: "Memoize functional components",
-                    category: "Refactor",
-                    description: "Due to the number of forms on the dashboard, too many components are rerendering during form input.  We should optimize that with memoization",
-                    urgency: "low",
-                    is_resolved: 1,
-                    in_progress: 0,
-                    created_at: 1579504663022,
-                    submitted_by: "Mike",
-                    project_id: 3,
-                    author: "Mike"
+                    "id": 4,
+                    "title": "Memoize functional components",
+                    "category": "Refactor",
+                    "description": "Due to the number of forms on the dashboard, too many components are rerendering during form input.  We should optimize that with memoization",
+                    "urgency": "low",
+                    "is_resolved": 1,
+                    "in_progress": 0,
+                    "created_at": 1579572651699,
+                    "submitted_by": "Mike",
+                    "project_id": 3
                 }
             ]
         - **`findTicket(ticket_id)`**:  if ticket exists, returns ticket with given `ticket_id`.  All associated replies and developers attached as an array.  **Ex:**

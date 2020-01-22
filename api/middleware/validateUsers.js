@@ -1,4 +1,4 @@
-const Users = require('../models/users-model');
+const Users = require('../auth/auth-model');
 
 // prettier-ignore
 const validateNewUser = async (req, res, next) => {
@@ -25,7 +25,7 @@ const validateNewUser = async (req, res, next) => {
 	}
 	catch (err) {
 		console.log(err)
-		res.status(500).json({ error: 'Error while checking for uniqueness' })
+		res.status(500).json({ errMessage: 'Error while checking for uniqueness', err })
 	}	
 };
 
@@ -37,19 +37,19 @@ const validateLogin = (req, res, next) => {
 };
 
 // prettier-ignore
-const validateEditCredentials = (req, res, next) => {
-		const { credentials, isAdmin, superUser } = req.token
+const validateEditTicket = (req, res, next) => {
+		const { username, isAdmin, superUser } = req.token
 
-		!credentials || !user || !superUser && 
+		!username || !isAdmin || !superUser && 
 			res.status(400).json({ message: 'Could not find credentials' });
 
-		return isAdmin
+		return username === req.body.submitted_by
 			? next()
 			: superUser
 				? next()
-				: user === req.body.submitted_by
+				: isAdmin
 					? next()
 					: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
 	};
 
-module.exports = { validateNewUser, validateLogin, validateEditCredentials };
+module.exports = { validateNewUser, validateLogin, validateEditTicket };

@@ -1,18 +1,27 @@
 const db = require('../../data/dbConfig');
 
 const findProjectByName = async name => {
-	const project = await db('projects')
-		.where(db.raw('LOWER(??)', ['projects.name']), name)
-		.first();
+	try {
+		const project = await db('projects')
+			.where(db.raw('LOWER(??)', ['projects.name']), name)
+			.first();
 
-	const devs = await db('project_devs')
-		.select('dev_username as username')
-		.where({ project_id: project.id });
+		if (project) {
+			const devs = await db('project_devs')
+				.select('dev_username as username')
+				.where({ project_id: project.id });
 
-	return {
-		...project,
-		devs
-	};
+			return {
+				...project,
+				devs
+			};
+		} else {
+			return { message: 'No project found by that name' };
+		}
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while fetching project by ID' };
+	}
 };
 
 // prettier-ignore
@@ -21,8 +30,7 @@ const findProjectById = async id => {
 		const [project, devs] = await Promise.all([
 			db('projects').where({ id }).first(),
 			
-			db
-				.select('project_devs.dev_username as username')
+			db.select('dev_username as username')
 				.from('project_devs')
 				.where({ project_id: id })
 		]);
@@ -34,8 +42,23 @@ const findProjectById = async id => {
 	}
 	catch (err) {
 		console.log(err);
-		return res.status(500).json({ error: 'Error while querying db for project by ID' })
+		return { errMessage: 'Error in db function while fetching project by ID' }
 	}
 };
 
-module.exports = { findProjectByName, findProjectById };
+const addProject = async newProject => {
+	try {
+		const id = await db('projects')
+			.insert(newProject)
+			.returning('id');
+
+		const addedProject = await findProjectById(id[0]);
+
+		return addedProject;
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while adding new project' };
+	}
+};
+
+module.exports = { findProjectByName, findProjectById, addProject };

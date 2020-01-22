@@ -4,7 +4,7 @@ const restricted = require('../auth/auth-middleware');
 
 const Projects = require('../models/projects-model');
 
-// Search for project by name, case insensitive
+// GET - search for project by name, case insensitive
 router.get('/name_search/:name', restricted, (req, res) => {
 	Projects.findProjectByName(req.params.name)
 		.then(project => {
@@ -18,7 +18,7 @@ router.get('/name_search/:name', restricted, (req, res) => {
 		});
 });
 
-// GET projects with array of assigned devs
+// GET - fetches projects with array of assigned devs
 router.get('/id_search/:id', restricted, (req, res) => {
 	Projects.findProjectById(req.params.id)
 		.then(project => {
@@ -29,6 +29,18 @@ router.get('/id_search/:id', restricted, (req, res) => {
 		.catch(err => {
 			console.log(err);
 			res.status(500).json({ errMessage: 'Error getting project', err });
+		});
+});
+
+// POST - add new project
+router.post('/', restricted, (req, res) => {
+	Projects.addProject(req.body)
+		.then(project => {
+			res.status(200).json(project);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Error while adding new project' });
 		});
 });
 

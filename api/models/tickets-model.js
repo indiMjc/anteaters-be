@@ -33,7 +33,7 @@ const findTicket = async ticket_id => {
 	}
 	catch (err) {
 		console.log(err);
-		return res.status(500).json({ errMessage: 'Error while querying db for ticket by ID' })
+		return { errMessage: 'Error while querying db for ticket by ID' }
 	}
 };
 
@@ -55,12 +55,22 @@ const editTicket = async (id, changes) => {
 		.first();
 };
 
-const addTicket = async ticket => {
-	const id = await db('tickets')
-		.insert(ticket)
-		.returning('id');
+const addTicket = async newTicket => {
+	try {
+		const id = await db('tickets')
+			.insert(newTicket)
+			.returning('id');
 
-	return findTicket(id[0]);
+		const addedTicket = await findTicket(id[0]);
+
+		delete addedTicket.devs;
+		delete addedTicket.replies;
+
+		return addedTicket;
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error while adding new ticket' };
+	}
 };
 
 module.exports = { findByProject, findTicket, findUserTickets, editTicket, addTicket };

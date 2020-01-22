@@ -4,10 +4,7 @@
 -  [ ] middleware that checks if admin
 -  [ ] middleware that checks if superuser
 -  [ ] middleware that checks if me
--  [ ] add uid to token payload
 -  [ ] whitelist jwt algorithms, hardcode into `verify()`
--  [ ] store credentials (isAdmin, superUser, isLocked) in JWT and use the decoded token on the back end to verify user type when needed
-   -  refactor validateEditCredentials to pull credentials from header instead of request body
 
 ## FE notes:
 
@@ -20,7 +17,6 @@
 -  ticket_devs references username in users instead of ID
 -  project_devs references username in users instead of ID
 -  submitted_by fields reference username in users instead of ID
--  persist user type in session storage for middleware functions
 
 ## BE notes:
 

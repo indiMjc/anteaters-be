@@ -33,8 +33,25 @@ const findProjectById = async id => {
 	}
 	catch (err) {
 		console.log(err);
-		res.status(500).json({ errMessage: 'Error while querying db for project by ID', err })
+		return { errMessage: 'Error while querying db for project by ID', err }
 	}
 };
 
-module.exports = { findProjectByName, findProjectById };
+const addProject = async newProject => {
+	try {
+		const id = await db('projects')
+			.insert(newProject)
+			.returning('id');
+
+		const addedProject = await findProjectById(id[0]);
+
+		delete addedProject.devs;
+
+		return addedProject;
+	} catch (err) {
+		console.log('1', err);
+		return { errMessage: 'Error while adding new project' };
+	}
+};
+
+module.exports = { findProjectByName, findProjectById, addProject };

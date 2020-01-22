@@ -3,7 +3,7 @@ const db = require('../../data/dbConfig');
 const findAllUsersReplies = async username => {
 	try {
 		return await db
-			.select('*')
+			.select('ticket_replies.*')
 			.from('ticket_replies')
 			.join('users', 'ticket_replies.submitted_by', 'users.username')
 			.where(db.raw('LOWER(??)', ['username']), username)
@@ -25,7 +25,7 @@ const findAllTicketsReplies = async id => {
 				.orderBy('ticket_replies.created_at', 'desc'),
 
 			db
-				.select('ticket_devs.*')
+				.select('ticket_devs.dev_username AS username')
 				.from('ticket_devs')
 				.join('tickets', 'tickets.id', 'ticket_devs.ticket_id')
 				.whereRaw('tickets.id = ?', [id])

@@ -1,6 +1,18 @@
 const db = require('../../data/dbConfig');
 
-const findAllUsersReplies = () => {};
+const findAllUsersReplies = async username => {
+	try {
+		return await db
+			.select('*')
+			.from('ticket_replies')
+			.join('users', 'ticket_replies.submitted_by', 'users.username')
+			.where(db.raw('LOWER(??)', ['username']), username)
+			.orderBy('ticket_replies.created_at', 'desc');
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while getting replies for user' };
+	}
+};
 
 const findAllTicketsReplies = async id => {
 	try {

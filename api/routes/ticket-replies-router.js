@@ -16,4 +16,16 @@ router.get('/:id', (req, res) => {
 		});
 });
 
+// GET - fetches all replies submitted by username
+router.get('/my_replies/:username', (req, res) => {
+	Replies.findAllUsersReplies(req.params.username)
+		.then(replies => {
+			res.status(200).json(replies);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Error while fetching replies' });
+		});
+});
+
 module.exports = router;

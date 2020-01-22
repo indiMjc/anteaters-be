@@ -28,4 +28,15 @@ router.get('/my_replies/:username', (req, res) => {
 		});
 });
 
+router.post('/', (req, res) => {
+	Replies.addReply(req.body)
+		.then(reply => {
+			res.status(200).json(reply);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Error while adding reply' });
+		});
+});
+
 module.exports = router;

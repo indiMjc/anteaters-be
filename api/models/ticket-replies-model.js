@@ -50,9 +50,22 @@ const findAllTicketsReplies = async id => {
 	}
 };
 
-const findRepliesByProjectId = () => {};
+const addReply = async reply => {
+	try {
+		const id = await db('ticket_replies')
+			.insert(reply)
+			.returning('id');
 
-const addReply = () => {};
+		const replied = await db('ticket_replies')
+			.where({ id: id[0] })
+			.first();
+
+		return replied;
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while adding reply' };
+	}
+};
 
 const editReply = () => {};
 
@@ -61,7 +74,6 @@ const deleteReply = () => {};
 module.exports = {
 	findAllUsersReplies,
 	findAllTicketsReplies,
-	findRepliesByProjectId,
 	addReply,
 	editReply,
 	deleteReply

@@ -14,7 +14,6 @@
     -  [x]   [x]       get all tickets by author username
 
     -  [x]   []       get all ticket replies by username
-
     -  []    []       reply to ticket
     -  []    []       edit reply (only if me, superUser, admin or reply author)
     -  []    []       delete reply (only if me, superUser, admin or reply author)

@@ -36,7 +36,19 @@ router.put('/edit/:id', restricted, restrictUsers.validateEditCredentials, (req,
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Edit ticket failed', err });
+			res.status(500).json({ errMessage: 'Edit ticket failed' });
+		});
+});
+
+// POST - add ticket
+router.post('/', restricted, (req, res) => {
+	Tickets.addTicket(req.body)
+		.then(ticket => {
+			res.status(200).json(ticket);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Add ticket failed' });
 		});
 });
 

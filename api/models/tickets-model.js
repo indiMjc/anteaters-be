@@ -55,4 +55,12 @@ const editTicket = async (id, changes) => {
 		.first();
 };
 
-module.exports = { findByProject, findTicket, findUserTickets, editTicket };
+const addTicket = async ticket => {
+	const id = await db('tickets')
+		.insert(ticket)
+		.returning('id');
+
+	return findTicket(id[0]);
+};
+
+module.exports = { findByProject, findTicket, findUserTickets, editTicket, addTicket };

@@ -11,7 +11,8 @@ const signToken = user => {
 		username: user.username,
 		role: user.role,
 		isAdmin: user.isAdmin,
-		superUser: user.superUser
+		superUser: user.superUser,
+		isLocked: user.isLocked
 	};
 
 	const secret = process.env.JWT_SECRET + user.password;

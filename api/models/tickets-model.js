@@ -48,13 +48,14 @@ const findTicket = async ticket_id => {
 	}
 };
 
-const findUserTickets = submitted_by => {
+const findUserTickets = async submitted_by => {
 	try {
-		return db
-			.select('*')
+		return await db
+			.select('tickets.*')
 			.from('tickets')
 			.join('users', 'tickets.submitted_by', 'users.username')
-			.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by);
+			.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by)
+			.orderBy('tickets.created_at', 'desc');
 	} catch (err) {
 		console.log(err);
 		return { errMessage: 'Error in db function while searching for user' };
@@ -89,9 +90,9 @@ const addTicket = async newTicket => {
 	}
 };
 
-const deleteTicket = id => {
+const deleteTicket = async id => {
 	try {
-		return db('tickets')
+		return await db('tickets')
 			.where({ id })
 			.del();
 	} catch (err) {
@@ -103,7 +104,7 @@ const deleteTicket = id => {
 const findRepliesByUsername = submitted_by => {
 	try {
 		return db
-			.select('*')
+			.select('ticket_replies.*')
 			.from('ticket_replies')
 			.join('users', 'ticket_replies.submitted_by', 'users.username')
 			.where(db.raw('LOWER(??)', ['users.username']), submitted_by);

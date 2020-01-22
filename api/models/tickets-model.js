@@ -83,4 +83,15 @@ const addTicket = async newTicket => {
 	}
 };
 
-module.exports = { findByProject, findTicket, findUserTickets, editTicket, addTicket };
+const deleteTicket = id => {
+	try {
+		return db('tickets')
+			.where({ id })
+			.del();
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while deleting ticket' };
+	}
+};
+
+module.exports = { findByProject, findTicket, findUserTickets, editTicket, addTicket, deleteTicket };

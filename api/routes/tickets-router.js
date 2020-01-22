@@ -28,7 +28,7 @@ router.get('/submitted_by/:username', restricted, (req, res) => {
 });
 
 // PUT - edit ticket, only accessible to superusers, admins and author of the ticket
-router.put('/edit/:id', restricted, restrictUsers.validateEditTicket, (req, res) => {
+router.put('/:id', restricted, restrictUsers.validateEditTicket, (req, res) => {
 	const { id } = req.params;
 	Tickets.editTicket(id, req.body)
 		.then(ticket => {
@@ -49,6 +49,20 @@ router.post('/', restricted, (req, res) => {
 		.catch(err => {
 			console.log(err);
 			res.status(500).json({ errMessage: 'Add ticket failed' });
+		});
+});
+
+// DELETE - remove ticket
+router.delete('/:id', restricted, (req, res) => {
+	Tickets.deleteTicket(req.params.id)
+		.then(deleted => {
+			deleted
+				? res.status(200).json({ removed: deleted })
+				: res.status(500).json({ errMessage: 'Could not find ticket with given ID' });
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Delete ticket failed' });
 		});
 });
 

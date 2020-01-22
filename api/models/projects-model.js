@@ -6,14 +6,18 @@ const findProjectByName = async name => {
 			.where(db.raw('LOWER(??)', ['projects.name']), name)
 			.first();
 
-		const devs = await db('project_devs')
-			.select('dev_username as username')
-			.where({ project_id: project.id });
+		if (project) {
+			const devs = await db('project_devs')
+				.select('dev_username as username')
+				.where({ project_id: project.id });
 
-		return {
-			...project,
-			devs
-		};
+			return {
+				...project,
+				devs
+			};
+		} else {
+			return { message: 'No project found by that name' };
+		}
 	} catch (err) {
 		console.log(err);
 		return { errMessage: 'Error in db function while fetching project by ID' };

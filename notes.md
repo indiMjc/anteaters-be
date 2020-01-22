@@ -2,30 +2,31 @@
 
 #### BE:
 
-    -  [x] login
-    -  [x] register
+            docs
+    -  [x]   [x]       login
+    -  [x]   [x]       register
 
-    -  [x] add ticket
-    -  [x] edit ticket (only if me, superUser, admin or ticket author)
-    -  [x] delete ticket (only if me, superUser, admin or ticket author)
-    -  [x] get ticket by ticket ID (with replies and assigned devs)
-    -  [x] get all tickets for project by project ID
-    -  [x] get all tickets by author username
+    -  [x]   []       add ticket
+    -  [x]   [x]       edit ticket (only if me, superUser, admin or ticket author)
+    -  [x]   []       delete ticket (only if me, superUser, admin or ticket author)
+    -  [x]   [x]       get ticket by ticket ID (with replies and assigned devs)
+    -  [x]   [x]       get all tickets for project by project ID
+    -  [x]   [x]       get all tickets by author username
 
-    -  [x] get all ticket replies by username
+    -  [x]   []       get all ticket replies by username
 
-    -  [] reply to ticket
-    -  [] edit reply (only if me, superUser, admin or reply author)
-    -  [] delete reply (only if me, superUser, admin or reply author)
-    -  [] get all replies by username
+    -  []    []       reply to ticket
+    -  []    []       edit reply (only if me, superUser, admin or reply author)
+    -  []    []       delete reply (only if me, superUser, admin or reply author)
+    -  []    []       get all replies by username
 
-    -  [x] add new project
-    -  [] edit project (only if me, superUser, admin, project manager or stakeholder)
-    -  [] delete project (only if me, superUser, admin, project manager or stakeholder)
-    -  [x] get project by ID (with assigned devs)
-    -  [x] search for project by project name
-    -  []
-    -  []
+    -  [x]   []       add new project
+    -  []    []       edit project (only if me, superUser, admin, project manager or stakeholder)
+    -  []    []       delete project (only if me, superUser, admin, project manager or stakeholder)
+    -  [x]   [x]       get project by ID (with assigned devs)
+    -  [x]   [x]       search for project by project name (with assigned devs)
+    -  []    []
+    -  []    []
 
 #### FE:
 
@@ -84,5 +85,6 @@
 -  BE: account deletion
 -  BE: implement refresh tokens
 -  BE: jwt whitelist table
+-  BE: search for ticket by title
 -  BE & FE: internal messaging system
 -  BE & FE: watchlist

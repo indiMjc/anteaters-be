@@ -1,4 +1,4 @@
-const Users = require('../models/users-model');
+const Users = require('../auth/auth-model');
 
 // prettier-ignore
 const validateNewUser = async (req, res, next) => {

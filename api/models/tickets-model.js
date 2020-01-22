@@ -1,14 +1,20 @@
 const db = require('../../data/dbConfig');
 
-const findByProject = project_id => {
+const findByProject = async project_id => {
 	try {
-		return db
+		const tickets = await db
 			.select('tickets.*')
 			.from('tickets')
 			.join('users', 'users.username', 'tickets.submitted_by')
 			.join('projects', 'projects.id', 'tickets.project_id')
 			.where({ project_id })
 			.orderBy('tickets.created_at', 'desc');
+
+		if (tickets.length) {
+			return tickets;
+		} else {
+			return { message: 'No tickets found under this project ID' };
+		}
 	} catch (err) {
 		console.log(err);
 		return { errMessage: 'Error in db function while fetching project' };

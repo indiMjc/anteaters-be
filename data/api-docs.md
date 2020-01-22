@@ -11,8 +11,7 @@
     - ### DB access functions
         _**See:**_ **`findByUsername()`** _and_ **`add()`** _in "Users" section below_
 
--  ## Users
-    - ### Endpoints
+-  ## Auth
     - ### DB access functions
         - **`findById(id)`**:  returns user with corresponding `id` if user exists
         - **`findByUsername(username)`**:  returns user with corresponding `username` if user exists

@@ -28,7 +28,7 @@ router.get('/submitted_by/:username', restricted, (req, res) => {
 });
 
 // PUT - edit ticket, only accessible to superusers, admins and author of the ticket
-router.put('/edit/:id', restricted, restrictUsers.validateEditCredentials, (req, res) => {
+router.put('/edit/:id', restricted, restrictUsers.validateEditTicket, (req, res) => {
 	const { id } = req.params;
 	Tickets.editTicket(id, req.body)
 		.then(ticket => {

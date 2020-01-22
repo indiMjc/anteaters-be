@@ -33,7 +33,7 @@ const findTicket = async ticket_id => {
 	}
 	catch (err) {
 		console.log(err);
-		return { errMessage: 'Error while querying db for ticket by ID' }
+		return { errMessage: 'Error in db function while fetching ticket by ID' }
 	}
 };
 
@@ -46,13 +46,16 @@ const findUserTickets = submitted_by => {
 };
 
 const editTicket = async (id, changes) => {
-	await db('tickets')
-		.where({ id })
-		.update(changes);
+	try {
+		await db('tickets')
+			.where({ id })
+			.update(changes);
 
-	return db('tickets')
-		.where({ id })
-		.first();
+		return findTicket(id);
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while editing ticket' };
+	}
 };
 
 const addTicket = async newTicket => {
@@ -63,13 +66,10 @@ const addTicket = async newTicket => {
 
 		const addedTicket = await findTicket(id[0]);
 
-		delete addedTicket.devs;
-		delete addedTicket.replies;
-
 		return addedTicket;
 	} catch (err) {
 		console.log(err);
-		return { errMessage: 'Error while adding new ticket' };
+		return { errMessage: 'Error in db function while adding new ticket' };
 	}
 };
 

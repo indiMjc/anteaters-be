@@ -7,11 +7,16 @@ const findById = id => {
 };
 
 const add = async user => {
-	const id = await db('users')
-		.insert(user)
-		.returning('id');
+	try {
+		const id = await db('users')
+			.insert(user)
+			.returning('id');
 
-	return findById(id[0]).first();
+		return findById(id[0]).first();
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while adding new user' };
+	}
 };
 
 const findByUsername = username => {

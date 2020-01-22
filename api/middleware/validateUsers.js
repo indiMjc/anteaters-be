@@ -37,7 +37,7 @@ const validateLogin = (req, res, next) => {
 };
 
 // prettier-ignore
-const validateEditCredentials = (req, res, next) => {
+const validateEditTicket = (req, res, next) => {
 		const { username, isAdmin, superUser } = req.token
 
 		!username || !isAdmin || !superUser && 
@@ -52,4 +52,4 @@ const validateEditCredentials = (req, res, next) => {
 					: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
 	};
 
-module.exports = { validateNewUser, validateLogin, validateEditCredentials };
+module.exports = { validateNewUser, validateLogin, validateEditTicket };

@@ -39,4 +39,18 @@ router.post('/', (req, res) => {
 		});
 });
 
+// DELETE - remove reply by ID
+router.delete('/:id', (req, res) => {
+	Replies.deleteReply(req.params.id)
+		.then(deleted => {
+			deleted
+				? res.status(200).json({ removed: deleted })
+				: res.status(404).json({ errMessage: 'Could not find reply with given ID' });
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Delete reply failed' });
+		});
+});
+
 module.exports = router;

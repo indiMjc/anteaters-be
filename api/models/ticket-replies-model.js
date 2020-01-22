@@ -69,7 +69,16 @@ const addReply = async reply => {
 
 const editReply = () => {};
 
-const deleteReply = () => {};
+const deleteReply = async id => {
+	try {
+		return await db('ticket_replies')
+			.where({ id })
+			.del();
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while deleting reply' };
+	}
+};
 
 module.exports = {
 	findAllUsersReplies,

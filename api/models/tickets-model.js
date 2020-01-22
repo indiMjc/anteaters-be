@@ -38,11 +38,16 @@ const findTicket = async ticket_id => {
 };
 
 const findUserTickets = submitted_by => {
-	return db
-		.select('tickets.*')
-		.from('tickets')
-		.join('users', 'tickets.submitted_by', 'username')
-		.where({ submitted_by });
+	try {
+		return db
+			.select('*')
+			.from('tickets')
+			.join('users', 'tickets.submitted_by', 'users.username')
+			.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by);
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while searching for user' };
+	}
 };
 
 const editTicket = async (id, changes) => {

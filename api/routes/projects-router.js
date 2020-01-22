@@ -14,7 +14,7 @@ router.get('/name_search/:name', restricted, (req, res) => {
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Error while searching for project', err });
+			res.status(500).json({ errMessage: 'Error while searching for project' });
 		});
 });
 
@@ -24,11 +24,11 @@ router.get('/id_search/:id', restricted, (req, res) => {
 		.then(project => {
 			project
 				? res.status(200).json(project)
-				: res.status(401).json({ message: 'Could not find project' });
+				: res.status(401).json({ message: 'Could not find project with that ID' });
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Error getting project', err });
+			res.status(500).json({ errMessage: 'Error getting project' });
 		});
 });
 

@@ -28,6 +28,7 @@ router.get('/my_replies/:username', (req, res) => {
 		});
 });
 
+// POST - add reply
 router.post('/', (req, res) => {
 	Replies.addReply(req.body)
 		.then(reply => {
@@ -45,7 +46,7 @@ router.delete('/:id', (req, res) => {
 		.then(deleted => {
 			deleted
 				? res.status(200).json({ removed: deleted })
-				: res.status(404).json({ errMessage: 'Could not find reply with given ID' });
+				: res.status(401).json({ errMessage: 'Could not find reply with given ID' });
 		})
 		.catch(err => {
 			console.log(err);

@@ -1,13 +1,18 @@
 const db = require('../../data/dbConfig');
 
 const findByProject = project_id => {
-	return db
-		.select('tickets.*')
-		.from('tickets')
-		.join('users', 'users.username', 'tickets.submitted_by')
-		.join('projects', 'projects.id', 'tickets.project_id')
-		.where({ project_id })
-		.orderBy('tickets.created_at', 'desc');
+	try {
+		return db
+			.select('tickets.*')
+			.from('tickets')
+			.join('users', 'users.username', 'tickets.submitted_by')
+			.join('projects', 'projects.id', 'tickets.project_id')
+			.where({ project_id })
+			.orderBy('tickets.created_at', 'desc');
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while fetching project' };
+	}
 };
 
 // prettier-ignore

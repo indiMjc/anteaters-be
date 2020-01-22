@@ -94,4 +94,25 @@ const deleteTicket = id => {
 	}
 };
 
-module.exports = { findByProject, findTicket, findUserTickets, editTicket, addTicket, deleteTicket };
+const findRepliesByUsername = submitted_by => {
+	try {
+		return db
+			.select('*')
+			.from('ticket_replies')
+			.join('users', 'ticket_replies.submitted_by', 'users.username')
+			.where(db.raw('LOWER(??)', ['users.username']), submitted_by);
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while fetching replies' };
+	}
+};
+
+module.exports = {
+	findByProject,
+	findTicket,
+	findUserTickets,
+	editTicket,
+	addTicket,
+	deleteTicket,
+	findRepliesByUsername
+};

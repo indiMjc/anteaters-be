@@ -7,12 +7,12 @@
 
     -  [x] add ticket
     -  [x] edit ticket (only if me, superUser, admin or ticket author)
-    -  [] delete ticket (only if me, superUser, admin or ticket author)
+    -  [x] delete ticket (only if me, superUser, admin or ticket author)
     -  [x] get ticket by ticket ID (with replies and assigned devs)
     -  [x] get all tickets for project by project ID
     -  [x] get all tickets by author username
 
-    -  [] get all ticket replies by username
+    -  [x] get all ticket replies by username
 
     -  [] reply to ticket
     -  [] edit reply (only if me, superUser, admin or reply author)

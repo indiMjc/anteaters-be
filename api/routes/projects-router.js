@@ -45,7 +45,7 @@ router.post('/', restricted, (req, res) => {
 });
 
 // PUT - edit project
-router.put('/:id', (req, res) => {
+router.put('/:id', restricted, (req, res) => {
 	Projects.editProject(req.params.id, req.body)
 		.then(project => {
 			res.status(200).json(project);

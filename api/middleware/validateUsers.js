@@ -36,20 +36,15 @@ const validateLogin = (req, res, next) => {
 	next();
 };
 
-// prettier-ignore
-const validateEditTicket = (req, res, next) => {
-		const { username, isAdmin, superUser } = req.token
+const validateEdit = (req, res, next) => {
+	const { username, isAdmin, superUser } = req.token;
 
-		!username || !isAdmin || !superUser && 
-			res.status(400).json({ message: 'Could not find credentials' });
+	!req.token && res.status(400).json({ message: 'Could not find credentials' });
 
-		return username === req.body.submitted_by
-			? next()
-			: superUser
-				? next()
-				: isAdmin
-					? next()
-					: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
-	};
+	// make sure user trying to edit ticket is either an admin, superUser or author
+	return username === req.body.submitted_by || superUser || isAdmin
+		? next()
+		: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
+};
 
-module.exports = { validateNewUser, validateLogin, validateEditTicket };
+module.exports = { validateNewUser, validateLogin, validateEdit };

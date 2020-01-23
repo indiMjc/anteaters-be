@@ -15,10 +15,10 @@
 
     -  [x]   []       get all ticket replies by username
     -  [x]   []       get all ticket replies by ticket ID
-    -  []    []       reply to ticket
-    -  []    []       edit reply (only if me, superUser, admin or reply author)
-    -  []    []       delete reply (only if me, superUser, admin or reply author)
-    -  []    []       get all replies by username
+    -  [x]   []       reply to ticket
+    -  [x]   []       edit reply (only if me, superUser, admin or reply author)
+    -  [x]   []       delete reply (only if me, superUser, admin or reply author)
+    -  [x]   []       get all replies by username
 
     -  [x]   []       add new project
     -  []    []       edit project (only if me, superUser, admin, project manager or stakeholder)

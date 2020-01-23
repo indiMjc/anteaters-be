@@ -3,14 +3,12 @@
 ### _(_**all** _endpoints require authentication)_
 
 -  ## Login and register
-    - ### Endpoints
     | Method | URL _(base:_ `/auth`)    | Description                                                        |
     |:-------| :----------------------: | -----------------------------------------------------------------: |
     | POST   | **`/login`**             | User login (accepts username OR email), returns username and token |
     | POST   | **`/register`**          | User registration, returns new user's username and token           |
 
 -  ## Tickets
-    - ### Endpoints
     | Method | URL _(base:_ `/tickets`)      | Description                                                                                         |
     |:-------| :---------------------------: | --------------------------------------------------------------------------------------------------: |
     | GET    | **`/:id`**                    | Fetch ticket with specified `ticket_id`, gets associated replies and devs                           |
@@ -21,7 +19,6 @@
     | DELETE | **`/:id`**                    | Delete ticket with given ID, returns number of records deleted                                      |          
         
 -  ## Projects
-    - ### Endpoints
     | Method | URL _(base:_ `/projects`)     | Description                                                                                         |
     |:-------| :---------------------------: | --------------------------------------------------------------------------------------------------: |
     | GET    | **`/name_search/:name`**      | Fetch project with specified `name` with associated developers                                      |
@@ -31,7 +28,6 @@
     | DELETE | **`/:id`**                    | Delete project with given `id` **if user is a superuser, admin, project manager or stakeholder**    |
 
 -  ## Ticket Replies
-    - ### Endpoints
     | Method | URL _(base:_ `/replies`)      | Description                                                                                         |
     |:-------| :---------------------------: | --------------------------------------------------------------------------------------------------: |
     | GET    | **`/:id`**                    | Fetch all replies and associated devs with given ticket `id`                                        |

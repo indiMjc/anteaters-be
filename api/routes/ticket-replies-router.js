@@ -5,7 +5,7 @@ const restricted = require('../auth/auth-middleware');
 const Replies = require('../models/ticket-replies-model');
 
 // GET - fetches all ticket replies and devs assigned to ticket
-router.get('/:id', (req, res) => {
+router.get('/:id', restricted, (req, res) => {
 	Replies.findAllTicketsReplies(req.params.id)
 		.then(replies => {
 			res.status(200).json(replies);
@@ -17,7 +17,7 @@ router.get('/:id', (req, res) => {
 });
 
 // GET - fetches all replies submitted by username
-router.get('/my_replies/:username', (req, res) => {
+router.get('/my_replies/:username', restricted, (req, res) => {
 	Replies.findAllUsersReplies(req.params.username)
 		.then(replies => {
 			res.status(200).json(replies);
@@ -29,7 +29,7 @@ router.get('/my_replies/:username', (req, res) => {
 });
 
 // POST - add reply
-router.post('/', (req, res) => {
+router.post('/', restricted, (req, res) => {
 	Replies.addReply(req.body)
 		.then(reply => {
 			res.status(200).json(reply);
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
 });
 
 // DELETE - remove reply by ID
-router.delete('/:id', (req, res) => {
+router.delete('/:id', restricted, (req, res) => {
 	Replies.deleteReply(req.params.id)
 		.then(deleted => {
 			deleted
@@ -55,7 +55,7 @@ router.delete('/:id', (req, res) => {
 });
 
 // PUT - edit ticket
-router.put('/:id', (req, res) => {
+router.put('/:id', restricted, (req, res) => {
 	Replies.editReply(req.params.id, req.body)
 		.then(edited => {
 			res.status(200).json(edited);

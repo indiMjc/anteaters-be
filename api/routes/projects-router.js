@@ -46,7 +46,7 @@ router.post('/', restricted, (req, res) => {
 
 // PUT - edit project
 router.put('/:id', restricted, (req, res) => {
-	Projects.editProject(req.params.id, req.body)
+	Projects.editProject(req.params.id, req.body, req.token)
 		.then(project => {
 			res.status(200).json(project);
 		})
@@ -57,7 +57,7 @@ router.put('/:id', restricted, (req, res) => {
 });
 
 // DELETE - delete project
-router.delete('/:id', (req, res) => {
+router.delete('/:id', restricted, (req, res) => {
 	Projects.deleteProject(req.params.id)
 		.then(deleted => {
 			deleted

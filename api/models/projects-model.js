@@ -61,27 +61,41 @@ const addProject = async newProject => {
 	}
 };
 
-const editProject = async (id, changes) => {
-	try {
-		await db('projects')
-			.where({ id })
-			.update(changes);
+const editProject = async (id, changes, token) => {
+	const { username, isAdmin, superUser } = token;
+	const project = await findProjectById(id);
 
-		return findProjectById(id);
-	} catch (err) {
-		console.log(err);
-		return { errMessage: 'Error in db function editing project' };
+	if (username === project.project_manager || username === project.stakeholder || isAdmin || superUser) {
+		try {
+			await db('projects')
+				.where({ id })
+				.update(changes);
+
+			return findProjectById(id);
+		} catch (err) {
+			console.log(err);
+			return { errMessage: 'Error in db function editing project' };
+		}
+	} else {
+		return { message: 'You do not have permission to edit this project' };
 	}
 };
 
-const deleteProject = async id => {
-	try {
-		return await db('projects')
-			.where({ id })
-			.del();
-	} catch (err) {
-		console.log(err);
-		return { errMessage: 'Error in db function while deleting project' };
+const deleteProject = async (id, token) => {
+	const { username, isAdmin, superUser } = token;
+	const project = await findProjectById(id);
+
+	if (username === project.project_manager || username === project.stakeholder || isAdmin || superUser) {
+		try {
+			return await db('projects')
+				.where({ id })
+				.del();
+		} catch (err) {
+			console.log(err);
+			return { errMessage: 'Error in db function while deleting project' };
+		}
+	} else {
+		return { message: 'You do not have permission to delete this project' };
 	}
 };
 

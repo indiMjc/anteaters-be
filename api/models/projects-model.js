@@ -28,16 +28,18 @@ const findProjectByName = async name => {
 const findProjectById = async id => {
 	try {		
 		const [project, devs] = await Promise.all([
-			db('projects').where({ id }).first(),
+			db('projects')
+				.where({ id })
+				.first(),
 			
 			db.select('dev_username as username')
 				.from('project_devs')
 				.where({ project_id: id })
 		]);
 
-		return project && {
-				...project,
-				devs
+		return  {
+			...project,
+			devs
 		};
 	}
 	catch (err) {

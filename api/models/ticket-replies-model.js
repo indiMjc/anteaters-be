@@ -67,7 +67,20 @@ const addReply = async reply => {
 	}
 };
 
-const editReply = () => {};
+const editReply = async (id, changes) => {
+	try {
+		await db('ticket_replies')
+			.where({ id })
+			.update(changes);
+
+		return db('ticket_replies')
+			.where({ id })
+			.first();
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while editing reply' };
+	}
+};
 
 const deleteReply = async id => {
 	try {

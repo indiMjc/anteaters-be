@@ -44,4 +44,30 @@ router.post('/', restricted, (req, res) => {
 		});
 });
 
+// PUT - edit project
+router.put('/:id', (req, res) => {
+	Projects.editProject(req.params.id, req.body)
+		.then(project => {
+			res.status(200).json(project);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Edit project failed' });
+		});
+});
+
+// DELETE - delete project
+router.delete('/:id', (req, res) => {
+	Projects.deleteProject(req.params.id)
+		.then(deleted => {
+			deleted
+				? res.status(200).json({ removed: deleted })
+				: res.status(404).json({ errMessage: 'Could not find ticket with given ID' });
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Delete project failed' });
+		});
+});
+
 module.exports = router;

@@ -9,7 +9,6 @@ const auth = require('../middleware/validateUsers');
 const signToken = user => {
 	const payload = {
 		username: user.username,
-		role: user.role,
 		isAdmin: user.isAdmin,
 		superUser: user.superUser,
 		isLocked: user.isLocked

@@ -57,7 +57,7 @@ router.delete('/:id', restricted, (req, res) => {
 });
 
 // PUT - edit ticket
-router.put('/:id', restricted, (req, res) => {
+router.put('/:id', restricted, restrictUsers.validateEdit, (req, res) => {
 	Replies.editReply(req.params.id, req.body)
 		.then(edited => {
 			res.status(200).json(edited);

@@ -61,4 +61,28 @@ const addProject = async newProject => {
 	}
 };
 
-module.exports = { findProjectByName, findProjectById, addProject };
+const editProject = async (id, changes) => {
+	try {
+		await db('projects')
+			.where({ id })
+			.update(changes);
+
+		return findProjectById(id);
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function editing project' };
+	}
+};
+
+const deleteProject = async id => {
+	try {
+		return await db('projects')
+			.where({ id })
+			.del();
+	} catch (err) {
+		console.log(err);
+		return { errMessage: 'Error in db function while deleting project' };
+	}
+};
+
+module.exports = { findProjectByName, findProjectById, addProject, deleteProject, editProject };

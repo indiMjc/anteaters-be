@@ -25,8 +25,6 @@
     -  []    []       delete project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       get project by ID (with assigned devs)
     -  [x]   [x]       search for project by project name (with assigned devs)
-    -  []    []
-    -  []    []
 
 #### FE:
 
@@ -34,13 +32,6 @@
     -  [] assign project manager to ticket
     -  [] assign stakeholder to ticket
     -  [] mark ticket as resolved
-    -  []
-    -  []
-    -  []
-    -  []
-    -  []
-    -  []
-    -  []
 
 ## Todo:
 

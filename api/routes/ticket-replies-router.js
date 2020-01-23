@@ -54,4 +54,16 @@ router.delete('/:id', (req, res) => {
 		});
 });
 
+// PUT - edit ticket
+router.put('/:id', (req, res) => {
+	Replies.editReply(req.params.id, req.body)
+		.then(edited => {
+			res.status(200).json(edited);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Error while editing ticket' });
+		});
+});
+
 module.exports = router;

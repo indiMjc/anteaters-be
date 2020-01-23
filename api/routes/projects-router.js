@@ -24,7 +24,7 @@ router.get('/id_search/:id', restricted, (req, res) => {
 		.then(project => {
 			project
 				? res.status(200).json(project)
-				: res.status(401).json({ message: 'Could not find project with that ID' });
+				: res.status(401).json({ message: 'No project with that ID' });
 		})
 		.catch(err => {
 			console.log(err);

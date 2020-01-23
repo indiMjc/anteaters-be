@@ -25,7 +25,9 @@
     | GET    | **`/:id`**                    | Fetch ticket with specified `ticket_id`, gets associated replies and devs                           |
     | GET    | **`/by_project/:id`**         | Fetch all tickets associated with given project that has specified `project_id`                     |
     | GET    | **`/submitted_by/:username`** | Fetch all tickets posted by given user with specified `username`                                    |
-    | PUT    | **`/:id`**               | Edit and return ticket with given `ticket_id` **if user is a superuser, admin or author of ticket** |
+    | PUT    | **`/:id`**                    | Edit and return ticket with given `ticket_id` **if user is a superuser, admin or author of ticket** |
+    | POST   | **`/`**                       | Add new ticket, returns ticket added                                                                |
+    | DELETE | **`/:id`**                    | Delete ticket with given ID, returns number of records deleted                                      |
     - ### DB access functions
         - **`findByProject(project_id)`**:  returns all tickets associated with given `project_id`:  if tickets exist, returns an array of all tickets associated with project with given `project_id`.  **Ex:**
             ```
@@ -101,6 +103,20 @@
     |:-------| :---------------------------: | --------------------------------------------------------------------------------------------------: |
     | GET    | **`/name_search/:name`**      | Fetch project with specified `name` with associated developers                                      |
     | GET    | **`/id_search/:name`**        | Fetch project with specified `id` with associated developers                                        |
+    | POST   | **`/`**                       | Add and return new project                                                                          |
+    | PUT    | **`/:id`**                    | Edit ticket **if user is a superuser, admin or author of ticket**                                   |
+    | DELETE | **`/:id`**                    | Delete ticket with given `id` **if user is a superuser, admin or author of ticket**                 |
+    - ### DB access functions
+
+-  ## Ticket Replies
+    - ### Endpoints
+    | Method | URL _(base:_ `/replies`)      | Description                                                                                         |
+    |:-------| :---------------------------: | --------------------------------------------------------------------------------------------------: |
+    | GET    | **`/:id`**                    | Fetch all replies and associated devs with given ticket `id`                                        |
+    | GET    | **`/my_replies/:username`**   | Fetch all ticket replies from user with given `username`                                            |
+    | POST   | **`/`**                       | Add and return new reply to ticket                                                                  |
+    | DELETE | **`/:id`**                    | Delete ticket with given `id` **if user is a superuser, admin, author of reply**                    |
+    | PUT    | **`/:id`**                    | Edit and return reply with given `id` **if user is a superuser, admin, author of reply**            |
     - ### DB access functions
 
 # **Schema**

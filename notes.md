@@ -6,23 +6,23 @@
     -  [x]   [x]       login
     -  [x]   [x]       register
 
-    -  [x]   []       add ticket
+    -  [x]   [x]       add ticket
     -  [x]   [x]       edit ticket (only if me, superUser, admin or ticket author)
-    -  [x]   []       delete ticket (only if me, superUser, admin or ticket author)
+    -  [x]   [x]       delete ticket (only if me, superUser, admin or ticket author)
     -  [x]   [x]       get ticket by ticket ID (with replies and assigned devs)
     -  [x]   [x]       get all tickets for project by project ID
     -  [x]   [x]       get all tickets by author username
 
-    -  [x]   []       get all ticket replies by username
-    -  [x]   []       get all ticket replies by ticket ID
-    -  [x]   []       reply to ticket
-    -  [x]   []       edit reply (only if me, superUser, admin or reply author)
-    -  [x]   []       delete reply (only if me, superUser, admin or reply author)
-    -  [x]   []       get all replies by username
+    -  [x]   [x]       get all ticket replies by username
+    -  [x]   [x]       get all ticket replies by ticket ID
+    -  [x]   [x]       reply to ticket
+    -  [x]   [x]       edit reply (only if me, superUser, admin or reply author)
+    -  [x]   [x]       delete reply (only if me, superUser, admin or reply author)
+    -  [x]   [x]       get all replies by username
 
-    -  [x]   []       add new project
-    -  []    []       edit project (only if me, superUser, admin, project manager or stakeholder)
-    -  []    []       delete project (only if me, superUser, admin, project manager or stakeholder)
+    -  [x]   [x]       add new project
+    -  [x]   [x]       edit project (only if me, superUser, admin, project manager or stakeholder)
+    -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       get project by ID (with assigned devs)
     -  [x]   [x]       search for project by project name (with assigned devs)
 

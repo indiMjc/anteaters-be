@@ -1,6 +1,6 @@
 const db = require('../../data/dbConfig');
 
-const findProjectByName = async name => {
+const findProjectByName = async (name, res) => {
 	try {
 		const project = await db('projects')
 			.where(db.raw('LOWER(??)', ['projects.name']), name)
@@ -20,7 +20,7 @@ const findProjectByName = async name => {
 		}
 	} catch (err) {
 		console.log(err);
-		return { errMessage: 'Error in db function while fetching project by ID' };
+		return res.status(500).json({ errMessage: 'Error in db function while fetching project by ID' });
 	}
 };
 
@@ -85,9 +85,9 @@ const editProject = async (id, changes, token) => {
 
 const deleteProject = async (id, token) => {
 	const { username, isAdmin, superUser } = token;
-	const project = await findProjectById(id);
+	const { project_manager, stakeholder } = await findProjectById(id);
 
-	if (username === project.project_manager || username === project.stakeholder || isAdmin || superUser) {
+	if (username === project_manager || username === stakeholder || isAdmin || superUser) {
 		try {
 			return await db('projects')
 				.where({ id })

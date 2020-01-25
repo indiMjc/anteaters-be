@@ -20,9 +20,7 @@ const findProjectByName = async name => {
 		}
 	} catch (err) {
 		console.log(err);
-		{
-			errMessage: 'Error in db function while fetching project by ID';
-		}
+		return { errMessage: 'Error in db function while fetching project by ID' };
 	}
 };
 

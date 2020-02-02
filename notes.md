@@ -25,6 +25,7 @@
     -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       get project by ID (with assigned devs)
     -  [x]   [x]       search for project by project name (with assigned devs)
+    -  []              normalize data
 
 #### FE:
 

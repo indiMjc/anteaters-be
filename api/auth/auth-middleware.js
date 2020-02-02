@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 			jwt.verify(authorization, secret, (err, decodedToken) => {
 				if (err) {
 					console.log(err);
-					res.status(401).json({ errMessage: 'Invalid token' });
+					return res.status(401).json({ errMessage: 'Invalid token' });
 				} else {
 					req.token = decodedToken;
 					next();
@@ -21,9 +21,9 @@ module.exports = async (req, res, next) => {
 			});
 		} catch (err) {
 			console.log(err);
-			res.status(401).json({ errMessage: 'Invalid token' });
+			return res.status(401).json({ errMessage: 'Invalid token' });
 		}
 	} else {
-		res.status(400).json({ message: 'Please login and try again' });
+		return res.status(400).json({ message: 'Please login and try again' });
 	}
 };

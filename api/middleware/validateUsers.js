@@ -1,31 +1,50 @@
-const validateNewUser = (req, res, next) => {
+const Users = require('../auth/auth-model');
+
+// prettier-ignore
+const validateNewUser = async (req, res, next) => {
 	const { email, username, password, role } = req.body;
+
+	// form field validation
 	!email && res.status(400).json({ message: 'Email required' });
 	!username && res.status(400).json({ message: 'Username required' });
 	!password && res.status(400).json({ message: 'Password required' });
 	!role && res.status(400).json({ message: 'Role required' });
-	next();
+
+	// check for uniqueness
+	try {
+		const [checkEmail, checkUsername] = await Promise.all([
+			Users.findByEmail(email.toLowerCase()),
+			Users.findByUsername(username.toLowerCase())
+		]);
+		
+		checkEmail
+			? res.status(400).json({ message: 'This email address is already registered' })
+			: checkUsername
+				? res.status(400).json({ message: 'This username is taken, please try another' })
+				: next();
+	}
+	catch (err) {
+		console.log(err)
+		res.status(500).json({ errMessage: 'Error while checking for uniqueness', err })
+	}	
 };
 
 const validateLogin = (req, res, next) => {
-	const { lowercase_username, password } = req.body;
-	!lowercase_username && res.status(400).json({ message: 'Username required' });
+	const { username, password } = req.body;
+	!username && res.status(400).json({ message: 'Username required' });
 	!password && res.status(400).json({ message: 'Password required' });
 	next();
 };
 
-// prettier-ignore
-const validateEditCredentials = (req, res, next) => {
-	const { credentials, submitted_by } = req.body;
-	delete req.body.credentials;
-	!credentials && res.status(400).json({ message: 'Could not find credentials' });
-	return credentials === 'isAdmin'
+const validateEdit = (req, res, next) => {
+	const { username, isAdmin, superUser } = req.token;
+
+	!req.token && res.status(400).json({ message: 'Could not find credentials' });
+
+	// make sure user trying to edit ticket is either an admin, superUser or author
+	return username === req.body.submitted_by || superUser || isAdmin
 		? next()
-		: credentials === 'superUser'
-			? next()
-			: credentials === submitted_by
-				? next()
-				: res.status(400).json({ message: 'Invalid credentials' });
+		: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
 };
 
-module.exports = { validateNewUser, validateLogin, validateEditCredentials };
+module.exports = { validateNewUser, validateLogin, validateEdit };

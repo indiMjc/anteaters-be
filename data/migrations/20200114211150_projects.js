@@ -6,10 +6,6 @@ exports.up = tbl => {
 			.notNullable()
 			.unique();
 
-		tbl.string('lowercase_name', 128)
-			.notNullable()
-			.unique();
-
 		tbl.text('description', 1000).notNullable();
 
 		tbl.integer('stakeholder')

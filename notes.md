@@ -41,6 +41,7 @@
 -  [] middleware that checks if superuser
 -  [] middleware that checks if me
 -  [] whitelist jwt algorithms, hardcode into `verify()`
+-  [] include UID in token and use it for middleware instead of in a header
 
 ## FE notes:
 

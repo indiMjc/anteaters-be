@@ -1,32 +1,26 @@
 const db = require('../../data/dbConfig');
 
 const findProjectByName = async name => {
-	try {
-		const project = await db('projects')
-			.where(db.raw('LOWER(??)', ['projects.name']), name)
-			.first();
+	const project = await db('projects')
+		.where(db.raw('LOWER(??)', ['projects.name']), name)
+		.first();
 
-		if (project) {
-			const devs = await db('project_devs')
-				.select('dev_username as username')
-				.where({ project_id: project.id });
+	if (project) {
+		const devs = await db('project_devs')
+			.select('dev_username as username')
+			.where({ project_id: project.id });
 
-			return {
-				...project,
-				devs
-			};
-		} else {
-			return { message: 'No project found by that name' };
-		}
-	} catch (err) {
-		console.log(err);
-		return { errMessage: 'Error in db function while fetching project by ID' };
+		return {
+			...project,
+			devs
+		};
+	} else {
+		return { message: 'No project found by that name' };
 	}
 };
 
 // prettier-ignore
 const findProjectById = async id => {
-	try {		
 		const [project, devs] = await Promise.all([
 			db('projects')
 				.where({ id })
@@ -41,26 +35,16 @@ const findProjectById = async id => {
 			...project,
 			devs
 		};
-	}
-	catch (err) {
-		console.log(err);
-		return { errMessage: 'Error in db function while fetching project by ID' }
-	}
 };
 
 const addProject = async newProject => {
-	try {
-		const id = await db('projects')
-			.insert(newProject)
-			.returning('id');
+	const id = await db('projects')
+		.insert(newProject)
+		.returning('id');
 
-		const addedProject = await findProjectById(id[0]);
+	const addedProject = await findProjectById(id[0]);
 
-		return addedProject;
-	} catch (err) {
-		console.log(err);
-		return { errMessage: 'Error in db function while adding new project' };
-	}
+	return addedProject;
 };
 
 const editProject = async (id, changes, token) => {
@@ -68,16 +52,11 @@ const editProject = async (id, changes, token) => {
 	const project = await findProjectById(id);
 
 	if (username === project.project_manager || username === project.stakeholder || isAdmin || superUser) {
-		try {
-			await db('projects')
-				.where({ id })
-				.update(changes);
+		await db('projects')
+			.where({ id })
+			.update(changes);
 
-			return findProjectById(id);
-		} catch (err) {
-			console.log(err);
-			return { errMessage: 'Error in db function editing project' };
-		}
+		return findProjectById(id);
 	} else {
 		return { message: 'You do not have permission to edit this project' };
 	}
@@ -88,14 +67,9 @@ const deleteProject = async (id, token) => {
 	const { project_manager, stakeholder } = await findProjectById(id);
 
 	if (username === project_manager || username === stakeholder || isAdmin || superUser) {
-		try {
-			return await db('projects')
-				.where({ id })
-				.del();
-		} catch (err) {
-			console.log(err);
-			return { errMessage: 'Error in db function while deleting project' };
-		}
+		return await db('projects')
+			.where({ id })
+			.del();
 	} else {
 		return { message: 'You do not have permission to delete this project' };
 	}

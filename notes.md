@@ -20,6 +20,7 @@
     -  [x]   [x]       delete reply (only if me, superUser, admin or reply author)
     -  [x]   [x]       get all replies by username
 
+    -  []    []        get all projects
     -  [x]   [x]       add new project
     -  [x]   [x]       edit project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)

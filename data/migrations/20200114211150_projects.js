@@ -9,14 +9,14 @@ exports.up = tbl => {
 		tbl.text('description', 1000).notNullable();
 
 		tbl.integer('stakeholder')
-			.references('username')
-			.inTable('users')
+			.references('users.username')
+			// .inTable('users')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 
 		tbl.integer('project_manager')
-			.references('username')
-			.inTable('users')
+			.references('users.username')
+			// .inTable('users')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 	});

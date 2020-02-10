@@ -5,9 +5,9 @@ const validateNewUser = async (req, res, next) => {
 	const { email, username, password, role } = req.body;
 
 	// form field validation
-	!email && res.status(400).json({ message: 'Email required' });
+	if (!email) return res.status(400).json({ message: 'Email required' });
 	if (!username) return res.status(400).json({ message: 'Username required' });
-	if (!password) res.status(400).json({ message: 'Password required' });
+	if (!password) return res.status(400).json({ message: 'Password required' });
 	if (!role) return res.status(400).json({ message: 'Role required' });
 
 	// check for uniqueness

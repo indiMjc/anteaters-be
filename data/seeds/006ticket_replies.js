@@ -7,7 +7,7 @@ exports.seed = function(knex) {
 					'Working on implementing form validation now.  I have written a hook that can handle all the form state tracking, form submissions and error handling.  Currently working on refactor.',
 				created_at: Date.now(),
 				ticket_id: 1,
-				submitted_by: 'Bernard'
+				submitted_by: 2
 			},
 			{
 				id: 2,
@@ -15,28 +15,28 @@ exports.seed = function(knex) {
 					'I have removed the console.log from both login and register components.  Changes have been pushed up to github with pull request opened, awaiting code review.',
 				created_at: Date.now(),
 				ticket_id: 2,
-				submitted_by: 'Jackson'
+				submitted_by: 3
 			},
 			{
 				id: 3,
 				reply: 'This is a great idea!  I am going to look into how to implement this.',
 				created_at: Date.now(),
 				ticket_id: 3,
-				submitted_by: 'Mike'
+				submitted_by: 1
 			},
 			{
 				id: 4,
 				reply: 'Total accident, wont let it happen again.',
 				created_at: Date.now(),
 				ticket_id: 2,
-				submitted_by: 'Bernard'
+				submitted_by: 2
 			},
 			{
 				id: 5,
 				reply: 'Whoopesies.',
 				created_at: Date.now(),
 				ticket_id: 2,
-				submitted_by: 'Bernard'
+				submitted_by: 2
 			}
 		]);
 	});

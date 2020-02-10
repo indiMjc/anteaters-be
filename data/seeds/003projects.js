@@ -5,14 +5,14 @@ exports.seed = function(knex) {
 				id: 1,
 				name: 'Anteaters',
 				description: 'Bug and issue tracking for software developers.',
-				stakeholder: 'Jackson',
-				project_manager: 'April'
+				stakeholder: 3,
+				project_manager: 5
 			},
 			{
 				id: 2,
 				name: 'DevShop24',
 				description: 'A platform for freelance software developers.',
-				stakeholder: 'Jackson',
+				stakeholder: 3,
 				project_manager: null
 			},
 			{
@@ -20,7 +20,7 @@ exports.seed = function(knex) {
 				name: 'Plant Purpose',
 				description: 'An app that helps users remember their schedule for plant care.',
 				stakeholder: null,
-				project_manager: 'April'
+				project_manager: 5
 			}
 		]);
 	});

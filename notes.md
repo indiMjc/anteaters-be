@@ -59,7 +59,7 @@
 ## BE notes:
 
 -  user role is stored in the decoded token and can be accessed via `req.token.role`
--  `username` foreign keys on `ticket_replies` and `ticket` tables are nullable to preserve data if a user deletes their account. schema is set to `.onDelete('SET NULL')`
+-  `username` foreign keys on `ticket_replies` and `ticket` tables are nullable to preserve data if a user deletes their account.
 
 ## Permissions:
 

@@ -17,7 +17,7 @@ exports.up = tbl => {
 		tbl.integer('project_manager')
 			.references('username')
 			.inTable('users')
-			.onDelete('SET NULL')
+			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 	});
 };

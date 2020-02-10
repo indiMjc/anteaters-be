@@ -28,7 +28,7 @@ exports.up = tbl => {
 		tbl.integer('submitted_by')
 			.references('username')
 			.inTable('users')
-			.onDelete('SET NULL')
+			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 
 		tbl.integer('project_id')

@@ -23,7 +23,7 @@ exports.up = tbl => {
 			.unsigned()
 			.references('username')
 			.inTable('users')
-			.onDelete('SET NULL')
+			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 	});
 };

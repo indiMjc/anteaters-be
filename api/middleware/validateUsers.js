@@ -4,14 +4,14 @@ const Users = require('../auth/auth-model');
 const validateNewUser = async (req, res, next) => {
 	const { email, username, password, role } = req.body;
 
-	// form field validation
-	!email && res.status(400).json({ message: 'Email required' });
-	!username && res.status(400).json({ message: 'Username required' });
-	!password && res.status(400).json({ message: 'Password required' });
-	!role && res.status(400).json({ message: 'Role required' });
-
+	
 	// check for uniqueness
 	try {
+		// form field validation
+		!email && res.status(400).json({ message: 'Email required' });
+		if (!username) return res.status(400).json({ message: 'Username required' });
+		if (!password) res.status(400).json({ message: 'Password required' });
+		if (!role) return res.status(400).json({ message: 'Role required' });
 		const [checkEmail, checkUsername] = await Promise.all([
 			Users.findByEmail(email.toLowerCase()),
 			Users.findByUsername(username.toLowerCase())
@@ -31,15 +31,15 @@ const validateNewUser = async (req, res, next) => {
 
 const validateLogin = (req, res, next) => {
 	const { username, password } = req.body;
-	!username && res.status(400).json({ message: 'Username required' });
-	!password && res.status(400).json({ message: 'Password required' });
+	if (!username) return res.status(400).json({ message: 'Username required' });
+	if (!password) return res.status(400).json({ message: 'Password required' });
 	next();
 };
 
 const validateEdit = (req, res, next) => {
 	const { username, isAdmin, superUser } = req.token;
 
-	!req.token && res.status(400).json({ message: 'Could not find credentials' });
+	if (!req.token) return res.status(400).json({ message: 'Could not find credentials' });
 
 	// make sure user trying to edit ticket is either an admin, superUser or author
 	return username === req.body.submitted_by || superUser || isAdmin

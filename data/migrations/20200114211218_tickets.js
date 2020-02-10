@@ -26,7 +26,7 @@ exports.up = tbl => {
 			.defaultTo(knex.fn.now());
 
 		tbl.integer('submitted_by')
-			.references('username')
+			.references('id')
 			.inTable('users')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');

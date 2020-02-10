@@ -11,7 +11,7 @@ exports.up = tbl => {
 		tbl.integer('stakeholder')
 			.references('username')
 			.inTable('users')
-			.onDelete('SET NULL')
+			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 
 		tbl.integer('project_manager')

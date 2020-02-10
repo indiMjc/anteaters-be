@@ -9,7 +9,7 @@ exports.up = tbl => {
 
 		tbl.timestamp('created_at', { precision: 10 })
 			.notNullable()
-			.defaultTo(knex.fn.now());
+			.defaultTo(knex.fn.now(10));
 
 		tbl.integer('ticket_id')
 			.unsigned()

@@ -21,7 +21,7 @@ exports.up = tbl => {
 
 		tbl.integer('submitted_by')
 			.unsigned()
-			.references('username')
+			.references('id')
 			.inTable('users')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');

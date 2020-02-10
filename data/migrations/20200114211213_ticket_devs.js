@@ -12,7 +12,7 @@ exports.up = tbl => {
 
 		tbl.integer('dev_username')
 			.notNullable()
-			.references('username')
+			.references('id')
 			.inTable('users')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');

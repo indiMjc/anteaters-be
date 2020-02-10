@@ -23,7 +23,7 @@ exports.up = tbl => {
 
 		tbl.timestamp('created_at', { useTz: true })
 			.notNullable()
-			.defaultTo(knex.fn.now());
+			.defaultTo(`${knex.fn.now().toDateString()} ${knex.fn.now().toTimeString()}`);
 
 		tbl.integer('submitted_by')
 			.references('id')

@@ -7,7 +7,7 @@ exports.up = tbl => {
 
 		tbl.text('reply', 1000).notNullable();
 
-		tbl.string('created_at')
+		tbl.integer('created_at')
 			.defaultTo(knex.fn.now(10))
 			.notNullable();
 

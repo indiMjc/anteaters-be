@@ -21,7 +21,7 @@ exports.up = tbl => {
 			.notNullable()
 			.defaultTo(0);
 
-		tbl.string('created_at')
+		tbl.integer('created_at')
 			.defaultTo(knex.fn.now(10))
 			.notNullable();
 

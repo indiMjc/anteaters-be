@@ -6,8 +6,10 @@ const findProjectByName = async name => {
 		.first();
 
 	if (project) {
-		const devs = await db('project_devs')
-			.select('dev_username as username')
+		const devs = await db
+			.select('username')
+			.from('users')
+			.join('project_devs', 'dev_id', 'users.id')
 			.where({ project_id: project.id });
 
 		return {
@@ -26,8 +28,9 @@ const findProjectById = async id => {
 				.where({ id })
 				.first(),
 			
-			db.select('dev_username as username')
-				.from('project_devs')
+			db.select('username')
+				.from('users')
+				.join('project_devs', 'dev_id', 'users.id')
 				.where({ project_id: id })
 		]);
 

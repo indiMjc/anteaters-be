@@ -22,7 +22,7 @@ exports.up = tbl => {
 			.notNullable()
 			.defaultTo(0);
 
-		tbl.integer('created_at')
+		tbl.string('created_at')
 			.defaultTo(new Date(Date.now()))
 			.notNullable();
 

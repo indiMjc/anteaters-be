@@ -1,42 +1,49 @@
 const db = require('../../data/dbConfig');
 
-const findAllUsersReplies = async username => {
+const findAllUsersReplies = async id => {
 	return await db
-		.select('ticket_replies.*')
+		.select('ticket_replies.*', 'users.username')
 		.from('ticket_replies')
-		.join('users', 'ticket_replies.submitted_by', 'users.username')
-		.where(db.raw('LOWER(??)', ['username']), username)
+		.join('users', 'ticket_replies.submitted_by', 'users.id')
+		.where('users.id', '=', id)
 		.orderBy('ticket_replies.created_at', 'desc');
 };
 
 const findAllTicketsReplies = async id => {
-	let [replies, devs] = await Promise.all([
-		db
-			.select('ticket_replies.*')
-			.from('ticket_replies')
-			.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
-			.whereRaw('tickets.id = ?', [id])
-			.orderBy('ticket_replies.created_at', 'desc'),
+	const replies = await db
+		.select('ticket_replies.*')
+		.from('ticket_replies')
+		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
+		.whereRaw('tickets.id = ?', [id])
+		.orderBy('ticket_replies.created_at', 'desc');
 
-		db
-			.select('ticket_devs.dev_username AS username')
-			.from('ticket_devs')
-			.join('tickets', 'tickets.id', 'ticket_devs.ticket_id')
-			.whereRaw('tickets.id = ?', [id])
-	]);
+	// let [replies, devs] = await Promise.all([
+	// 	db
+	// 		.select('ticket_replies.*')
+	// 		.from('ticket_replies')
+	// 		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
+	// 		.whereRaw('tickets.id = ?', [id])
+	// 		.orderBy('ticket_replies.created_at', 'desc'),
+
+	// 	db
+	// 		.select('username')
+	// 		.from('users')
+	// 		.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
+	// 		.whereRaw('ticket_devs.id = ?', [id])
+
+	// db
+	// 	.select('ticket_devs.dev_username AS username')
+	// 	.from('ticket_devs')
+	// 	.join('tickets', 'tickets.id', 'ticket_devs.ticket_id')
+	// 	.whereRaw('tickets.id = ?', [id])
+	// ]);
 
 	if (!replies.length) {
 		replies = 'No replies yet';
 
-		return {
-			replies,
-			devs
-		};
+		return replies;
 	} else {
-		return {
-			...replies,
-			devs
-		};
+		return replies;
 	}
 };
 

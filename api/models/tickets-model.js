@@ -2,9 +2,9 @@ const db = require('../../data/dbConfig');
 
 const findByProject = async project_id => {
 	const tickets = await db
-		.select('tickets.*')
+		.select('tickets.*', 'users.username as submitted_by', 'projects.name as project_id')
 		.from('tickets')
-		.join('users', 'users.username', 'tickets.submitted_by')
+		.join('users', 'users.id', 'tickets.submitted_by')
 		.join('projects', 'projects.id', 'tickets.project_id')
 		.where({ project_id })
 		.orderBy('tickets.created_at', 'desc');
@@ -25,9 +25,10 @@ const findTicket = async ticket_id => {
 				.from('ticket_replies')
 				.where({ ticket_id }),
 
-			db.select('dev_username as username')
-				.from('ticket_devs')
-				.where({ ticket_id })
+			db.select('username')
+				.from('users')
+				.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
+				.where('ticket_devs.ticket_id', '=', ticket_id)
 		]);
 
 		return ticket && {

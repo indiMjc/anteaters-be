@@ -18,10 +18,10 @@ router.get('/:id', restricted, async (req, res) => {
 	}
 });
 
-// GET - fetches all replies submitted by username
-router.get('/my_replies/:username', restricted, async (req, res) => {
+// GET - fetches all replies submitted by user id
+router.get('/my_replies/:id', restricted, async (req, res) => {
 	try {
-		const replies = await Replies.findAllUsersReplies(req.params.username);
+		const replies = await Replies.findAllUsersReplies(req.params.id);
 
 		res.status(200).json(replies);
 	} catch (err) {

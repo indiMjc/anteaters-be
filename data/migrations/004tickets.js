@@ -21,7 +21,7 @@ exports.up = tbl => {
 			.notNullable()
 			.defaultTo(0);
 
-		tbl.datetime2('created_at', { precision: 10 })
+		tbl.timestamp('created_at', { precision: 10 })
 			.notNullable()
 			.defaultTo(knex.fn.now(10));
 

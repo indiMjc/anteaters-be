@@ -8,8 +8,8 @@ exports.up = tbl => {
 		tbl.text('reply', 1000).notNullable();
 
 		tbl.datetime('created_at', { precision: 10 })
-			.notNullable()
-			.defaultTo(knex.fn.now(10));
+			.defaultTo(knex.fn.now(10))
+			.notNullable();
 
 		tbl.integer('ticket_id')
 			.unsigned()

@@ -22,8 +22,8 @@ exports.up = tbl => {
 			.defaultTo(0);
 
 		tbl.datetime('created_at', { precision: 10 })
-			.notNullable()
-			.defaultTo(knex.fn.now(10));
+			.defaultTo(knex.fn.now(10))
+			.notNullable();
 
 		tbl.integer('submitted_by')
 			.references('id')

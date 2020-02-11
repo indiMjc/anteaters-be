@@ -33,6 +33,7 @@ const findProjectById = async id => {
 				.join('project_devs', 'dev_id', 'users.id')
 				.where({ project_id: id })
 		]);
+        console.log(" : project", project)
 
 		return  {
 			...project,

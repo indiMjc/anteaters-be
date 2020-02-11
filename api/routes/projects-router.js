@@ -21,9 +21,7 @@ router.get('/id_search/:id', restricted, async (req, res) => {
 	try {
 		const project = await Projects.findProjectById(req.params.id);
 
-		project.length
-			? res.status(200).json(project)
-			: res.status(401).json({ message: 'No project with that ID' });
+		project ? res.status(200).json(project) : res.status(401).json({ message: 'No project with that ID' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error getting project' });

@@ -25,9 +25,10 @@ const findTicket = async ticket_id => {
 				.from('ticket_replies')
 				.where({ ticket_id }),
 
-			db.select('dev_username as username')
-				.from('ticket_devs')
-				.where({ ticket_id })
+			db.select('username')
+				.from('users')
+				.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
+				.where('ticket_devs.ticket_id', '=', ticket_id)
 		]);
 
 		return ticket && {

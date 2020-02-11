@@ -2,9 +2,9 @@ const db = require('../../data/dbConfig');
 
 const findByProject = async project_id => {
 	const tickets = await db
-		.select('tickets.*')
+		.select('tickets.*', 'users.username as submitted_by', 'projects.name as project_id')
 		.from('tickets')
-		.join('users', 'users.username', 'tickets.submitted_by')
+		.join('users', 'users.id', 'tickets.submitted_by')
 		.join('projects', 'projects.id', 'tickets.project_id')
 		.where({ project_id })
 		.orderBy('tickets.created_at', 'desc');

@@ -57,7 +57,7 @@ router.get('/replies/:username', restricted, async (req, res) => {
 });
 
 // PUT - edit ticket, only accessible to superusers, admins and author of the ticket
-router.put('/:id', restricted, restrictUsers.validateEdit, async (req, res) => {
+router.put('/:id', restricted, async (req, res) => {
 	const { id } = req.params;
 
 	try {

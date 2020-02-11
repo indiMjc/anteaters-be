@@ -27,6 +27,10 @@
     -  [x]   [x]       get project by ID (with assigned devs)
     -  [x]   [x]       search for project by project name (with assigned devs)
     -  []              normalize data
+    -  []              validate edit middleware
+    -  []              middleware to validate edit and delete, all but for editing a project
+    -  []              verify delete functions work
+    -  []              make data return exactly what i want, usernames where possbile ect.
 
 #### FE:
 

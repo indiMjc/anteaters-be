@@ -57,7 +57,7 @@ router.delete('/:id', restricted, async (req, res) => {
 });
 
 // PUT - edit reply
-router.put('/:id', restricted, restrictUsers.validateEdit, async (req, res) => {
+router.put('/:id', restricted, async (req, res) => {
 	try {
 		const edited = await Replies.editReply(req.params.id, req.body);
 

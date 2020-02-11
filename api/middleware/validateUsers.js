@@ -1,5 +1,7 @@
 const Users = require('../auth/auth-model');
 
+const Projects = require('../models/projects-model');
+
 // prettier-ignore
 const validateNewUser = async (req, res, next) => {
 	const { email, username, password, role } = req.body;
@@ -36,15 +38,22 @@ const validateLogin = (req, res, next) => {
 	next();
 };
 
-const validateEdit = (req, res, next) => {
-	const { username, isAdmin, superUser } = req.token;
+const validateEditProject = async (req, res, next) => {
+	try {
+		const project = await Projects.findProjectById(req.params.id);
+		console.log(' : validateEditProject -> project', project);
+		const { uid, isAdmin, superUser } = req.token;
+		console.log(' : validateEditProject -> uid', uid);
 
-	if (!req.token) return res.status(400).json({ message: 'Could not find credentials' });
+		if (!req.token) return res.status(400).json({ message: 'Could not find credentials' });
 
-	// make sure user trying to edit ticket is either an admin, superUser or author
-	return username === req.body.submitted_by || superUser || isAdmin
-		? next()
-		: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
+		// make sure user trying to edit ticket is either an admin, superUser or author
+		return uid === project.stakeholder || uid === project.project_manager || superUser || isAdmin
+			? next()
+			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
+	} catch (err) {
+		console.log(err);
+	}
 };
 
-module.exports = { validateNewUser, validateLogin, validateEdit };
+module.exports = { validateNewUser, validateLogin, validateEditProject };

@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const restricted = require('../auth/auth-middleware');
 
+const restrictUsers = require('../middleware/validateUsers');
+
 const Projects = require('../models/projects-model');
 
 // GET - search for project by name, case insensitive
@@ -41,7 +43,7 @@ router.post('/', restricted, async (req, res) => {
 });
 
 // PUT - edit project
-router.put('/:id', restricted, async (req, res) => {
+router.put('/:id', restricted, restrictUsers.validateEditProject, async (req, res) => {
 	try {
 		const project = await Projects.editProject(req.params.id, req.body, req.token);
 
@@ -53,7 +55,7 @@ router.put('/:id', restricted, async (req, res) => {
 });
 
 // DELETE - delete project
-router.delete('/:id', restricted, async (req, res) => {
+router.delete('/:id', async (req, res) => {
 	try {
 		const deleted = await Projects.deleteProject(req.params.id);
 

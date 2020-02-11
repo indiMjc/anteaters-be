@@ -1,5 +1,5 @@
-const knexfile = require('../../knexfile');
-const knex = require('knex')(knexfile.development);
+// const knexfile = require('../../knexfile');
+// const knex = require('knex')(knexfile.development);
 
 exports.up = tbl => {
 	return tbl.schema.createTable('ticket_replies', tbl => {
@@ -8,7 +8,7 @@ exports.up = tbl => {
 		tbl.text('reply', 1000).notNullable();
 
 		tbl.integer('created_at')
-			.defaultTo(knex.fn.now(10))
+			.defaultTo(new Date(Date.now()))
 			.notNullable();
 
 		tbl.integer('ticket_id')

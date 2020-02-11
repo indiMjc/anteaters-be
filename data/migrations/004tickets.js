@@ -1,7 +1,3 @@
-// const knexfile = require('../../knexfile');
-// const knex = require('knex')(knexfile.development);
-// const date = new Date(Date.now());
-
 exports.up = tbl => {
 	return tbl.schema.createTable('tickets', tbl => {
 		tbl.increments();

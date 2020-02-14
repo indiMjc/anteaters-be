@@ -57,14 +57,17 @@ router.put('/:id', restricted, restrictUsers.validateEditProject, async (req, re
 // DELETE - delete project
 router.delete('/:id', async (req, res) => {
 	try {
-		const deleted = await Projects.deleteProject(req.params.id);
+		const deleted = await Projects.deleteProject(req.params.id, req.token);
+		console.log(' : deleted', deleted);
 
-		deleted
+		deleted.message
+			? res.status(401).json({ errMessage: deleted.message })
+			: deleted
 			? res.status(200).json({ removed: deleted })
-			: res.status(404).json({ errMessage: 'Could not find ticket with given ID' });
+			: res.status(404).json({ errMessage: 'Could not find project with given ID' });
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({ errMessage: 'Could not find ticket with given ID' });
+		res.status(500).json({ errMessage: 'Could not find project with given ID' });
 	}
 });
 

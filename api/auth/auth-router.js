@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const Users = require('./auth-model');
 
-const auth = require('../middleware/validateUsers');
+const { validateLogin, validateNewUser } = require('../middleware/validateAuthData');
 
 const signToken = user => {
 	const payload = {
@@ -38,7 +38,7 @@ const handleValidateToken = (user, password, res) => {
 	}
 };
 
-router.post('/login', auth.validateLogin, async (req, res) => {
+router.post('/login', validateLogin, async (req, res) => {
 	let { username, password } = req.body;
 
 	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {
@@ -60,7 +60,7 @@ router.post('/login', auth.validateLogin, async (req, res) => {
 	}
 });
 
-router.post('/register', auth.validateNewUser, (req, res) => {
+router.post('/register', validateNewUser, (req, res) => {
 	let user = req.body;
 	const hash = bcrypt.hashSync(user.password, 6);
 	user.password = hash;

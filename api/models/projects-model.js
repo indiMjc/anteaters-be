@@ -1,5 +1,6 @@
 const db = require('../../data/dbConfig');
 
+// prettier-ignore
 const findProjectByName = async name => {
 	const project = await db
 		.select('projects.*', 'username as stakeholder')
@@ -9,11 +10,19 @@ const findProjectByName = async name => {
 		.first();
 
 	if (project) {
-		const devs = await db
-			.select('username')
-			.from('users')
-			.join('project_devs', 'dev_id', 'users.id')
-			.where({ project_id: project.id });
+		const [devs, manager] = await Promise.all([
+			db.select('username')
+				.from('users')
+				.join('project_devs', 'dev_id', 'users.id')
+				.where({ project_id: project.id }),
+
+			db.select('username')
+				.from('users')
+				.where('users.id', '=', project.project_manager)
+				.first()
+		]);
+
+		project.project_manager = manager.username;
 
 		return {
 			...project,

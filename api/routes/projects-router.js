@@ -55,7 +55,7 @@ router.put('/:id', restricted, restrictUsers.validateEditProject, async (req, re
 });
 
 // DELETE - delete project
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', restricted, restrictUsers.validateEditProject, async (req, res) => {
 	try {
 		const deleted = await Projects.deleteProject(req.params.id, req.token);
 		console.log(' : deleted', deleted);

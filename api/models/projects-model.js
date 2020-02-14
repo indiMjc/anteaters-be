@@ -50,32 +50,18 @@ const addProject = async newProject => {
 	return addedProject;
 };
 
-const editProject = async (id, changes, token) => {
-	// const { username, isAdmin, superUser } = token;
-	// const project = await findProjectById(id);
-
-	// if (username === project.project_manager || username === project.stakeholder || isAdmin || superUser) {
+const editProject = async (id, changes) => {
 	await db('projects')
 		.where({ id })
 		.update(changes);
 
 	return findProjectById(id);
-	// } else {
-	// return { message: 'You do not have permission to edit this project' };
-	// }
 };
 
 const deleteProject = async (id, token) => {
-	const { username, isAdmin, superUser } = token;
-	const { project_manager, stakeholder } = await findProjectById(id);
-
-	if (username === project_manager || username === stakeholder || isAdmin || superUser) {
-		return await db('projects')
-			.where({ id })
-			.del();
-	} else {
-		return { message: 'You do not have permission to delete this project' };
-	}
+	return await db('projects')
+		.where({ id })
+		.del();
 };
 
 module.exports = { findProjectByName, findProjectById, addProject, deleteProject, editProject };

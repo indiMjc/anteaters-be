@@ -1,16 +1,28 @@
 const db = require('../../data/dbConfig');
 
+// prettier-ignore
 const findProjectByName = async name => {
-	const project = await db('projects')
+	const project = await db
+		.select('projects.*', 'username as stakeholder')
+		.from('projects')
+		.join('users', 'users.id', 'projects.stakeholder')
 		.where(db.raw('LOWER(??)', ['projects.name']), name)
 		.first();
 
 	if (project) {
-		const devs = await db
-			.select('username')
-			.from('users')
-			.join('project_devs', 'dev_id', 'users.id')
-			.where({ project_id: project.id });
+		const [devs, manager] = await Promise.all([
+			db.select('username')
+				.from('users')
+				.join('project_devs', 'dev_id', 'users.id')
+				.where({ project_id: project.id }),
+
+			db.select('username')
+				.from('users')
+				.where('users.id', '=', project.project_manager)
+				.first()
+		]);
+
+		project.project_manager = manager.username;
 
 		return {
 			...project,
@@ -23,21 +35,31 @@ const findProjectByName = async name => {
 
 // prettier-ignore
 const findProjectById = async id => {
-		const [project, devs] = await Promise.all([
-			db('projects')
-				.where({ id })
-				.first(),
-			
-			db.select('username')
-				.from('users')
-				.join('project_devs', 'dev_id', 'users.id')
-				.where({ project_id: id })
-		]);
+	const [project, devs] = await Promise.all([
+		db.select('projects.*', 'username as stakeholder')
+			.from('projects')
+			.join('users', 'users.id', 'projects.stakeholder')
+			.where('projects.id', '=', id)
+			.first(),
 
-		return  {
-			...project,
-			devs
-		};
+		db.select('username')
+			.from('users')
+			.join('project_devs', 'dev_id', 'users.id')
+			.where({ project_id: id })
+	]);
+
+	const manager = await db
+		.select('username')
+		.from('users')
+		.where('users.id', '=', project.project_manager)
+		.first();
+
+	project.project_manager = manager.username;
+
+	return {
+		...project,
+		devs
+	};
 };
 
 const addProject = async newProject => {
@@ -50,32 +72,18 @@ const addProject = async newProject => {
 	return addedProject;
 };
 
-const editProject = async (id, changes, token) => {
-	// const { username, isAdmin, superUser } = token;
-	// const project = await findProjectById(id);
-
-	// if (username === project.project_manager || username === project.stakeholder || isAdmin || superUser) {
+const editProject = async (id, changes) => {
 	await db('projects')
 		.where({ id })
 		.update(changes);
 
 	return findProjectById(id);
-	// } else {
-	// return { message: 'You do not have permission to edit this project' };
-	// }
 };
 
 const deleteProject = async (id, token) => {
-	const { username, isAdmin, superUser } = token;
-	const { project_manager, stakeholder } = await findProjectById(id);
-
-	if (username === project_manager || username === stakeholder || isAdmin || superUser) {
-		return await db('projects')
-			.where({ id })
-			.del();
-	} else {
-		return { message: 'You do not have permission to delete this project' };
-	}
+	return await db('projects')
+		.where({ id })
+		.del();
 };
 
 module.exports = { findProjectByName, findProjectById, addProject, deleteProject, editProject };

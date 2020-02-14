@@ -1,50 +1,18 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const Users = require('./auth-model');
 
-const auth = require('../middleware/validateUsers');
+const { signToken, validateToken } = require('./util');
+const { validateLogin, validateNewUser } = require('../middleware/validateAuthData');
 
-const signToken = user => {
-	const payload = {
-		uid: user.id,
-		username: user.username,
-		isAdmin: user.isAdmin,
-		superUser: user.superUser,
-		isLocked: user.isLocked
-	};
-
-	const secret = process.env.JWT_SECRET + user.password;
-
-	const options = {
-		expiresIn: '24h'
-	};
-
-	return jwt.sign(payload, secret, options);
-};
-
-const handleValidateToken = (user, password, res) => {
-	if (user && bcrypt.compareSync(password, user.password)) {
-		const token = signToken(user);
-
-		res.status(200).json({
-			uid: user.id,
-			message: `Welcome back, ${user.username}`,
-			token
-		});
-	} else {
-		res.status(401).json({ message: 'Invalid credentials' });
-	}
-};
-
-router.post('/login', auth.validateLogin, async (req, res) => {
+router.post('/login', validateLogin, async (req, res) => {
 	let { username, password } = req.body;
 
 	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {
 		try {
 			const user = await Users.findByUsername(username.toLowerCase());
-			handleValidateToken(user, password, res);
+			validateToken(user, password, res);
 		} catch (err) {
 			console.log(err);
 			res.status(500).json({ errMessage: 'Error while logging in', err });
@@ -60,7 +28,7 @@ router.post('/login', auth.validateLogin, async (req, res) => {
 	}
 });
 
-router.post('/register', auth.validateNewUser, (req, res) => {
+router.post('/register', validateNewUser, (req, res) => {
 	let user = req.body;
 	const hash = bcrypt.hashSync(user.password, 6);
 	user.password = hash;

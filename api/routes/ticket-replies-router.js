@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const restrictUsers = require('../middleware/validateUsers');
+const restrictUsers = require('../middleware');
 
 const Replies = require('../models/ticket-replies-model');
 

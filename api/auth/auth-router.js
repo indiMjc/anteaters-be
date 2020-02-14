@@ -4,12 +4,9 @@ const bcrypt = require('bcryptjs');
 const Users = require('./auth-model');
 
 const { signToken, validateToken } = require('./util');
-// const signToken = require('./util/signToken');
-// const validateToken = require('./util/validateToken');
 const { validateLogin, validateNewUser } = require('../middleware/validateAuthData');
 
 router.post('/login', validateLogin, async (req, res) => {
-	console.log(' : validateToken', validateToken);
 	let { username, password } = req.body;
 
 	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {

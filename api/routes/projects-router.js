@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { validateEditProject, validateDeleteProject } = require('../middleware/validateProjectWriting');
+const { validateEditProject, validateDeleteProject } = require('../middleware');
 
 const Projects = require('../models/projects-model');
 

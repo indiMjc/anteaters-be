@@ -5,9 +5,9 @@ const cors = require('cors');
 const authenticate = require('../api/auth/auth-middleware');
 
 const authRouter = require('../api/auth/auth-router');
-const ticketsRouter = require('../api/routes/tickets-router');
-const projectsRouter = require('../api/routes/projects-router');
-const repliesRouter = require('../api/routes/ticket-replies-router');
+const { ticketsRouter, projectsRouter, repliesRouter } = require('../api/routes');
+// const projectsRouter = require('../api/routes/projects-router');
+// const repliesRouter = require('../api/routes/ticket-replies-router');
 
 const logger = (req, __, next) => {
 	const date = new Date(Date.now());

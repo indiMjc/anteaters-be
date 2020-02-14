@@ -2,18 +2,10 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 
-const authenticate = require('../api/auth/auth-middleware');
-
-const authRouter = require('../api/auth/auth-router');
+const { authenticate, authRouter } = require('../api/auth');
 const { ticketsRouter, projectsRouter, repliesRouter } = require('../api/routes');
-// const projectsRouter = require('../api/routes/projects-router');
-// const repliesRouter = require('../api/routes/ticket-replies-router');
 
-const logger = (req, __, next) => {
-	const date = new Date(Date.now());
-	console.log(`${req.method} to ${req.originalUrl} at ${date.toDateString()}, ${date.toTimeString()}`);
-	next();
-};
+const logger = require('./logger');
 
 const server = express();
 

@@ -1,7 +1,5 @@
 const router = require('express').Router();
 
-const restricted = require('../auth/auth-middleware');
-
 const restrictUsers = require('../middleware/validateUsers');
 
 const Projects = require('../models/projects-model');
@@ -55,14 +53,12 @@ router.put('/:id', restrictUsers.validateEditProject, async (req, res) => {
 });
 
 // DELETE - delete project
-router.delete('/:id', restrictUsers.validateEditProject, async (req, res) => {
+router.delete('/:id', restrictUsers.validateDeleteProject, async (req, res) => {
 	try {
 		const deleted = await Projects.deleteProject(req.params.id, req.token);
 		console.log(' : deleted', deleted);
 
-		deleted.message
-			? res.status(401).json({ errMessage: deleted.message })
-			: deleted
+		deleted
 			? res.status(200).json({ removed: deleted })
 			: res.status(404).json({ errMessage: 'Could not find project with given ID' });
 	} catch (err) {

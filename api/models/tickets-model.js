@@ -19,7 +19,7 @@ const findByProject = async project_id => {
 // prettier-ignore
 const findTicket = async ticket_id => {
 		const [ticket, replies, devs] = await Promise.all([
-			db.select('tickets.*', 'username as ')
+			db.select('tickets.*')
 			.from('tickets')
 			.where({ id: ticket_id })
 			.first(),

@@ -24,8 +24,10 @@ const findProjectByName = async name => {
 // prettier-ignore
 const findProjectById = async id => {
 		const [project, devs] = await Promise.all([
-			db('projects')
-				.where({ id })
+			db.select('projects.*', 'username as stakeholder')
+				.from('projects')
+				.join('users', 'users.id', 'projects.stakeholder')
+				.where('projects.id', '=', id)
 				.first(),
 			
 			db.select('username')
@@ -33,6 +35,13 @@ const findProjectById = async id => {
 				.join('project_devs', 'dev_id', 'users.id')
 				.where({ project_id: id })
 		]);
+
+		const manager = await db.select('username')
+			.from('users')
+			.where('users.id', '=', project.project_manager)
+			.first()
+
+		project.project_manager = manager.username
 
 		return  {
 			...project,

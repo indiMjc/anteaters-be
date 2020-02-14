@@ -56,7 +56,6 @@ router.put('/:id', restrictUsers.validateEditProject, async (req, res) => {
 router.delete('/:id', restrictUsers.validateDeleteProject, async (req, res) => {
 	try {
 		const deleted = await Projects.deleteProject(req.params.id, req.token);
-		console.log(' : deleted', deleted);
 
 		deleted
 			? res.status(200).json({ removed: deleted })

@@ -7,7 +7,7 @@ const restrictUsers = require('../middleware/validateUsers');
 const Projects = require('../models/projects-model');
 
 // GET - search for project by name, case insensitive
-router.get('/name_search/:name', restricted, async (req, res) => {
+router.get('/name_search/:name', async (req, res) => {
 	try {
 		const project = await Projects.findProjectByName(req.params.name);
 
@@ -19,7 +19,7 @@ router.get('/name_search/:name', restricted, async (req, res) => {
 });
 
 // GET - fetches projects with array of assigned devs
-router.get('/id_search/:id', restricted, async (req, res) => {
+router.get('/id_search/:id', async (req, res) => {
 	try {
 		const project = await Projects.findProjectById(req.params.id);
 
@@ -31,7 +31,7 @@ router.get('/id_search/:id', restricted, async (req, res) => {
 });
 
 // POST - add new project
-router.post('/', restricted, async (req, res) => {
+router.post('/', async (req, res) => {
 	try {
 		const project = await Projects.addProject(req.body);
 
@@ -43,7 +43,7 @@ router.post('/', restricted, async (req, res) => {
 });
 
 // PUT - edit project
-router.put('/:id', restricted, restrictUsers.validateEditProject, async (req, res) => {
+router.put('/:id', restrictUsers.validateEditProject, async (req, res) => {
 	try {
 		const project = await Projects.editProject(req.params.id, req.body, req.token);
 
@@ -55,7 +55,7 @@ router.put('/:id', restricted, restrictUsers.validateEditProject, async (req, re
 });
 
 // DELETE - delete project
-router.delete('/:id', restricted, restrictUsers.validateEditProject, async (req, res) => {
+router.delete('/:id', restrictUsers.validateEditProject, async (req, res) => {
 	try {
 		const deleted = await Projects.deleteProject(req.params.id, req.token);
 		console.log(' : deleted', deleted);

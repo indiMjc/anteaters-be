@@ -1,50 +1,55 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 
 const Users = require('./auth-model');
 
+const signToken = require('./util/signToken');
+const validateToken = require('./util/validateToken');
 const { validateLogin, validateNewUser } = require('../middleware/validateAuthData');
 
-const signToken = user => {
-	const payload = {
-		uid: user.id,
-		username: user.username,
-		isAdmin: user.isAdmin,
-		superUser: user.superUser,
-		isLocked: user.isLocked
-	};
+// const validateToken = validateToke();
 
-	const secret = process.env.JWT_SECRET + user.password;
+// const signToken = user => {
+// 	const payload = {
+// 		uid: user.id,
+// 		username: user.username,
+// 		isAdmin: user.isAdmin,
+// 		superUser: user.superUser,
+// 		isLocked: user.isLocked
+// 	};
 
-	const options = {
-		expiresIn: '24h'
-	};
+// 	const secret = process.env.JWT_SECRET + user.password;
 
-	return jwt.sign(payload, secret, options);
-};
+// 	const options = {
+// 		expiresIn: '24h'
+// 	};
 
-const handleValidateToken = (user, password, res) => {
-	if (user && bcrypt.compareSync(password, user.password)) {
-		const token = signToken(user);
+// 	return jwt.sign(payload, secret, options);
+// };
 
-		res.status(200).json({
-			uid: user.id,
-			message: `Welcome back, ${user.username}`,
-			token
-		});
-	} else {
-		res.status(401).json({ message: 'Invalid credentials' });
-	}
-};
+// const validateToken = (user, password, res) => {
+// 	if (user && bcrypt.compareSync(password, user.password)) {
+// 		const token = signToken(user);
+
+// 		res.status(200).json({
+// 			uid: user.id,
+// 			message: `Welcome back, ${user.username}`,
+// 			token
+// 		});
+// 	} else {
+// 		res.status(401).json({ message: 'Invalid credentials' });
+// 	}
+// };
 
 router.post('/login', validateLogin, async (req, res) => {
+	console.log(' : validateToken', validateToken);
 	let { username, password } = req.body;
 
 	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {
 		try {
 			const user = await Users.findByUsername(username.toLowerCase());
-			handleValidateToken(user, password, res);
+			validateToken(user, password, res);
 		} catch (err) {
 			console.log(err);
 			res.status(500).json({ errMessage: 'Error while logging in', err });

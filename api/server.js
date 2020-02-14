@@ -14,9 +14,10 @@ server.use(cors());
 server.use(express.json(), logger);
 
 server.use('/auth', authRouter);
-server.use('/tickets', authenticate, ticketsRouter);
-server.use('/projects', authenticate, projectsRouter);
-server.use('/replies', authenticate, repliesRouter);
+server.use(['/tickets', '/projects', '/replies'], authenticate);
+server.use('/tickets', ticketsRouter);
+server.use('/projects', projectsRouter);
+server.use('/replies', repliesRouter);
 
 server.use('/', (__, res) => {
 	res.send('Server up');

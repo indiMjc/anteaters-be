@@ -11,13 +11,13 @@ exports.up = tbl => {
 		tbl.integer('stakeholder')
 			.references('id')
 			.inTable('users')
-			.onDelete('CASCADE')
+			.onDelete('SET NULL')
 			.onUpdate('CASCADE');
 
 		tbl.integer('project_manager')
 			.references('id')
 			.inTable('users')
-			.onDelete('CASCADE')
+			.onDelete('SET NULL')
 			.onUpdate('CASCADE');
 	});
 };

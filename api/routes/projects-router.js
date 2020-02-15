@@ -18,6 +18,7 @@ router.get('/name_search/:name', async (req, res) => {
 
 // GET - fetches projects with array of assigned devs
 router.get('/id_search/:id', async (req, res) => {
+	console.log('end');
 	try {
 		const project = await Projects.findProjectById(req.params.id);
 

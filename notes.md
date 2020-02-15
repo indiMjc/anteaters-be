@@ -37,6 +37,7 @@
     -  []              make data return exactly what i want, usernames where possbile ect.
     -  []              whitelist jwt algo(s), hardocde into `verify()`
     -  []              organize middleware
+    -  []              fix ticket replies response when no replies
 
 #### FE:
 

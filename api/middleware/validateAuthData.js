@@ -31,6 +31,7 @@ const validateNewUser = async (req, res, next) => {
 
 const validateLogin = (req, res, next) => {
 	const { username, password } = req.body;
+
 	if (!username) return res.status(400).json({ message: 'Username required' });
 	if (!password) return res.status(400).json({ message: 'Password required' });
 	next();

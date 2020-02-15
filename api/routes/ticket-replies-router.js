@@ -1,7 +1,5 @@
 const router = require('express').Router();
 
-const restrictUsers = require('../middleware');
-
 const Replies = require('../models/ticket-replies-model');
 
 // GET - fetches all ticket replies and devs assigned to ticket

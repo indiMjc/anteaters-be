@@ -7,6 +7,7 @@ const repliesRouter = require('./ticket-replies-router');
 const ticketsRouter = require('./tickets-router');
 
 router.use('/auth', authRouter);
+
 router.use(
 	['/tickets', '/projects', '/replies'],
 	[ticketsRouter, projectsRouter, repliesRouter],

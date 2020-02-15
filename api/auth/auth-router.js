@@ -12,6 +12,7 @@ router.post('/login', validateLogin, async (req, res) => {
 	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {
 		try {
 			const user = await Users.findByUsername(username.toLowerCase());
+
 			validateToken(user, password, res);
 		} catch (err) {
 			console.log(err);
@@ -20,6 +21,7 @@ router.post('/login', validateLogin, async (req, res) => {
 	} else {
 		try {
 			const user_2 = await Users.findByEmail(username.toLowerCase());
+
 			handleValidateToken(user_2, password, res);
 		} catch (err_1) {
 			console.log(err_1);
@@ -36,6 +38,7 @@ router.post('/register', validateNewUser, (req, res) => {
 	Users.add(user)
 		.then(saved => {
 			const token = signToken(saved);
+
 			res.status(200).json({
 				uid: saved.id,
 				token,

@@ -2,12 +2,11 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 
-// const { authenticate, authRouter } = require('../api/auth');
-const routes = require('./routes');
+const server = express();
 
 const logger = require('./logger');
 
-const server = express();
+const routes = require('./routes');
 
 server.use(express.json(), helmet(), cors(), logger, routes);
 

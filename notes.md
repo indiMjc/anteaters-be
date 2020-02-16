@@ -2,6 +2,8 @@
 
 #### BE:
 
+    Endpoints:
+
             docs
     -  [x]   [x]       login
     -  [x]   [x]       register
@@ -26,11 +28,16 @@
     -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       get project by ID (with assigned devs)
     -  [x]   [x]       search for project by project name (with assigned devs)
+
+    Misc:
+
     -  []              normalize data
-    -  []              validate edit middleware
     -  []              middleware to validate edit and delete, all but for editing a project
     -  []              verify delete functions work
     -  []              make data return exactly what i want, usernames where possbile ect.
+    -  []              whitelist jwt algo(s), hardocde into `verify()`
+    -  []              organize middleware
+    -  []              fix ticket replies response when no replies
 
 #### FE:
 
@@ -38,15 +45,6 @@
     -  [] assign project manager to ticket
     -  [] assign stakeholder to ticket
     -  [] mark ticket as resolved
-
-## Todo:
-
--  [] api docs
--  [] middleware that checks if admin
--  [] middleware that checks if superuser
--  [] middleware that checks if me
--  [] whitelist jwt algorithms, hardcode into `verify()`
--  [] include UID in token and use it for middleware instead of in a header
 
 ## FE notes:
 

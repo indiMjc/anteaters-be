@@ -1,13 +1,9 @@
 const router = require('express').Router();
 
-const restricted = require('../auth/auth-middleware');
-
-const restrictUsers = require('../middleware/validateUsers');
-
 const Replies = require('../models/ticket-replies-model');
 
 // GET - fetches all ticket replies and devs assigned to ticket
-router.get('/:id', restricted, async (req, res) => {
+router.get('/:id', async (req, res) => {
 	try {
 		const replies = await Replies.findAllTicketsReplies(req.params.id);
 
@@ -19,7 +15,7 @@ router.get('/:id', restricted, async (req, res) => {
 });
 
 // GET - fetches all replies submitted by user id
-router.get('/my_replies/:id', restricted, async (req, res) => {
+router.get('/my_replies/:id', async (req, res) => {
 	try {
 		const replies = await Replies.findAllUsersReplies(req.params.id);
 
@@ -31,7 +27,7 @@ router.get('/my_replies/:id', restricted, async (req, res) => {
 });
 
 // POST - add reply
-router.post('/', restricted, async (req, res) => {
+router.post('/', async (req, res) => {
 	try {
 		const reply = await Replies.addReply(req.body);
 
@@ -43,7 +39,7 @@ router.post('/', restricted, async (req, res) => {
 });
 
 // DELETE - remove reply by ID
-router.delete('/:id', restricted, async (req, res) => {
+router.delete('/:id', async (req, res) => {
 	try {
 		const deleted = await Replies.deleteReply(req.params.id);
 
@@ -57,7 +53,7 @@ router.delete('/:id', restricted, async (req, res) => {
 });
 
 // PUT - edit reply
-router.put('/:id', restricted, async (req, res) => {
+router.put('/:id', async (req, res) => {
 	try {
 		const edited = await Replies.editReply(req.params.id, req.body);
 

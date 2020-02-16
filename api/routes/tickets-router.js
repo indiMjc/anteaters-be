@@ -1,13 +1,9 @@
 const router = require('express').Router();
 
-const restricted = require('../auth/auth-middleware');
-
-const restrictUsers = require('../middleware/validateUsers');
-
 const Tickets = require('../models/tickets-model');
 
 // GET - fetch ticket with replies and devs arrays
-router.get('/:id', restricted, async (req, res) => {
+router.get('/:id', async (req, res) => {
 	try {
 		const ticket = await Tickets.findTicket(req.params.id);
 
@@ -19,7 +15,7 @@ router.get('/:id', restricted, async (req, res) => {
 });
 
 // GET - fetch all tickets for specific project
-router.get('/by_project/:id', restricted, async (req, res) => {
+router.get('/by_project/:id', async (req, res) => {
 	try {
 		const tickets = await Tickets.findByProject(req.params.id);
 
@@ -31,7 +27,7 @@ router.get('/by_project/:id', restricted, async (req, res) => {
 });
 
 // GET - fetch all tickets for particular user by username
-router.get('/submitted_by/:username', restricted, async (req, res) => {
+router.get('/submitted_by/:username', async (req, res) => {
 	try {
 		const tickets = await Tickets.findUserTickets(req.params.username);
 
@@ -43,7 +39,7 @@ router.get('/submitted_by/:username', restricted, async (req, res) => {
 });
 
 // GET - fetch all replies by username
-router.get('/replies/:username', restricted, async (req, res) => {
+router.get('/replies/:username', async (req, res) => {
 	try {
 		const replies = await Tickets.findRepliesByUsername(req.params.username);
 
@@ -57,7 +53,7 @@ router.get('/replies/:username', restricted, async (req, res) => {
 });
 
 // PUT - edit ticket, only accessible to superusers, admins and author of the ticket
-router.put('/:id', restricted, async (req, res) => {
+router.put('/:id', async (req, res) => {
 	const { id } = req.params;
 
 	try {
@@ -71,7 +67,7 @@ router.put('/:id', restricted, async (req, res) => {
 });
 
 // POST - add ticket
-router.post('/', restricted, async (req, res) => {
+router.post('/', async (req, res) => {
 	try {
 		const ticket = await Tickets.addTicket(req.body);
 
@@ -83,7 +79,7 @@ router.post('/', restricted, async (req, res) => {
 });
 
 // DELETE - remove ticket by ID
-router.delete('/:id', restricted, async (req, res) => {
+router.delete('/:id', async (req, res) => {
 	try {
 		const deleted = await Tickets.deleteTicket(req.params.id);
 

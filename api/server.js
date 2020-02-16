@@ -2,31 +2,16 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 
-const authenticate = require('../api/auth/auth-middleware');
-const authRouter = require('../api/auth/auth-router');
-const ticketsRouter = require('../api/routes/tickets-router');
-const projectsRouter = require('../api/routes/projects-router');
-const repliesRouter = require('../api/routes/ticket-replies-router');
-
-const logger = (req, __, next) => {
-	const date = new Date(Date.now());
-	console.log(`${req.method} to ${req.originalUrl} at ${date.toDateString()}, ${date.toTimeString()}`);
-	next();
-};
-
 const server = express();
 
-server.use(helmet());
-server.use(cors());
-server.use(express.json(), logger);
+const logger = require('./logger');
 
-server.use('/auth', authRouter);
-server.use('/tickets', authenticate, ticketsRouter);
-server.use('/projects', authenticate, projectsRouter);
-server.use('/replies', repliesRouter);
+const routes = require('./routes');
 
-server.use('/', (__, res) => {
-	res.send('Server up');
+server.use(express.json(), helmet(), cors(), logger, routes);
+
+server.get('/', (__, res) => {
+	res.status(200).json({ message: 'Server up' });
 });
 
 module.exports = server;

@@ -51,16 +51,11 @@ const findUserTickets = async submitted_by => {
 };
 
 const editTicket = async (id, changes) => {
-	try {
-		await db('tickets')
-			.where({ id })
-			.update(changes);
+	await db('tickets')
+		.where({ id })
+		.update(changes);
 
-		return findTicket(id);
-	} catch (err) {
-		console.log(err);
-		return { errMessage: 'Error in db function while editing ticket' };
-	}
+	return findTicket(id);
 };
 
 const addTicket = async newTicket => {

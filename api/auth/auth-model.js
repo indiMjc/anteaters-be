@@ -29,23 +29,19 @@ const add = async user => {
 	return findById(id[0]).first();
 };
 
-const editUser = async (id, changes) => {
+const editUser = (id, changes) => {
 	user.isAdmin = false;
 	user.superUser = false;
 
-	await db('users')
+	db('users')
 		.where({ id })
 		.update(changes);
-
-	return findById(id);
 };
 
-const editPermissions = async (id, newPermission) => {
-	await db('users')
+const editPermissions = (id, newPermission) => {
+	db('users')
 		.where({ id })
 		.update(newPermission);
-
-	return findById(id);
 };
 
-module.exports = { add, findByUsername, findById, findByEmail, editPermissions };
+module.exports = { add, findByUsername, findById, findByEmail, editPermissions, editUser };

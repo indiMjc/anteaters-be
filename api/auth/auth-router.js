@@ -16,7 +16,7 @@ router.post('/login', validateLogin, async (req, res) => {
 			validateToken(user, password, res);
 		} catch (err) {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Error while logging in', err });
+			res.status(500).json({ errMessage: 'Error while logging in' });
 		}
 	} else {
 		try {
@@ -25,7 +25,7 @@ router.post('/login', validateLogin, async (req, res) => {
 			handleValidateToken(user_2, password, res);
 		} catch (err_1) {
 			console.log(err_1);
-			res.status(500).json({ errMessage: 'Error while logging in', err_1 });
+			res.status(500).json({ errMessage: 'Error while logging in' });
 		}
 	}
 });
@@ -47,8 +47,21 @@ router.post('/register', validateNewUser, (req, res) => {
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Error while registering new user', err });
+			res.status(500).json({ errMessage: 'Error while registering new user' });
 		});
+});
+
+router.put('/permission/:id', async (req, res) => {
+	const { id } = req.params;
+	try {
+		await Users.editPermissions(id, req.body);
+		const user = await Users.findById(id);
+		// user && delete user.password;
+		res.status(200).json(user);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Error while editing user permission' });
+	}
 });
 
 module.exports = router;

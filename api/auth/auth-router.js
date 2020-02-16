@@ -51,13 +51,26 @@ router.post('/register', validateNewUser, (req, res) => {
 		});
 });
 
+router.put('/:id', async (req, res) => {
+	const { id } = req.params;
+
+	try {
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Error while editing user' });
+	}
+});
+
 router.put('/permission/:id', async (req, res) => {
 	const { id } = req.params;
 	try {
-		await Users.editPermissions(id, req.body);
-		const user = await Users.findById(id);
-		// user && delete user.password;
-		res.status(200).json(user);
+		const user = await Users.editPermissions(id, req.body);
+
+		user && delete user.password;
+
+		user
+			? res.status(200).json(user)
+			: res.status(401).json({ message: 'User with specified ID does not exist' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while editing user permission' });

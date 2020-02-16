@@ -5,6 +5,8 @@
     Endpoints:
 
             docs
+    -  [x]   []        edit user
+    -  [x]   []        edit user permissions
     -  [x]   [x]       login
     -  [x]   [x]       register
 

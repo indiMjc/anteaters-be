@@ -12,14 +12,17 @@ module.exports = (req, res, next) => {
 			jwt.verify(authorization, secret, (err, decodedToken) => {
 				if (err) {
 					console.log(err);
+
 					return res.status(401).json({ errMessage: 'Invalid token' });
 				} else {
 					req.token = decodedToken;
+
 					next();
 				}
 			});
 		} catch (err) {
 			console.log(err);
+
 			return res.status(401).json({ errMessage: 'Invalid token' });
 		}
 	} else {

@@ -9,7 +9,7 @@ module.exports = user => {
 		isLocked: user.isLocked
 	};
 
-	const secret = process.env.JWT_SECRET + user.password;
+	const secret = process.env.JWT_SECRET;
 
 	const options = {
 		expiresIn: '24h'

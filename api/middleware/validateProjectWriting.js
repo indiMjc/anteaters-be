@@ -9,7 +9,7 @@ const validateEditProject = async (req, res, next) => {
 
 		return uid === project.stakeholder || uid === project.project_manager || superUser || isAdmin
 			? next()
-			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
+			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this project' });
 	} catch (err) {
 		console.log(err);
 	}

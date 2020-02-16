@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const Users = require('./auth-model');
 
 const { signToken, validateToken } = require('./util');
-const { validateLogin, validateNewUser } = require('../middleware/validateAuthData');
+const { validateLogin, validateNewUser, validateAdminCreation } = require('../middleware');
 
 router.post('/login', validateLogin, async (req, res) => {
 	let { username, password } = req.body;
@@ -16,16 +16,16 @@ router.post('/login', validateLogin, async (req, res) => {
 			validateToken(user, password, res);
 		} catch (err) {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Error while logging in', err });
+			res.status(500).json({ errMessage: 'Error while logging in' });
 		}
 	} else {
 		try {
 			const user_2 = await Users.findByEmail(username.toLowerCase());
 
-			handleValidateToken(user_2, password, res);
+			validateToken(user_2, password, res);
 		} catch (err_1) {
 			console.log(err_1);
-			res.status(500).json({ errMessage: 'Error while logging in', err_1 });
+			res.status(500).json({ errMessage: 'Error while logging in' });
 		}
 	}
 });
@@ -47,8 +47,49 @@ router.post('/register', validateNewUser, (req, res) => {
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Error while registering new user', err });
+			res.status(500).json({ errMessage: 'Error while registering new user' });
 		});
+});
+
+router.put('/:id', async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		const user = await Users.editUser(id, req.body);
+
+		if (user) {
+			delete user.id;
+			delete user.password;
+			delete user.email;
+		}
+
+		user
+			? res.status(200).json(user)
+			: res.status(401).json({ message: 'User with specified ID does not exist' });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Error while editing user' });
+	}
+});
+
+router.put('/permission/:id', validateAdminCreation, async (req, res) => {
+	const { id } = req.params;
+	try {
+		const user = await Users.editPermissions(id, req.body);
+
+		if (user) {
+			delete user.id;
+			delete user.password;
+			delete user.email;
+		}
+
+		user
+			? res.status(200).json(user)
+			: res.status(401).json({ message: 'User with specified ID does not exist' });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Error while editing user permission' });
+	}
 });
 
 module.exports = router;

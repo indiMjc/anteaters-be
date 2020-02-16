@@ -8,10 +8,8 @@ const ticketsRouter = require('./tickets-router');
 
 router.use('/auth', authRouter);
 
-router.use(
-	['/tickets', '/projects', '/replies'],
-	[ticketsRouter, projectsRouter, repliesRouter],
-	authenticate
-);
+router.use('/tickets', ticketsRouter, authenticate);
+router.use('/projects', authenticate, projectsRouter);
+router.use('/replies', repliesRouter, authenticate);
 
 module.exports = router;

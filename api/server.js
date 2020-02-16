@@ -13,4 +13,5 @@ server.use(express.json(), helmet(), cors(), logger, routes);
 server.get('/', (__, res) => {
 	res.status(200).json({ message: 'Server up' });
 });
+
 module.exports = server;

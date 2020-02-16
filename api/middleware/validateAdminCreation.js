@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const Users = require('./auth-model');
-
-module.exports = (req, res, next) => {
+const validateAdminCreation = (req, res, next) => {
 	const { authorization } = req.headers;
 
 	if (authorization) {
@@ -12,17 +10,22 @@ module.exports = (req, res, next) => {
 			jwt.verify(authorization, secret, (err, decodedToken) => {
 				if (err) {
 					console.log(err);
+
 					return res.status(401).json({ errMessage: 'Invalid token' });
 				} else {
-					req.token = decodedToken;
-					next();
+					const { isAdmin, superUser, uid } = decodedToken;
+
+					if (isAdmin || superUser || uid === 1) return next();
+
+					return res.status(401).json({ errMessage: 'You do not have permission to create admins' });
 				}
 			});
 		} catch (err) {
 			console.log(err);
+
 			return res.status(401).json({ errMessage: 'Invalid token' });
 		}
-	} else {
-		return res.status(400).json({ message: 'Please login and try again' });
 	}
 };
+
+module.exports = { validateAdminCreation };

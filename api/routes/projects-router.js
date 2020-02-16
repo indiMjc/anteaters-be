@@ -4,6 +4,18 @@ const { validateEditProject, validateDeleteProject } = require('../middleware');
 
 const Projects = require('../models/projects-model');
 
+// GET - all projects
+router.get('/', async (req, res) => {
+	try {
+		const projects = await Projects.findAll();
+
+		res.status(200).json(projects);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Error while getting projects' });
+	}
+});
+
 // GET - search for project by name, case insensitive
 router.get('/name_search/:name', async (req, res) => {
 	try {

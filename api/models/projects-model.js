@@ -84,7 +84,7 @@ const editProject = async (id, changes) => {
 	return findProjectById(id);
 };
 
-const deleteProject = async (id, token) => {
+const deleteProject = async id => {
 	return await db('projects')
 		.where({ id })
 		.del();

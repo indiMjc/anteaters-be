@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const Users = require('./auth-model');
 
 const { signToken, validateToken } = require('./util');
-const { validateLogin, validateNewUser } = require('../middleware/validateAuthData');
+const { validateLogin, validateNewUser, validateAdminCreation } = require('../middleware');
+// const { validateAdminCreation } = require('../middleware/validateAdminCreation');
 
 router.post('/login', validateLogin, async (req, res) => {
 	let { username, password } = req.body;
@@ -22,7 +23,7 @@ router.post('/login', validateLogin, async (req, res) => {
 		try {
 			const user_2 = await Users.findByEmail(username.toLowerCase());
 
-			handleValidateToken(user_2, password, res);
+			validateToken(user_2, password, res);
 		} catch (err_1) {
 			console.log(err_1);
 			res.status(500).json({ errMessage: 'Error while logging in' });
@@ -72,7 +73,7 @@ router.put('/:id', async (req, res) => {
 	}
 });
 
-router.put('/permission/:id', async (req, res) => {
+router.put('/permission/:id', validateAdminCreation, async (req, res) => {
 	const { id } = req.params;
 	try {
 		const user = await Users.editPermissions(id, req.body);

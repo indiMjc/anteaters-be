@@ -2,12 +2,11 @@ const jwt = require('jsonwebtoken');
 
 const Users = require('./auth-model');
 
-module.exports = async (req, res, next) => {
-	const { authorization, uid } = req.headers;
+module.exports = (req, res, next) => {
+	const { authorization } = req.headers;
 
 	if (authorization) {
 		try {
-			const user = await Users.findById(uid);
 			const secret = process.env.JWT_SECRET;
 
 			jwt.verify(authorization, secret, (err, decodedToken) => {

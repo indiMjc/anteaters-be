@@ -50,7 +50,6 @@
 
 ## FE notes:
 
--  **EVERY REQUEST NEEDS A UID HEADER THAT HAS THE USER'S ID TO GET PAST AUTHENTICATION MIDDLEWARE**
 -  store token in memory and get new token if page is refreshed
 -  persist on login: token, uid and isAdmin || superUser (uid and role in token)
 -  decode jwt with `JSON.parse(atob(token.split('.')[1]))`

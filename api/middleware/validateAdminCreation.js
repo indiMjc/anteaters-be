@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const validateAdminCreation = async (req, res, next) => {
+const validateAdminCreation = (req, res, next) => {
 	const { authorization } = req.headers;
 
 	if (authorization) {
@@ -22,6 +22,7 @@ const validateAdminCreation = async (req, res, next) => {
 			});
 		} catch (err) {
 			console.log(err);
+
 			return res.status(401).json({ errMessage: 'Invalid token' });
 		}
 	}

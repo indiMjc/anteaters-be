@@ -5,7 +5,6 @@ const Users = require('./auth-model');
 
 const { signToken, validateToken } = require('./util');
 const { validateLogin, validateNewUser, validateAdminCreation } = require('../middleware');
-// const { validateAdminCreation } = require('../middleware/validateAdminCreation');
 
 router.post('/login', validateLogin, async (req, res) => {
 	let { username, password } = req.body;

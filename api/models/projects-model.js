@@ -1,5 +1,9 @@
 const db = require('../../data/dbConfig');
 
+const findAll = () => {
+	return db('projects');
+};
+
 // prettier-ignore
 const findProjectByName = async name => {
 	const project = await db
@@ -86,4 +90,4 @@ const deleteProject = async (id, token) => {
 		.del();
 };
 
-module.exports = { findProjectByName, findProjectById, addProject, deleteProject, editProject };
+module.exports = { findAll, findProjectByName, findProjectById, addProject, deleteProject, editProject };

@@ -55,6 +55,17 @@ router.put('/:id', async (req, res) => {
 	const { id } = req.params;
 
 	try {
+		const user = await Users.editUser(id, req.body);
+
+		if (user) {
+			delete user.id;
+			delete user.password;
+			delete user.email;
+		}
+
+		user
+			? res.status(200).json(user)
+			: res.status(401).json({ message: 'User with specified ID does not exist' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while editing user' });
@@ -66,7 +77,11 @@ router.put('/permission/:id', async (req, res) => {
 	try {
 		const user = await Users.editPermissions(id, req.body);
 
-		user && delete user.password;
+		if (user) {
+			delete user.id;
+			delete user.password;
+			delete user.email;
+		}
 
 		user
 			? res.status(200).json(user)

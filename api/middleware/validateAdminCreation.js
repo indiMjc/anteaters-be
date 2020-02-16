@@ -1,4 +1,4 @@
-const validateAdminCreation = (req, res, next) => {
+const validateUserEdit = (req, res, next) => {
 	const { uid, isAdmin, superUser } = req.token;
 	console.log(' : validateAdminCreation -> req.token', req.token);
 
@@ -7,4 +7,4 @@ const validateAdminCreation = (req, res, next) => {
 	return res.status(400).json({ message: 'Sorry, you do not have permission to create admins ' });
 };
 
-module.exports = validateAdminCreation;
+module.exports = validateUserEdit;

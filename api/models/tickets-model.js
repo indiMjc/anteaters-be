@@ -18,21 +18,41 @@ const findByProject = async project_id => {
 
 // prettier-ignore
 const findTicket = async ticket_id => {
-		const [ticket, replies, devs] = await Promise.all([
-			db.select('tickets.*')
-			.from('tickets')
-			.where({ id: ticket_id })
-			.first(),
+	const [ticket, replies, devs] = await Promise.all([
+		db.select('tickets.*', 'users.username as submitted_by')
+		.from('tickets')
+		.join('users', 'users.id', 'tickets.submitted_by')
+		.whereRaw('tickets.id = ?', [ticket_id])
+		// 		.whereRaw('tickets.id = ?', [id])
+		.first(),
 
-			db.select('reply', 'created_at', 'submitted_by')
-				.from('ticket_replies')
-				.where({ ticket_id }),
+		db.select('ticket_replies.*', 'users.username as submitted_by')
+		.from('ticket_replies')
+		.join('users', 'users.id', 'ticket_replies.submitted_by')
+		.where({ ticket_id }),
 
-			db.select('username')
-				.from('users')
-				.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
-				.where('ticket_devs.ticket_id', '=', ticket_id)
-		]);
+		db.select('username')
+		.from('users')
+		.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
+		.where('ticket_devs.id', '=', 'ticket_id')
+	])
+
+
+		// const [ticket, replies, devs] = await Promise.all([
+		// 	db.select('tickets.*')
+		// 	.from('tickets')
+		// 	.where({ id: ticket_id })
+		// 	.first(),
+
+		// 	db.select('reply', 'created_at', 'submitted_by')
+		// 		.from('ticket_replies')
+		// 		.where({ ticket_id }),
+
+		// 	db.select('username')
+		// 		.from('users')
+		// 		.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
+		// 		.where('ticket_devs.ticket_id', '=', ticket_id)
+		// ]);
 
 		return ticket && {
 				...ticket,
@@ -51,6 +71,8 @@ const findUserTickets = async submitted_by => {
 };
 
 const editTicket = async (id, changes) => {
+	console.log(' : editTicket -> id', id);
+	console.log(' : editTicket -> changes', changes);
 	await db('tickets')
 		.where({ id })
 		.update(changes);

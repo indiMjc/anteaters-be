@@ -58,6 +58,7 @@ router.put('/:id', async (req, res) => {
 
 	try {
 		const ticket = await Tickets.editTicket(id, req.body);
+		console.log(' : ticket', ticket);
 
 		res.status(200).json(ticket);
 	} catch (err) {

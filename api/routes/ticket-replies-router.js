@@ -56,6 +56,7 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
 	try {
 		const edited = await Replies.editReply(req.params.id, req.body);
+		console.log(' : edited', edited);
 
 		res.status(200).json(edited);
 	} catch (err) {

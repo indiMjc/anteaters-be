@@ -35,7 +35,6 @@ const editUser = async (id, changes) => {
 		.update(changes);
 
 	const user = await findById(id);
-	console.log(' : editUser -> user', user);
 	// user.isAdmin = false;
 	// user.superUser = false;
 

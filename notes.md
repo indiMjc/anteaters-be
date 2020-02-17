@@ -40,6 +40,7 @@
     -  []              whitelist jwt algo(s), hardocde into `verify()`
     -  []              organize middleware
     -  []              fix ticket replies response when no replies
+    -  []              fix usernames, they will save if one letter case is different
 
 #### FE:
 

@@ -52,7 +52,7 @@ router.get('/replies/:username', async (req, res) => {
 	}
 });
 
-// PUT - edit ticket, only accessible to superusers, admins and author of the ticket
+// PUT - edit ticket
 router.put('/:id', async (req, res) => {
 	const { id } = req.params;
 

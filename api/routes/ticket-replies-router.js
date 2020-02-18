@@ -2,22 +2,10 @@ const router = require('express').Router();
 
 const Replies = require('../models/ticket-replies-model');
 
-// GET - fetches all ticket replies and devs assigned to ticket
-router.get('/:id', async (req, res) => {
+// GET - fetches all replies submitted by username
+router.get('/my_replies/:username', async (req, res) => {
 	try {
-		const replies = await Replies.findAllTicketsReplies(req.params.id);
-
-		res.status(200).json(replies);
-	} catch (err) {
-		console.log(err);
-		res.status(500).json({ errMessage: 'Error while fetching replies' });
-	}
-});
-
-// GET - fetches all replies submitted by user id
-router.get('/my_replies/:id', async (req, res) => {
-	try {
-		const replies = await Replies.findAllUsersReplies(req.params.id);
+		const replies = await Replies.findAllUsersReplies(req.params.username.toLowerCase());
 
 		res.status(200).json(replies);
 	} catch (err) {

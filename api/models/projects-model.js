@@ -1,13 +1,42 @@
 const db = require('../../data/dbConfig');
 
-const findAll = () => {
-	return db('projects');
+const findAll = async () => {
+	const projects = await db
+		.select('projects.*', 'username AS stakeholder')
+		.from('projects')
+		.join('users', 'users.id', 'projects.stakeholder');
+
+	const devsAndManager = new Promise(resolve => {
+		projects.map(async (project, i) => {
+			const manager = await db
+				.select('username')
+				.from('users')
+				.where('users.id', '=', project.project_manager)
+				.first();
+
+			projects[i].project_manager = manager.username;
+
+			const devs = await db
+				.select('username')
+				.from('users')
+				.join('project_devs', 'dev_id', 'users.id')
+				.where('project_id', '=', project.id);
+
+			project.devs = devs;
+
+			resolve();
+		});
+	});
+
+	await Promise.all([devsAndManager]);
+
+	return projects;
 };
 
 // prettier-ignore
 const findProjectByName = async name => {
 	const project = await db
-		.select('projects.*', 'username as stakeholder')
+		.select('projects.*', 'username AS stakeholder')
 		.from('projects')
 		.join('users', 'users.id', 'projects.stakeholder')
 		.where(db.raw('LOWER(??)', ['projects.name']), name)
@@ -40,7 +69,7 @@ const findProjectByName = async name => {
 // prettier-ignore
 const findProjectById = async id => {
 	const [project, devs] = await Promise.all([
-		db.select('projects.*', 'username as stakeholder')
+		db.select('projects.*', 'username AS stakeholder')
 			.from('projects')
 			.join('users', 'users.id', 'projects.stakeholder')
 			.where('projects.id', '=', id)

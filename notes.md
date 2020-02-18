@@ -16,6 +16,7 @@
     -  [x]   [x]       get ticket by ticket ID (with replies and assigned devs)
     -  [x]   [x]       get all tickets for project by project ID
     -  [x]   [x]       get all tickets by author username
+    -  []    []        join ticket
 
     -  [x]   [x]       get all ticket replies by username
     -  [x]   [x]       get all ticket replies by ticket ID
@@ -30,6 +31,7 @@
     -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       get project by ID (with assigned devs)
     -  [x]   [x]       search for project by project name (with assigned devs)
+    -  []    []        join project
 
     Misc:
 

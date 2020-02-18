@@ -9,44 +9,6 @@ const findAllUsersReplies = async username => {
 		.orderBy('ticket_replies.created_at', 'desc');
 };
 
-const findAllTicketsReplies = async id => {
-	const replies = await db
-		.select('ticket_replies.*')
-		.from('ticket_replies')
-		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
-		.whereRaw('tickets.id = ?', [id])
-		.orderBy('ticket_replies.created_at', 'desc');
-
-	// let [replies, devs] = await Promise.all([
-	// 	db
-	// 		.select('ticket_replies.*')
-	// 		.from('ticket_replies')
-	// 		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
-	// 		.whereRaw('tickets.id = ?', [id])
-	// 		.orderBy('ticket_replies.created_at', 'desc'),
-
-	// 	db
-	// 		.select('username')
-	// 		.from('users')
-	// 		.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
-	// 		.whereRaw('ticket_devs.id = ?', [id])
-
-	// db
-	// 	.select('ticket_devs.dev_username AS username')
-	// 	.from('ticket_devs')
-	// 	.join('tickets', 'tickets.id', 'ticket_devs.ticket_id')
-	// 	.whereRaw('tickets.id = ?', [id])
-	// ]);
-
-	if (!replies.length) {
-		replies = 'No replies yet';
-
-		return replies;
-	} else {
-		return replies;
-	}
-};
-
 const addReply = async reply => {
 	const id = await db('ticket_replies')
 		.insert(reply)
@@ -80,7 +42,6 @@ const deleteReply = async id => {
 
 module.exports = {
 	findAllUsersReplies,
-	findAllTicketsReplies,
 	addReply,
 	editReply,
 	deleteReply

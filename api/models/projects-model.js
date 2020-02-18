@@ -1,7 +1,36 @@
 const db = require('../../data/dbConfig');
 
-const findAll = () => {
-	return db('projects');
+const findAll = async () => {
+	const projects = await db
+		.select('projects.*', 'username AS stakeholder')
+		.from('projects')
+		.join('users', 'users.id', 'projects.stakeholder');
+
+	const devsAndManager = new Promise(resolve => {
+		projects.map(async (project, i) => {
+			const manager = await db
+				.select('username')
+				.from('users')
+				.where('users.id', '=', project.project_manager)
+				.first();
+
+			projects[i].project_manager = manager.username;
+
+			const devs = await db
+				.select('username')
+				.from('users')
+				.join('project_devs', 'dev_id', 'users.id')
+				.where('project_id', '=', project.id);
+
+			project.devs = devs;
+
+			resolve();
+		});
+	});
+
+	await Promise.all([devsAndManager]);
+
+	return projects;
 };
 
 // prettier-ignore

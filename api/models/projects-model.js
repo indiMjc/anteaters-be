@@ -7,7 +7,7 @@ const findAll = () => {
 // prettier-ignore
 const findProjectByName = async name => {
 	const project = await db
-		.select('projects.*', 'username as stakeholder')
+		.select('projects.*', 'username AS stakeholder')
 		.from('projects')
 		.join('users', 'users.id', 'projects.stakeholder')
 		.where(db.raw('LOWER(??)', ['projects.name']), name)
@@ -40,7 +40,7 @@ const findProjectByName = async name => {
 // prettier-ignore
 const findProjectById = async id => {
 	const [project, devs] = await Promise.all([
-		db.select('projects.*', 'username as stakeholder')
+		db.select('projects.*', 'username AS stakeholder')
 			.from('projects')
 			.join('users', 'users.id', 'projects.stakeholder')
 			.where('projects.id', '=', id)

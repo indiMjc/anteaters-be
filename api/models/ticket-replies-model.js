@@ -1,11 +1,11 @@
 const db = require('../../data/dbConfig');
 
-const findAllUsersReplies = async id => {
+const findAllUsersReplies = async username => {
 	return await db
-		.select('ticket_replies.*', 'users.username')
+		.select('ticket_replies.*', 'users.username AS submitted_by')
 		.from('ticket_replies')
 		.join('users', 'ticket_replies.submitted_by', 'users.id')
-		.where('users.id', '=', id)
+		.where(db.raw('LOWER(??)', ['users.username']), username)
 		.orderBy('ticket_replies.created_at', 'desc');
 };
 
@@ -65,7 +65,7 @@ const editReply = async (id, changes) => {
 		.update(changes);
 
 	return db
-		.select('ticket_replies.*', 'users.username as submitted_by')
+		.select('ticket_replies.*', 'users.username AS submitted_by')
 		.from('ticket_replies')
 		.join('users', 'users.id', 'ticket_replies.submitted_by')
 		.where('ticket_replies.id', '=', id)

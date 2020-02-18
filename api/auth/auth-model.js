@@ -30,15 +30,14 @@ const add = async user => {
 };
 
 const editUser = async (id, changes) => {
+	changes.isAdmin = false;
+	changes.superUser = false;
+
 	await db('users')
 		.where({ id })
 		.update(changes);
 
-	const user = await findById(id);
-	// user.isAdmin = false;
-	// user.superUser = false;
-
-	return user;
+	return await findById(id);
 };
 
 const editPermissions = async (id, newPermission) => {

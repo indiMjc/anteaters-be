@@ -23,7 +23,7 @@ const findTicket = async ticket_id => {
 			.from('tickets')
 			.join('users', 'users.id', 'tickets.submitted_by')
 			.join('projects', 'projects.id', 'tickets.project_id')
-			.whereRaw('tickets.id = ?', [ticket_id])
+			.where('tickets.id', '=', ticket_id)
 			.first(),
 
 		db.select('ticket_replies.*', 'users.username AS submitted_by')
@@ -86,6 +86,12 @@ const findRepliesByUsername = submitted_by => {
 };
 
 const joinTicket = async (ticket_id, dev_id) => {
+	const alreadyJoined = await db('ticket_devs')
+		.where('dev_id', '=', dev_id)
+		.first();
+
+	if (alreadyJoined) return { message: 'User already joined ticket' };
+
 	await db('ticket_devs').insert({ ticket_id, dev_id });
 
 	return findTicket(ticket_id);

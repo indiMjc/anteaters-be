@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
 });
 
 // DELETE - remove reply by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateEditReply, async (req, res) => {
 	try {
 		const deleted = await Replies.deleteReply(req.params.id);
 

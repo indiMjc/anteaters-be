@@ -19,7 +19,7 @@ const findByProject = async project_id => {
 // prettier-ignore
 const findTicket = async ticket_id => {
 	let [ticket, replies, devs] = await Promise.all([
-		db.select('tickets.*', 'users.username AS submitted_by', 'projects.name AS project_id')
+		db.select('tickets.*', 'users.username AS submitted_by', 'projects.name AS project_name')
 			.from('tickets')
 			.join('users', 'users.id', 'tickets.submitted_by')
 			.join('projects', 'projects.id', 'tickets.project_id')
@@ -34,7 +34,7 @@ const findTicket = async ticket_id => {
 		db.select('username')
 			.from('users')
 			.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
-			.where('ticket_devs.id', '=', 'ticket_id')
+			.where('ticket_devs.ticket_id', '=', ticket_id)
 	]);
 
 	if (!devs.length) devs = [{ username: 'No devs joined this ticket yet' }]
@@ -68,9 +68,7 @@ const addTicket = async newTicket => {
 		.insert(newTicket)
 		.returning('id');
 
-	const addedTicket = await findTicket(id[0]);
-
-	return addedTicket;
+	return await findTicket(id[0]);
 };
 
 const deleteTicket = async id => {
@@ -87,6 +85,12 @@ const findRepliesByUsername = submitted_by => {
 		.where(db.raw('LOWER(??)', ['users.username']), submitted_by);
 };
 
+const joinTicket = async (ticket_id, dev_id) => {
+	await db('ticket_devs').insert({ ticket_id, dev_id });
+
+	return findTicket(ticket_id);
+};
+
 module.exports = {
 	findByProject,
 	findTicket,
@@ -94,5 +98,6 @@ module.exports = {
 	editTicket,
 	addTicket,
 	deleteTicket,
-	findRepliesByUsername
+	findRepliesByUsername,
+	joinTicket
 };

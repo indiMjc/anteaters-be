@@ -7,10 +7,12 @@ const authenticate = require('./auth-middleware');
 const { signToken, validateToken } = require('./util');
 const { validateLogin, validateNewUser, validateAdminCreation } = require('../middleware');
 
+const checkIfNotEmail = username => !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username);
+
 router.post('/login', validateLogin, async (req, res) => {
 	let { username, password } = req.body;
 
-	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {
+	if (checkIfNotEmail(username)) {
 		try {
 			const user = await Users.findByUsername(username.toLowerCase());
 

@@ -94,4 +94,18 @@ router.delete('/:id', validateEditTicket, async (req, res) => {
 	}
 });
 
+// POST - join ticket
+router.post('/join/:id', async (req, res) => {
+	try {
+		const joined = await Tickets.joinTicket(req.params.id, req.locals.uid);
+
+		joined
+			? res.status(200).json(joined)
+			: res.status(404).json({ errMessage: 'Could not find ticket with given ID' });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Join ticket failed' });
+	}
+});
+
 module.exports = router;

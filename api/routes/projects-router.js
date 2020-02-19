@@ -5,9 +5,10 @@ const { validateEditProject } = require('../middleware');
 const Projects = require('../models/projects-model');
 
 // GET - all projects
-router.get('/', async (req, res) => {
+router.get('/', async (__, res) => {
 	try {
 		const projects = await Projects.findAll();
+		// console.log(' : projects ON ROUTE', projects);
 
 		res.status(200).json(projects);
 	} catch (err) {

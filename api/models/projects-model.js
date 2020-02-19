@@ -7,14 +7,14 @@ const findAll = async () => {
 		.join('users', 'users.id', 'projects.stakeholder');
 
 	const devsAndManager = new Promise(resolve => {
-		projects.map(async (project, i) => {
+		projects.forEach(async (project, i) => {
 			const manager = await db
 				.select('username')
 				.from('users')
 				.where('users.id', '=', project.project_manager)
 				.first();
 
-			projects[i].project_manager = manager.username;
+			if (manager) projects[i].project_manager = manager.username;
 
 			const devs = await db
 				.select('username')
@@ -81,13 +81,15 @@ const findProjectById = async id => {
 			.where({ project_id: id })
 	]);
 
-	const manager = await db
-		.select('username')
-		.from('users')
-		.where('users.id', '=', project.project_manager)
-		.first();
-
-	project.project_manager = manager.username;
+	if (project && project.project_manager != null) {
+		const manager = await db
+			.select('username')
+			.from('users')
+			.where('users.id', '=', project.project_manager)
+			.first();
+	
+		project.project_manager = manager.username;
+	}
 
 	return {
 		...project,

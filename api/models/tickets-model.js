@@ -18,10 +18,11 @@ const findByProject = async project_id => {
 
 // prettier-ignore
 const findTicket = async ticket_id => {
-	const [ticket, replies, devs] = await Promise.all([
-		db.select('tickets.*', 'users.username AS submitted_by')
+	let [ticket, replies, devs] = await Promise.all([
+		db.select('tickets.*', 'users.username AS submitted_by', 'projects.name AS project_id')
 			.from('tickets')
 			.join('users', 'users.id', 'tickets.submitted_by')
+			.join('projects', 'projects.id', 'tickets.project_id')
 			.whereRaw('tickets.id = ?', [ticket_id])
 			.first(),
 
@@ -35,6 +36,8 @@ const findTicket = async ticket_id => {
 			.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
 			.where('ticket_devs.id', '=', 'ticket_id')
 	]);
+
+	if (!devs.length) devs = [{ username: 'No devs joined this ticket yet' }]
 
 	return ticket && {
 			...ticket,

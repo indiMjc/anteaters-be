@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-const Users = require('./auth-model');
-
 module.exports = (req, res, next) => {
 	const { authorization } = req.headers;
 
@@ -15,7 +13,7 @@ module.exports = (req, res, next) => {
 
 					return res.status(401).json({ errMessage: 'Invalid token' });
 				} else {
-					req.token = decodedToken;
+					req.locals = decodedToken;
 
 					next();
 				}

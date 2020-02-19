@@ -2,10 +2,12 @@ const router = require('express').Router();
 
 const Replies = require('../models/ticket-replies-model');
 
-// GET - fetches all replies submitted by username
-router.get('/my_replies/:username', async (req, res) => {
+const { validateEditReply } = require('../middleware');
+
+// GET - fetches all replies submitted by user by uid on token
+router.get('/my_replies/', async (req, res) => {
 	try {
-		const replies = await Replies.findAllUsersReplies(req.params.username.toLowerCase());
+		const replies = await Replies.findAllUsersReplies(req.locals.uid);
 
 		res.status(200).json(replies);
 	} catch (err) {
@@ -27,7 +29,7 @@ router.post('/', async (req, res) => {
 });
 
 // DELETE - remove reply by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateEditReply, async (req, res) => {
 	try {
 		const deleted = await Replies.deleteReply(req.params.id);
 
@@ -41,7 +43,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // PUT - edit reply
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateEditReply, async (req, res) => {
 	try {
 		const edited = await Replies.editReply(req.params.id, req.body);
 

@@ -1,12 +1,22 @@
 const db = require('../../data/dbConfig');
 
-const findAllUsersReplies = async username => {
+const findAllUsersReplies = async id => {
+	return await db
+		.select('ticket_replies.*', 'username AS submitted_by', 'tickets.title AS ticket_id')
+		.from('ticket_replies')
+		.join('users', 'users.id', 'ticket_replies.submitted_by')
+		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
+		.where('ticket_replies.submitted_by', '=', id)
+		.orderBy('ticket_replies.created_at', 'desc');
+};
+
+const findById = async id => {
 	return await db
 		.select('ticket_replies.*', 'users.username AS submitted_by')
 		.from('ticket_replies')
-		.join('users', 'ticket_replies.submitted_by', 'users.id')
-		.where(db.raw('LOWER(??)', ['users.username']), username)
-		.orderBy('ticket_replies.created_at', 'desc');
+		.join('users', 'users.id', 'ticket_replies.submitted_by')
+		.whereRaw('ticket_replies.id = ?', [id])
+		.first();
 };
 
 const addReply = async reply => {
@@ -14,11 +24,7 @@ const addReply = async reply => {
 		.insert(reply)
 		.returning('id');
 
-	const replied = await db('ticket_replies')
-		.where({ id: id[0] })
-		.first();
-
-	return replied;
+	return findById(id[0]);
 };
 
 const editReply = async (id, changes) => {
@@ -26,12 +32,7 @@ const editReply = async (id, changes) => {
 		.where({ id })
 		.update(changes);
 
-	return db
-		.select('ticket_replies.*', 'users.username AS submitted_by')
-		.from('ticket_replies')
-		.join('users', 'users.id', 'ticket_replies.submitted_by')
-		.where('ticket_replies.id', '=', id)
-		.first();
+	return findById(id);
 };
 
 const deleteReply = async id => {
@@ -42,6 +43,7 @@ const deleteReply = async id => {
 
 module.exports = {
 	findAllUsersReplies,
+	findById,
 	addReply,
 	editReply,
 	deleteReply

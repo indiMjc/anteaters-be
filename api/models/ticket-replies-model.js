@@ -43,6 +43,7 @@ const deleteReply = async id => {
 
 module.exports = {
 	findAllUsersReplies,
+	findById,
 	addReply,
 	editReply,
 	deleteReply

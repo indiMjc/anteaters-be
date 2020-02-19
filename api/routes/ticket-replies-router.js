@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const Replies = require('../models/ticket-replies-model');
 
+const { validateEditReply } = require('../middleware');
+
 // GET - fetches all replies submitted by user by uid on token
 router.get('/my_replies/', async (req, res) => {
 	try {
@@ -41,7 +43,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // PUT - edit reply
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateEditReply, async (req, res) => {
 	try {
 		const edited = await Replies.editReply(req.params.id, req.body);
 

@@ -1,6 +1,6 @@
 const Projects = require('../models/projects-model');
 
-const validateEditProject = async (req, res, next) => {
+const validateEdit = async (req, res, next) => {
 	try {
 		const project = await Projects.findProjectById(req.params.id);
 		const { uid, isAdmin, superUser } = req.locals;
@@ -15,7 +15,7 @@ const validateEditProject = async (req, res, next) => {
 	}
 };
 
-const validateDeleteProject = async (req, res, next) => {
+const validateDelete = async (req, res, next) => {
 	try {
 		const project = await Projects.findProjectById(req.params.id);
 		const { uid, isAdmin, superUser } = req.locals;
@@ -30,4 +30,4 @@ const validateDeleteProject = async (req, res, next) => {
 	}
 };
 
-module.exports = { validateEditProject, validateDeleteProject };
+module.exports = { validateEdit, validateDelete };

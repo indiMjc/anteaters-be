@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const Users = require('./auth-model');
 
+const authenticate = require('./auth-middleware');
 const { signToken, validateToken } = require('./util');
 const { validateLogin, validateNewUser, validateAdminCreation } = require('../middleware');
 
@@ -51,33 +52,35 @@ router.post('/register', validateNewUser, (req, res) => {
 		});
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
 	const { id } = req.params;
-	console.log(' : password1', req.body.password);
 	const { password } = req.body;
+	const { uid, isAdmin, superUser } = req.locals;
 
-	if (password) {
-		const hash = bcrypt.hashSync(password, 6);
-		req.body.password = hash;
-	}
-
-	console.log(' : password2', password);
-	try {
-		const user = await Users.editUser(id, req.body);
-
-		if (user) {
-			delete user.id;
-			delete user.password;
-			delete user.email;
+	if (uid === id || uid === 1 || isAdmin || superUser) {
+		if (password) {
+			const hash = bcrypt.hashSync(password, 6);
+			req.body.password = hash;
 		}
 
-		user
-			? res.status(200).json(user)
-			: res.status(401).json({ message: 'User with specified ID does not exist' });
-	} catch (err) {
-		console.log(err);
-		res.status(500).json({ errMessage: 'Error while editing user' });
+		try {
+			const user = await Users.editUser(id, req.body);
+
+			if (user) {
+				delete user.id;
+				delete user.password;
+				delete user.email;
+			}
+
+			return user
+				? res.status(200).json(user)
+				: res.status(404).json({ message: 'User with specified ID does not exist' });
+		} catch (err) {
+			console.log(err);
+			res.status(500).json({ errMessage: 'Error while editing user' });
+		}
 	}
+	return res.status(401).json({ message: 'You do not have permission to edit this user' });
 });
 
 router.put('/permission/:id', validateAdminCreation, async (req, res) => {
@@ -91,7 +94,7 @@ router.put('/permission/:id', validateAdminCreation, async (req, res) => {
 			delete user.email;
 		}
 
-		user
+		return user
 			? res.status(200).json(user)
 			: res.status(401).json({ message: 'User with specified ID does not exist' });
 	} catch (err) {

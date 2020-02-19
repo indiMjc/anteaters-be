@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { validateEditProject, validateDeleteProject } = require('../middleware');
+const { validateEdit, validateDelete } = require('../middleware');
 
 const Projects = require('../models/projects-model');
 
@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT - edit project
-router.put('/:id', validateEditProject, async (req, res) => {
+router.put('/:id', validateEdit, async (req, res) => {
 	try {
 		const project = await Projects.editProject(req.params.id, req.body);
 
@@ -65,7 +65,7 @@ router.put('/:id', validateEditProject, async (req, res) => {
 });
 
 // DELETE - delete project
-router.delete('/:id', validateDeleteProject, async (req, res) => {
+router.delete('/:id', validateDelete, async (req, res) => {
 	try {
 		const deleted = await Projects.deleteProject(req.params.id);
 

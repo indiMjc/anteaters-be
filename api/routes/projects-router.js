@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
 // PUT - edit project
 router.put('/:id', validateEditProject, async (req, res) => {
 	try {
-		const project = await Projects.editProject(req.params.id, req.body, req.locals);
+		const project = await Projects.editProject(req.params.id, req.body);
 
 		res.status(200).json(project);
 	} catch (err) {
@@ -67,7 +67,7 @@ router.put('/:id', validateEditProject, async (req, res) => {
 // DELETE - delete project
 router.delete('/:id', validateDeleteProject, async (req, res) => {
 	try {
-		const deleted = await Projects.deleteProject(req.params.id, req.locals);
+		const deleted = await Projects.deleteProject(req.params.id);
 
 		deleted
 			? res.status(200).json({ removed: deleted })

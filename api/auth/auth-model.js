@@ -48,4 +48,4 @@ const editPermissions = async (id, newPermission) => {
 	return findById(id);
 };
 
-module.exports = { add, findByUsername, findById, findByEmail, editPermissions, editUser };
+module.exports = { add, findByUsername, findByEmail, editPermissions, editUser };

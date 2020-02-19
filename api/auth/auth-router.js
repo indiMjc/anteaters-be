@@ -53,7 +53,15 @@ router.post('/register', validateNewUser, (req, res) => {
 
 router.put('/:id', async (req, res) => {
 	const { id } = req.params;
+	console.log(' : password1', req.body.password);
+	const { password } = req.body;
 
+	if (password) {
+		const hash = bcrypt.hashSync(password, 6);
+		req.body.password = hash;
+	}
+
+	console.log(' : password2', password);
 	try {
 		const user = await Users.editUser(id, req.body);
 

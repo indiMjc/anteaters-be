@@ -2,10 +2,10 @@ const router = require('express').Router();
 
 const Replies = require('../models/ticket-replies-model');
 
-// GET - fetches all replies submitted by username
-router.get('/my_replies/:username', async (req, res) => {
+// GET - fetches all replies submitted by user by uid on token
+router.get('/my_replies/', async (req, res) => {
 	try {
-		const replies = await Replies.findAllUsersReplies(req.params.username.toLowerCase());
+		const replies = await Replies.findAllUsersReplies(req.locals.uid);
 
 		res.status(200).json(replies);
 	} catch (err) {

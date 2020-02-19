@@ -16,7 +16,7 @@
     -  [x]   [x]       get ticket by ticket ID (with replies and assigned devs)
     -  [x]   [x]       get all tickets for project by project ID
     -  [x]   [x]       get all tickets by author username
-    -  []    []        join ticket
+    -  [x]    []       join ticket
 
     -  [x]   [x]       get all ticket replies by username
     -  [x]   [x]       get all ticket replies by ticket ID
@@ -25,7 +25,7 @@
     -  [x]   [x]       delete reply (only if me, superUser, admin or reply author)
     -  [x]   [x]       get all replies by username
 
-    -  [x]    []        get all projects
+    -  [x]    []       get all projects
     -  [x]   [x]       add new project
     -  [x]   [x]       edit project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)

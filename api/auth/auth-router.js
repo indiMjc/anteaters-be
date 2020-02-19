@@ -26,8 +26,8 @@ router.post('/login', validateLogin, async (req, res) => {
 			const user_2 = await Users.findByEmail(username.toLowerCase());
 
 			validateToken(user_2, password, res);
-		} catch (err_1) {
-			console.log(err_1);
+		} catch (err_2) {
+			console.log(err_2);
 			res.status(500).json({ errMessage: 'Error while logging in' });
 		}
 	}

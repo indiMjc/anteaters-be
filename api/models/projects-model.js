@@ -1,36 +1,40 @@
 const db = require('../../data/dbConfig');
 
 const findAll = async () => {
-	const projects = await db
-		.select('projects.*', 'username AS stakeholder')
-		.from('projects')
-		.join('users', 'users.id', 'projects.stakeholder');
+	try {
+		const projects = await db
+			.select('projects.*', 'username AS stakeholder')
+			.from('projects')
+			.join('users', 'users.id', 'projects.stakeholder');
 
-	const devsAndManager = new Promise(resolve => {
-		projects.map(async (project, i) => {
-			const manager = await db
-				.select('username')
-				.from('users')
-				.where('users.id', '=', project.project_manager)
-				.first();
+		const devsAndManager = new Promise(resolve => {
+			projects.forEach(async (project, i) => {
+				const manager = await db
+					.select('username')
+					.from('users')
+					.where('users.id', '=', project.project_manager)
+					.first();
 
-			projects[i].project_manager = manager.username;
+				if (manager) projects[i].project_manager = manager.username;
 
-			const devs = await db
-				.select('username')
-				.from('users')
-				.join('project_devs', 'dev_id', 'users.id')
-				.where('project_id', '=', project.id);
+				const devs = await db
+					.select('username')
+					.from('users')
+					.join('project_devs', 'dev_id', 'users.id')
+					.where('project_id', '=', project.id);
 
-			project.devs = devs;
+				project.devs = devs;
 
-			resolve();
+				resolve();
+			});
 		});
-	});
 
-	await Promise.all([devsAndManager]);
+		await Promise.all([devsAndManager]);
 
-	return projects;
+		return projects;
+	} catch (err) {
+		return err;
+	}
 };
 
 // prettier-ignore
@@ -81,13 +85,15 @@ const findProjectById = async id => {
 			.where({ project_id: id })
 	]);
 
-	const manager = await db
-		.select('username')
-		.from('users')
-		.where('users.id', '=', project.project_manager)
-		.first();
-
-	project.project_manager = manager.username;
+	if (project && project.project_manager != null) {
+		const manager = await db
+			.select('username')
+			.from('users')
+			.where('users.id', '=', project.project_manager)
+			.first();
+	
+		project.project_manager = manager.username;
+	}
 
 	return {
 		...project,

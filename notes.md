@@ -44,6 +44,7 @@
     -  []              fix ticket replies response when no replies
     -  []              fix usernames, they will save if one letter case is different
     -  []              return ticked on edit
+    -  []              fix add project function, it doesn't return added project.  OR make sure new DB request happens on FE when project is added
 
 #### FE:
 

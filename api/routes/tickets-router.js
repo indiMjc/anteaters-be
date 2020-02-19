@@ -68,8 +68,6 @@ router.put('/:id', async (req, res) => {
 
 // POST - add ticket
 router.post('/', async (req, res) => {
-	// console.log(req.token);
-	console.log(req.locals);
 	try {
 		const ticket = await Tickets.addTicket(req.body);
 

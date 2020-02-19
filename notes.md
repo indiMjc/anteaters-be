@@ -66,7 +66,7 @@
 
 ## BE notes:
 
--  user role is stored in the decoded token and can be accessed via `req.token.role`
+-  user role is stored in the decoded token and can be accessed via `req.locals`
 -  `username` foreign keys on `ticket_replies` and `ticket` tables are nullable to preserve data if a user deletes their account.
 
 ## Permissions:

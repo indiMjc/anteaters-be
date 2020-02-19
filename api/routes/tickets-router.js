@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const Tickets = require('../models/tickets-model');
 
+const { validateEditTicket } = require('../middleware');
+
 // GET - fetch ticket with replies and devs arrays
 router.get('/:id', async (req, res) => {
 	try {
@@ -52,20 +54,6 @@ router.get('/replies/:username', async (req, res) => {
 	}
 });
 
-// PUT - edit ticket
-router.put('/:id', async (req, res) => {
-	const { id } = req.params;
-
-	try {
-		const ticket = await Tickets.editTicket(id, req.body);
-
-		res.status(200).json(ticket);
-	} catch (err) {
-		console.log(err);
-		res.status(500).json({ errMessage: 'Edit ticket failed' });
-	}
-});
-
 // POST - add ticket
 router.post('/', async (req, res) => {
 	try {
@@ -78,8 +66,22 @@ router.post('/', async (req, res) => {
 	}
 });
 
+// PUT - edit ticket
+router.put('/:id', validateEditTicket, async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		const ticket = await Tickets.editTicket(id, req.body);
+
+		res.status(200).json(ticket);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Edit ticket failed' });
+	}
+});
+
 // DELETE - remove ticket by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateEditTicket, async (req, res) => {
 	try {
 		const deleted = await Tickets.deleteTicket(req.params.id);
 

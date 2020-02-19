@@ -1,11 +1,11 @@
 const Projects = require('../models/projects-model');
 
 const validateEditProject = async (req, res, next) => {
+	if (!req.locals) return res.status(400).json({ message: 'Could not find credentials' });
+
 	try {
 		const project = await Projects.findProjectById(req.params.id);
 		const { uid, isAdmin, superUser } = req.locals;
-
-		if (!req.locals) return res.status(400).json({ message: 'Could not find credentials' });
 
 		return uid === project.stakeholder ||
 			uid === project.project_manager ||

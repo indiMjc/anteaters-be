@@ -26,7 +26,7 @@ const findAll = async () => {
 
 			project.devs = devs;
 
-			await waitFor(1);
+			await waitFor(1000);
 
 			resolve();
 		});

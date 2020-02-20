@@ -46,15 +46,6 @@ const findTicket = async ticket_id => {
 		};
 };
 
-const findUserTickets = async submitted_by => {
-	return await db
-		.select('tickets.*')
-		.from('tickets')
-		.join('users', 'tickets.submitted_by', 'users.username')
-		.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by)
-		.orderBy('tickets.created_at', 'desc');
-};
-
 const editTicket = async (id, changes) => {
 	await db('tickets')
 		.where({ id })
@@ -69,6 +60,15 @@ const addTicket = async newTicket => {
 		.returning('id');
 
 	return await findTicket(id[0]);
+};
+
+const findUserTickets = async submitted_by => {
+	return await db
+		.select('tickets.*')
+		.from('tickets')
+		.join('users', 'tickets.submitted_by', 'users.username')
+		.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by)
+		.orderBy('tickets.created_at', 'desc');
 };
 
 const deleteTicket = async id => {

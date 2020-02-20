@@ -87,7 +87,7 @@ router.put('/:id', authenticate, async (req, res) => {
 		if (userObj.superUser) delete user.Obj.superUser;
 
 		// admin/superUser permission
-		if (isAdmin || superUser || uid == 1) {
+		if (isAdmin || superUser) {
 			if (userObj.password) {
 				const hash = bcrypt.hashSync(userObj.password, process.env.SALT);
 				userObj.password = hash;

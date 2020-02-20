@@ -8,8 +8,8 @@ const validateEditProject = async (req, res, next) => {
 		const project = await Projects.findProjectById(req.params.id);
 		const { uid, isAdmin, superUser } = req.locals;
 
-		return uid === project.stakeholder 
-			|| uid === project.project_manager 
+		return uid == project.stakeholder 
+			|| uid == project.project_manager 
 			|| superUser 
 			|| isAdmin 
 			|| uid == 1

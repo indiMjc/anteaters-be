@@ -7,7 +7,8 @@ const validateEditProject = async (req, res, next) => {
 		const project = await Projects.findProjectById(req.params.id);
 		const { uid, isAdmin, superUser } = req.locals;
 
-		return uid == project.stakeholder || uid == project.project_manager || superUser || isAdmin
+		// only allow edit if user is the stakeholder, project manager, admin or superUser
+		return uid == project.stakeholder || uid == project.project_manager || isAdmin || superUser
 			? next()
 			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this project' });
 	} catch (err) {

@@ -9,7 +9,7 @@ router.get('/my_replies/', async (req, res) => {
 	try {
 		const replies = await Replies.findAllUsersReplies(req.locals.uid);
 
-		res.status(200).json(replies);
+		replies.length ? res.status(200).json(replies) : res.status(404).json({ message: 'No replies yet' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while fetching replies' });
@@ -47,7 +47,9 @@ router.put('/:id', validateEditReply, async (req, res) => {
 	try {
 		const edited = await Replies.editReply(req.params.id, req.body);
 
-		res.status(200).json(edited);
+		edited
+			? res.status(200).json(edited)
+			: res.status(404).json({ message: 'Could not find reply with given ID' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while editing ticket' });

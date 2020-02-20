@@ -52,11 +52,12 @@ router.post('/register', validateNewUser, (req, res) => {
 // PUT - edit user
 router.put('/:id', authenticate, async (req, res) => {
 	const { id } = req.params;
+	console.log(' : id', id);
 	const { password } = req.body;
 	const { uid, isAdmin, superUser } = req.locals;
 
 	// base permissions
-	if (uid === req.params.id) {
+	if (!isAdmin && !superUser && uid != 1 && uid == req.params.id) {
 		let userObj = req.body;
 
 		// cannot set admin/superUser to true
@@ -75,17 +76,15 @@ router.put('/:id', authenticate, async (req, res) => {
 		try {
 			const user = await Users.editUser(id, userObj);
 
-			return user
-				? res.status(200).json(user)
-				: res.status(404).json({ message: 'User with specified ID does not exist' });
+			return user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' });
 		} catch (err) {
 			console.log(err);
-			res.status(500).json({ errMessage: 'Error while editing user' });
+			res.status(500).json({ errMessage: 'Error' });
 		}
 	}
 
 	// admin/superUser cannot edit my account
-	if (uid !== 1) {
+	if (id != 1 && uid != 1) {
 		userObj = req.body;
 
 		// admins cannot change their own admin status
@@ -93,7 +92,7 @@ router.put('/:id', authenticate, async (req, res) => {
 		if (userObj.superUser) delete user.Obj.superUser;
 
 		// admin/superUser permission
-		if (isAdmin || superUser || uid === 1) {
+		if (isAdmin || superUser || uid == 1) {
 			if (password) {
 				const hash = bcrypt.hashSync(password, 6);
 				userObj.password = hash;
@@ -102,17 +101,15 @@ router.put('/:id', authenticate, async (req, res) => {
 			try {
 				const user = await Users.editUser(id, userObj);
 
-				return user
-					? res.status(200).json(user)
-					: res.status(404).json({ message: 'User with specified ID does not exist' });
+				return user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' });
 			} catch (err) {
 				console.log(err);
-				res.status(500).json({ errMessage: 'Error while editing user' });
+				res.status(500).json({ errMessage: 'Error' });
 			}
 		}
 	}
 
-	if (uid === 1) {
+	if (uid == 1) {
 		if (password) {
 			const hash = bcrypt.hashSync(password, 6);
 			req.body.password = hash;
@@ -123,48 +120,15 @@ router.put('/:id', authenticate, async (req, res) => {
 				res.status(200).json(user);
 			} catch (err) {
 				console.log(err);
-				res.status(500).json({ errMessage: 'Error while editing user' });
+				res.status(500).json({ errMessage: 'Error' });
 			}
 		}
 	}
 
-	return res.status(401).json({ message: 'You do not have permission to edit this user' });
+	return res.status(401).json({ message: 'You do not have permission' });
 });
 
-// PUT - edit user
-// router.put('/:id', authenticate, async (req, res) => {
-// 	const { id } = req.params;
-// 	const { password } = req.body;
-// 	const { uid, isAdmin, superUser } = req.locals;
-
-// 	if (uid === id || uid === 1 || isAdmin || superUser) {
-// 		if (password) {
-// 			const hash = bcrypt.hashSync(password, 6);
-// 			req.body.password = hash;
-// 		}
-
-// 		try {
-// 			const user = await Users.editUser(id, req.body);
-
-// 			if (user) {
-// 				delete user.id;
-// 				delete user.password;
-// 				delete user.email;
-// 			}
-
-// 			return user
-// 				? res.status(200).json(user)
-// 				: res.status(404).json({ message: 'User with specified ID does not exist' });
-// 		} catch (err) {
-// 			console.log(err);
-// 			res.status(500).json({ errMessage: 'Error while editing user' });
-// 		}
-// 	}
-
-// 	return res.status(401).json({ message: 'You do not have permission to edit this user' });
-// });
-
-router.put('/permission/:id', validateAdminCreation, async (req, res) => {
+router.put('/super/:id', validateAdminCreation, async (req, res) => {
 	const { id } = req.params;
 	try {
 		const user = await Users.editPermissions(id, req.body);
@@ -175,12 +139,10 @@ router.put('/permission/:id', validateAdminCreation, async (req, res) => {
 			delete user.email;
 		}
 
-		return user
-			? res.status(200).json(user)
-			: res.status(401).json({ message: 'User with specified ID does not exist' });
+		return user ? res.status(200).json(user) : res.status(401).json({ errMessage: 'Error' });
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({ errMessage: 'Error while editing user permission' });
+		res.status(500).json({ errMessage: 'Error' });
 	}
 });
 

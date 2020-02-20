@@ -15,7 +15,7 @@ const validateAdminCreation = (req, res, next) => {
 				} else {
 					const { superUser, uid } = decodedToken;
 
-					if (superUser || uid === 1) return next();
+					if (superUser || uid == 1) return next();
 
 					return res.status(401).json({ errMessage: 'You do not have permission' });
 				}

@@ -1,5 +1,7 @@
 const db = require('../../data/dbConfig');
 
+const waitFor = ms => new Promise(r => setTimeout(r, ms));
+
 const findAll = async () => {
 	const projects = await db
 		.select('projects.*', 'username AS stakeholder')
@@ -23,6 +25,8 @@ const findAll = async () => {
 				.where('project_id', '=', project.id);
 
 			project.devs = devs;
+
+			await waitFor(1);
 
 			resolve();
 		});

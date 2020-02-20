@@ -5,8 +5,8 @@
     Endpoints:
 
             docs
-    -  [x]   []        edit user
-    -  [x]   []        edit user permissions
+    -  [x]    []       edit user
+    -  [x]    []       edit user permissions
     -  [x]   [x]       login
     -  [x]   [x]       register
 
@@ -31,7 +31,7 @@
     -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)
     -  [x]   [x]       get project by ID (with assigned devs)
     -  [x]   [x]       search for project by project name (with assigned devs)
-    -  []    []        join project
+    -  [x]    []       join project
 
     Misc:
 

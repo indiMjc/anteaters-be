@@ -1,7 +1,11 @@
 const validateAdmin = (req, res, next) => {
-	const { role } = req.body;
-	!role && res.status(400).json({ message: 'Unknown role, please sign out and back in to retry' });
-	next();
+	if (!req.locals) return res.status(400).json({ message: 'Could not find credentials' });
+
+	const { isAdmin, superUser } = req.locals;
+
+	if (isAdmin || superUser) next();
+
+	return res.status(401).json({ message: 'Sorry, you do not have permission' });
 };
 
 module.exports = validateAdmin;

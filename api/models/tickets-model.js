@@ -87,7 +87,7 @@ const findRepliesByUsername = submitted_by => {
 
 const joinTicket = async (ticket_id, dev_id) => {
 	const alreadyJoined = await db('ticket_devs')
-		.where('dev_id', '=', dev_id)
+		.whereRaw('ticket_id = ? AND dev_id = ?', [ticket_id, dev_id])
 		.first();
 
 	if (alreadyJoined) return { message: 'User already joined ticket' };

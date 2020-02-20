@@ -32,6 +32,7 @@ router.post('/register', validateNewUser, (req, res) => {
 	let newUser = req.body;
 	const hash = bcrypt.hashSync(newUser.password, Number(process.env.SALT));
 
+	// cannot sign up as admin or superUser
 	newUser.password = hash;
 	newUser.isAdmin = false;
 	newUser.superUser = false;
@@ -60,6 +61,7 @@ router.put('/:id', authenticate, async (req, res) => {
 
 	// base permissions
 	if (!isAdmin && !superUser && uid != 1 && uid == req.params.id) {
+		//
 		// cannot set admin/superUser to true
 		userObj.isAdmin = false;
 		userObj.superUser = false;
@@ -85,6 +87,7 @@ router.put('/:id', authenticate, async (req, res) => {
 
 	// admin/superUser cannot edit my account
 	if (id != 1 && uid != 1) {
+		//
 		// admins cannot change their own admin status
 		if (userObj.isAdmin) delete userObj.isAdmin;
 		if (userObj.superUser) delete user.Obj.superUser;

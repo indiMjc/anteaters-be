@@ -57,7 +57,9 @@ router.put('/:id', validateEditProject, async (req, res) => {
 	try {
 		const project = await Projects.editProject(req.params.id, req.body);
 
-		res.status(200).json(project);
+		project
+			? res.status(200).json(project)
+			: res.status(404).json({ message: 'Could not find project with given ID' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Edit project failed' });

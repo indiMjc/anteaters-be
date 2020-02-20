@@ -30,8 +30,12 @@ router.post('/login', validateLogin, async (req, res) => {
 
 router.post('/register', validateNewUser, (req, res) => {
 	let newUser = req.body;
-	const hash = bcrypt.hashSync(newUser.password, process.env.SALT);
+	const hash = bcrypt.hashSync(newUser.password, Number(process.env.SALT));
+
+	// cannot sign up as admin or superUser
 	newUser.password = hash;
+	newUser.isAdmin = false;
+	newUser.superUser = false;
 
 	Users.add(newUser)
 		.then(saved => {
@@ -52,13 +56,12 @@ router.post('/register', validateNewUser, (req, res) => {
 // PUT - edit user
 router.put('/:id', authenticate, async (req, res) => {
 	const { id } = req.params;
-	const { password } = req.body;
 	const { uid, isAdmin, superUser } = req.locals;
+	let userObj = req.body;
 
 	// base permissions
 	if (!isAdmin && !superUser && uid != 1 && uid == req.params.id) {
-		let userObj = req.body;
-
+		//
 		// cannot set admin/superUser to true
 		userObj.isAdmin = false;
 		userObj.superUser = false;
@@ -67,8 +70,8 @@ router.put('/:id', authenticate, async (req, res) => {
 		userObj.id = uid;
 
 		// if password, hash it
-		if (password) {
-			const hash = bcrypt.hashSync(password, process.env.SALT);
+		if (userObj.password) {
+			const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
 			userObj.password = hash;
 		}
 
@@ -84,16 +87,15 @@ router.put('/:id', authenticate, async (req, res) => {
 
 	// admin/superUser cannot edit my account
 	if (id != 1 && uid != 1) {
-		userObj = req.body;
-
+		//
 		// admins cannot change their own admin status
 		if (userObj.isAdmin) delete userObj.isAdmin;
 		if (userObj.superUser) delete user.Obj.superUser;
 
 		// admin/superUser permission
-		if (isAdmin || superUser || uid == 1) {
-			if (password) {
-				const hash = bcrypt.hashSync(password, process.env.SALT);
+		if (isAdmin || superUser) {
+			if (userObj.password) {
+				const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
 				userObj.password = hash;
 			}
 
@@ -109,8 +111,8 @@ router.put('/:id', authenticate, async (req, res) => {
 	}
 
 	if (uid == 1) {
-		if (password) {
-			const hash = bcrypt.hashSync(password, process.env.SALT);
+		if (userObj.password) {
+			const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
 			req.body.password = hash;
 
 			try {
@@ -127,8 +129,11 @@ router.put('/:id', authenticate, async (req, res) => {
 	return res.status(401).json({ message: 'You do not have permission' });
 });
 
-router.put('/super/:id', validateAdminCreation, async (req, res) => {
+router.put('/super/:id', authenticate, validateAdminCreation, async (req, res) => {
 	const { id } = req.params;
+
+	if (id == 1 && req.locals.uid != 1) return res.status(401).json({ message: 'You do not have permission' });
+
 	try {
 		const user = await Users.editPermissions(id, req.body);
 
@@ -138,7 +143,7 @@ router.put('/super/:id', validateAdminCreation, async (req, res) => {
 			delete user.email;
 		}
 
-		return user ? res.status(200).json(user) : res.status(401).json({ errMessage: 'Error' });
+		user ? res.status(200).json(user) : res.status(401).json({ errMessage: 'Error' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error' });

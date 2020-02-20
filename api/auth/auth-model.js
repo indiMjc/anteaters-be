@@ -19,9 +19,6 @@ const findByEmail = email => {
 };
 
 const add = async user => {
-	user.isAdmin = false;
-	user.superUser = false;
-
 	const id = await db('users')
 		.insert(user)
 		.returning('id');

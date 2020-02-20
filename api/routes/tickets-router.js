@@ -8,8 +8,7 @@ const { validateEditTicket } = require('../middleware');
 router.get('/:id', async (req, res) => {
 	try {
 		const ticket = await Tickets.findTicket(req.params.id);
-
-		res.status(200).json(ticket);
+		ticket ? res.status(200).json(ticket) : res.status(404).json({ message: 'No ticket found by that ID' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while fetching ticket' });
@@ -21,7 +20,9 @@ router.get('/by_project/:id', async (req, res) => {
 	try {
 		const tickets = await Tickets.findByProject(req.params.id);
 
-		res.status(200).json(tickets);
+		tickets.length
+			? res.status(200).json(tickets)
+			: res.status(400).json({ message: 'No tickets for this project yet' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while fecthing project tickets' });
@@ -33,7 +34,9 @@ router.get('/submitted_by/:username', async (req, res) => {
 	try {
 		const tickets = await Tickets.findUserTickets(req.params.username);
 
-		res.status(200).json(tickets);
+		tickets.length
+			? res.status(200).json(tickets)
+			: res.status(404).json({ message: 'No tickets for this user yet' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while fecthing user tickets' });
@@ -47,7 +50,7 @@ router.get('/replies/:username', async (req, res) => {
 
 		replies.length
 			? res.status(200).json(replies)
-			: res.status(404).json({ message: 'No replies for this user' });
+			: res.status(404).json({ message: 'No replies for this user yet' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error while fetching user replies' });
@@ -73,7 +76,9 @@ router.put('/:id', validateEditTicket, async (req, res) => {
 	try {
 		const ticket = await Tickets.editTicket(id, req.body);
 
-		res.status(200).json(ticket);
+		ticket
+			? res.status(200).json(ticket)
+			: res.status(404).json({ message: 'Could not find ticket with given ID' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Edit ticket failed' });

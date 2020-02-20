@@ -7,7 +7,7 @@ const validateEditTicket = async (req, res, next) => {
 	try {
 		const ticket = Tickets.findTicket(req.params.id);
 
-		return uid === ticket.stakeholder || uid === ticket.project_manager || isAdmin || superUser || uid === 1
+		return uid == ticket.stakeholder || uid == ticket.project_manager || isAdmin || superUser || uid == 1
 			? next()
 			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' });
 	} catch (err) {

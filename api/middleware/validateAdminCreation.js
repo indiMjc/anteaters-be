@@ -13,17 +13,17 @@ const validateAdminCreation = (req, res, next) => {
 
 					return res.status(401).json({ errMessage: 'Invalid token' });
 				} else {
-					const { isAdmin, superUser, uid } = decodedToken;
+					const { superUser, uid } = decodedToken;
 
-					if (isAdmin || superUser || uid === 1) return next();
+					if (superUser || uid == 1) return next();
 
-					return res.status(401).json({ errMessage: 'You do not have permission to create admins' });
+					return res.status(401).json({ errMessage: 'You do not have permission' });
 				}
 			});
 		} catch (err) {
 			console.log(err);
 
-			return res.status(401).json({ errMessage: 'Invalid token' });
+			return res.status(401).json({ errMessage: 'Cannot find token' });
 		}
 	}
 };

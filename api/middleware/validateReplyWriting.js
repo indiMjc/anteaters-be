@@ -7,7 +7,7 @@ const validateEditReply = async (req, res, next) => {
 	try {
 		const reply = Replies.findById(req.params.id);
 
-		return uid === reply.submitted_by || isAdmin || superUser || uid === 1
+		return uid == reply.submitted_by || isAdmin || superUser || uid == 1
 			? next()
 			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this reply' });
 	} catch (err) {

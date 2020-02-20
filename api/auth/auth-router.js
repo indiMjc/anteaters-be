@@ -30,7 +30,7 @@ router.post('/login', validateLogin, async (req, res) => {
 
 router.post('/register', validateNewUser, (req, res) => {
 	let newUser = req.body;
-	const hash = bcrypt.hashSync(newUser.password, 6);
+	const hash = bcrypt.hashSync(newUser.password, process.env.SALT);
 	newUser.password = hash;
 
 	Users.add(newUser)
@@ -52,7 +52,6 @@ router.post('/register', validateNewUser, (req, res) => {
 // PUT - edit user
 router.put('/:id', authenticate, async (req, res) => {
 	const { id } = req.params;
-	console.log(' : id', id);
 	const { password } = req.body;
 	const { uid, isAdmin, superUser } = req.locals;
 
@@ -69,7 +68,7 @@ router.put('/:id', authenticate, async (req, res) => {
 
 		// if password, hash it
 		if (password) {
-			const hash = bcrypt.hashSync(password, 6);
+			const hash = bcrypt.hashSync(password, process.env.SALT);
 			userObj.password = hash;
 		}
 
@@ -94,7 +93,7 @@ router.put('/:id', authenticate, async (req, res) => {
 		// admin/superUser permission
 		if (isAdmin || superUser || uid == 1) {
 			if (password) {
-				const hash = bcrypt.hashSync(password, 6);
+				const hash = bcrypt.hashSync(password, process.env.SALT);
 				userObj.password = hash;
 			}
 
@@ -111,7 +110,7 @@ router.put('/:id', authenticate, async (req, res) => {
 
 	if (uid == 1) {
 		if (password) {
-			const hash = bcrypt.hashSync(password, 6);
+			const hash = bcrypt.hashSync(password, process.env.SALT);
 			req.body.password = hash;
 
 			try {

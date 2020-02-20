@@ -15,7 +15,7 @@ const findById = async id => {
 		.select('ticket_replies.*', 'users.username AS submitted_by')
 		.from('ticket_replies')
 		.join('users', 'users.id', 'ticket_replies.submitted_by')
-		.whereRaw('ticket_replies.id = ?', [id])
+		.where('ticket_replies.id', '=', id)
 		.first();
 };
 

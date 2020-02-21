@@ -1,11 +1,5 @@
 const db = require('../../data/dbConfig');
 
-const findById = id => {
-	return db('users')
-		.where({ id })
-		.first();
-};
-
 const findByUsername = username => {
 	return db('users')
 		.where(db.raw('LOWER(??)', ['users.username']), username)
@@ -16,14 +10,6 @@ const findByEmail = email => {
 	return db('users')
 		.where(db.raw('LOWER(??)', ['users.email']), email)
 		.first();
-};
-
-const add = async user => {
-	const id = await db('users')
-		.insert(user)
-		.returning('id');
-
-	return findById(id[0]).first();
 };
 
 const editUser = async (id, changes) => {
@@ -38,6 +24,20 @@ const editUser = async (id, changes) => {
 		.first();
 
 	return updatedUser;
+};
+
+const findById = id => {
+	return db('users')
+		.where({ id })
+		.first();
+};
+
+const add = async user => {
+	const id = await db('users')
+		.insert(user)
+		.returning('id');
+
+	return findById(id[0]).first();
 };
 
 const editPermissions = async (id, newPermission) => {

@@ -39,7 +39,7 @@ exports.seed = function(knex) {
 				username: 'Jen',
 				password: bcrypt.hashSync(process.env.PWD, Number(process.env.SALT)),
 				role: 'developer',
-				isAdmin: true,
+				isAdmin: false,
 				superUser: false,
 				isLocked: false
 			},

@@ -95,7 +95,7 @@ const findProjectById = async id => {
 		project.project_manager = manager.username;
 	}
 
-	return {
+	return project && {
 		...project,
 		devs
 	};
@@ -125,4 +125,25 @@ const deleteProject = async id => {
 		.del();
 };
 
-module.exports = { findAll, findProjectByName, findProjectById, addProject, deleteProject, editProject };
+const joinProject = async (project_id, dev_id) => {
+	const alreadyJoined = await db('project_devs')
+		.whereRaw('project_id = ? AND dev_id = ?', [project_id, dev_id])
+		.where({ dev_id })
+		.first();
+
+	if (alreadyJoined) return { message: 'User already joined project' };
+
+	await db('project_devs').insert({ project_id, dev_id });
+
+	return findProjectById(project_id);
+};
+
+module.exports = {
+	findAll,
+	findProjectByName,
+	findProjectById,
+	addProject,
+	deleteProject,
+	editProject,
+	joinProject
+};

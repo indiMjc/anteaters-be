@@ -34,25 +34,27 @@ const findTicket = async ticket_id => {
 		db.select('username')
 			.from('users')
 			.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
-			.where('ticket_devs.ticket_id', '=', ticket_id)
+			.where({ ticket_id })
 	]);
 
-	if (!devs.length) devs = [{ username: 'No devs joined this ticket yet' }]
+	if (!devs.length) devs = [{ username: 'No devs joined this ticket yet' }];
+
+	if (!replies.length)
+		replies = [
+			{
+				id: null,
+				reply: 'No replies yet',
+				created_at: null,
+				ticket_id: null,
+				submitted_by: null
+			}
+		];
 
 	return ticket && {
 			...ticket,
 			replies,
 			devs
 		};
-};
-
-const findUserTickets = async submitted_by => {
-	return await db
-		.select('tickets.*')
-		.from('tickets')
-		.join('users', 'tickets.submitted_by', 'users.username')
-		.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by)
-		.orderBy('tickets.created_at', 'desc');
 };
 
 const editTicket = async (id, changes) => {
@@ -71,6 +73,15 @@ const addTicket = async newTicket => {
 	return await findTicket(id[0]);
 };
 
+const findUserTickets = async submitted_by => {
+	return await db
+		.select('tickets.*')
+		.from('tickets')
+		.join('users', 'tickets.submitted_by', 'users.username')
+		.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by)
+		.orderBy('tickets.created_at', 'desc');
+};
+
 const deleteTicket = async id => {
 	return await db('tickets')
 		.where({ id })
@@ -87,7 +98,7 @@ const findRepliesByUsername = submitted_by => {
 
 const joinTicket = async (ticket_id, dev_id) => {
 	const alreadyJoined = await db('ticket_devs')
-		.where('dev_id', '=', dev_id)
+		.whereRaw('ticket_id = ? AND dev_id = ?', [ticket_id, dev_id])
 		.first();
 
 	if (alreadyJoined) return { message: 'User already joined ticket' };

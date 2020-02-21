@@ -5,41 +5,38 @@
     Endpoints:
 
             docs
-    -  [x]   []        edit user
-    -  [x]   []        edit user permissions
     -  [x]   [x]       login
     -  [x]   [x]       register
+    -  [x]    []       edit user (with permission)
+    -  [x]    []       edit user permissions (with permission)
 
-    -  [x]   [x]       add ticket
-    -  [x]   [x]       edit ticket (only if me, superUser, admin or ticket author)
-    -  [x]   [x]       delete ticket (only if me, superUser, admin or ticket author)
-    -  [x]   [x]       get ticket by ticket ID (with replies and assigned devs)
     -  [x]   [x]       get all tickets for project by project ID
     -  [x]   [x]       get all tickets by author username
+    -  [x]   [x]       get ticket by ticket ID
+    -  [x]   [x]       add ticket
+    -  [x]   [x]       edit ticket (with permission)
+    -  [x]   [x]       delete ticket (with permission)
     -  [x]    []       join ticket
 
-    -  [x]   [x]       get all ticket replies by username
-    -  [x]   [x]       get all ticket replies by ticket ID
-    -  [x]   [x]       reply to ticket
-    -  [x]   [x]       edit reply (only if me, superUser, admin or reply author)
-    -  [x]   [x]       delete reply (only if me, superUser, admin or reply author)
     -  [x]   [x]       get all replies by username
+    -  [x]   [x]       get all replies by ticket ID
+    -  [x]   [x]       get all replies by username
+    -  [x]   [x]       add reply to ticket
+    -  [x]   [x]       edit reply (with permission)
+    -  [x]   [x]       delete reply (with permission)
 
     -  [x]    []       get all projects
+    -  [x]   [x]       get project by ID
+    -  [x]   [x]       get project by project name
     -  [x]   [x]       add new project
-    -  [x]   [x]       edit project (only if me, superUser, admin, project manager or stakeholder)
-    -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)
-    -  [x]   [x]       get project by ID (with assigned devs)
-    -  [x]   [x]       search for project by project name (with assigned devs)
-    -  []    []        join project
+    -  [x]   [x]       edit project (with permission)
+    -  [x]   [x]       delete project (with permission)
+    -  [x]    []       join project
 
     Misc:
 
     -  []              normalize data
     -  []              whitelist jwt algo(s), hardocde into `verify()`
-    -  []              fix ticket replies response when no replies
-    -  []              fix usernames, they will save if one letter case is different
-    -  []              return ticked on edit
     -  []              fix add project function, it doesn't return added project.  OR make sure new DB request happens on FE when project is added
 
 #### FE:

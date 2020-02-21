@@ -52,6 +52,18 @@ router.post('/', async (req, res) => {
 	}
 });
 
+// POST - join project
+router.post('/join/:id', async (req, res) => {
+	try {
+		const joined = await Projects.joinProject(req.params.id, req.locals.uid);
+
+		res.status(200).json(joined);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Error while joining project' });
+	}
+});
+
 // PUT - edit project
 router.put('/:id', validateEditProject, async (req, res) => {
 	try {

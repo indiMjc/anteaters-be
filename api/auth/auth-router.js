@@ -126,13 +126,14 @@ router.put('/:id', authenticate, async (req, res) => {
 		}
 	}
 
-	return res.status(401).json({ message: 'You do not have permission' });
+	return res.status(401).json({ message: 'Sorry, you do not have permission' });
 });
 
 router.put('/super/:id', authenticate, validateAdminCreation, async (req, res) => {
 	const { id } = req.params;
 
-	if (id == 1 && req.locals.uid != 1) return res.status(401).json({ message: 'You do not have permission' });
+	if (id == 1 && req.locals.uid != 1)
+		return res.status(401).json({ message: 'Sorry, you do not have permission' });
 
 	try {
 		const user = await Users.editPermissions(id, req.body);

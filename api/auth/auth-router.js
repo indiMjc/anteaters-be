@@ -73,6 +73,7 @@ router.put('/:id', authenticate, async (req, res) => {
 			// if password, hash it
 			if (userObj.password) {
 				const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
+
 				userObj.password = hash;
 			}
 
@@ -92,6 +93,7 @@ router.put('/:id', authenticate, async (req, res) => {
 			if (isAdmin || superUser) {
 				if (userObj.password) {
 					const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
+
 					userObj.password = hash;
 				}
 
@@ -119,6 +121,7 @@ router.put('/:id', authenticate, async (req, res) => {
 	}
 });
 
+// PUT - edit user permissions
 router.put('/super/:id', authenticate, validateAdminCreation, async (req, res) => {
 	const { id } = req.params;
 

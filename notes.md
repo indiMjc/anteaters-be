@@ -11,16 +11,15 @@
     -  [x]    []       edit user permissions (with permission)
 
     -  [x]   [x]       get all tickets for project by project ID
-    -  [x]   [x]       get all tickets by author username
+    -   []    []       get all tickets by author UID in token
     -  [x]   [x]       get ticket by ticket ID
     -  [x]   [x]       add ticket
+    -  [x]    []       join ticket
     -  [x]   [x]       edit ticket (with permission)
     -  [x]   [x]       delete ticket (with permission)
-    -  [x]    []       join ticket
 
-    -  [x]   [x]       get all replies by username
-    -  [x]   [x]       get all replies by ticket ID
-    -  [x]   [x]       get all replies by username
+    -  [x]   [x]       get all replies by UID in token
+    -   []    []       get all replies by ticket ID
     -  [x]   [x]       add reply to ticket
     -  [x]   [x]       edit reply (with permission)
     -  [x]   [x]       delete reply (with permission)
@@ -29,9 +28,9 @@
     -  [x]   [x]       get project by ID
     -  [x]   [x]       get project by project name
     -  [x]   [x]       add new project
+    -  [x]    []       join project
     -  [x]   [x]       edit project (with permission)
     -  [x]   [x]       delete project (with permission)
-    -  [x]    []       join project
 
     Misc:
 

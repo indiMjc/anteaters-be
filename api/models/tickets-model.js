@@ -34,10 +34,21 @@ const findTicket = async ticket_id => {
 		db.select('username')
 			.from('users')
 			.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
-			.where('ticket_devs.ticket_id', '=', ticket_id)
+			.where({ ticket_id })
 	]);
 
-	if (!devs.length) devs = [{ username: 'No devs joined this ticket yet' }]
+	if (!devs.length) devs = [{ username: 'No devs joined this ticket yet' }];
+
+	if (!replies.length)
+		replies = [
+			{
+				id: null,
+				reply: 'No replies yet',
+				created_at: null,
+				ticket_id: null,
+				submitted_by: null
+			}
+		];
 
 	return ticket && {
 			...ticket,

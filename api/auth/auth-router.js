@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const Users = require('./auth-model');
 
-const authenticate = require('./auth-middleware');
+const { authenticate, validateUserType } = require('./util');
 const { signToken, validateToken } = require('./util');
 const { validateLogin, validateNewUser, validateAdminCreation } = require('../middleware');
 
@@ -54,70 +54,14 @@ router.post('/register', validateNewUser, (req, res) => {
 });
 
 // PUT - edit user
-router.put('/:id', authenticate, async (req, res) => {
-	const { id } = req.params;
-	const { uid, isAdmin, superUser } = req.locals;
-	let userObj = req.body;
-
+router.put('/:id', authenticate, validateUserType, async (req, res) => {
 	try {
-		// base permissions
-		if (!isAdmin && !superUser && uid != 1 && uid == req.params.id) {
-			//
-			// cannot set admin/superUser to true
-			userObj.isAdmin = false;
-			userObj.superUser = false;
+		const user = await Users.editUser(req.params.id, req.userObj);
 
-			// cannot change own uid
-			userObj.id = uid;
-
-			// if password, hash it
-			if (userObj.password) {
-				const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
-
-				userObj.password = hash;
-			}
-
-			const user = await Users.editUser(id, userObj);
-
-			return user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' });
-		}
-
-		// admin/superUser cannot edit my account
-		if (id != 1 && uid != 1) {
-			//
-			// admins cannot change their own admin status
-			if (userObj.isAdmin) delete userObj.isAdmin;
-			if (userObj.superUser) delete user.Obj.superUser;
-
-			// admin/superUser permission
-			if (isAdmin || superUser) {
-				if (userObj.password) {
-					const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
-
-					userObj.password = hash;
-				}
-
-				const user = await Users.editUser(id, userObj);
-
-				return user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' });
-			}
-		}
-
-		if (uid == 1) {
-			if (userObj.password) {
-				const hash = bcrypt.hashSync(userObj.password, Number(process.env.SALT));
-				req.body.password = hash;
-
-				const user = await Users.editUser(id, req.body);
-
-				res.status(200).json(user);
-			}
-		}
-
-		return res.status(401).json({ message: 'Sorry, you do not have permission' });
+		return user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' });
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({ errMessage: 'Error' });
+		return res.status(500).json({ errMessage: 'Error' });
 	}
 });
 

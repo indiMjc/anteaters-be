@@ -75,13 +75,7 @@ router.put('/super/:id', authenticate, validateAdminCreation, async (req, res) =
 	try {
 		const user = await Users.editPermissions(id, req.body);
 
-		if (user) {
-			delete user.id;
-			delete user.password;
-			delete user.email;
-		}
-
-		user ? res.status(200).json(user) : res.status(401).json({ errMessage: 'Error' });
+		user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Error' });

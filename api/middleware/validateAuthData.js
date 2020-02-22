@@ -1,7 +1,5 @@
 const Users = require('../auth/auth-model');
 
-const Projects = require('../models/projects-model');
-
 // prettier-ignore
 const validateNewUser = async (req, res, next) => {
 	const { email, username, password, role } = req.body;

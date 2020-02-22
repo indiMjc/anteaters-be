@@ -12,32 +12,30 @@ const findByEmail = email => {
 		.first();
 };
 
-const editUser = async (id, changes) => {
-	await db('users')
-		.where({ id })
-		.update(changes);
-
-	const updatedUser = await db
-		.select('username', 'role')
-		.from('users')
-		.where({ id })
-		.first();
-
-	return updatedUser;
-};
-
-const findById = id => {
-	return db('users')
-		.where({ id })
-		.first();
-};
-
 const add = async user => {
 	const id = await db('users')
 		.insert(user)
 		.returning('id');
 
-	return findById(id[0]).first();
+	return db('users')
+		.where({ id: id[0] })
+		.first();
+};
+
+const getSafeUserData = id => {
+	return db
+		.select('username', 'role')
+		.from('users')
+		.where({ id })
+		.first();
+};
+
+const editUser = async (id, changes) => {
+	await db('users')
+		.where({ id })
+		.update(changes);
+
+	return getSafeUserData(id);
 };
 
 const editPermissions = async (id, newPermission) => {
@@ -45,7 +43,7 @@ const editPermissions = async (id, newPermission) => {
 		.where({ id })
 		.update(newPermission);
 
-	return findById(id);
+	return getSafeUserData(id);
 };
 
 module.exports = { add, findByUsername, findByEmail, editPermissions, editUser };

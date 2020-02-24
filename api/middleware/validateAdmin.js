@@ -1,11 +1,9 @@
-const validateAdmin = (req, res, next) => {
-	if (!req.locals) return res.status(400).json({ message: 'Could not find credentials' });
+const ifUserIsAdminOrSuperUser = token => token.isAdmin || token.superUser
 
-	const { isAdmin, superUser } = req.locals;
+module.exports = (req, res, next) => {
+	if (!req.locals) return res.status(400).json({ message: 'Could not find credentials' })
 
-	if (isAdmin || superUser) next();
-
-	return res.status(401).json({ message: 'Sorry, you do not have permission' });
-};
-
-module.exports = validateAdmin;
+	return ifUserIsAdminOrSuperUser(req.locals)
+		? next()
+		: res.status(401).json({ message: 'Sorry, you do not have permission' })
+}

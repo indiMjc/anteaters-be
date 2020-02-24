@@ -1,49 +1,57 @@
-const db = require('../../data/dbConfig');
+const db = require('../../data/dbConfig')
 
 const findByUsername = username => {
 	return db('users')
 		.where(db.raw('LOWER(??)', ['users.username']), username)
-		.first();
-};
+		.first()
+}
 
 const findByEmail = email => {
 	return db('users')
 		.where(db.raw('LOWER(??)', ['users.email']), email)
-		.first();
-};
+		.first()
+}
 
 const add = async user => {
 	const id = await db('users')
 		.insert(user)
-		.returning('id');
+		.returning('id')
 
 	return db('users')
 		.where({ id: id[0] })
-		.first();
-};
+		.first()
+}
 
 const getSafeUserData = id => {
 	return db
-		.select('username', 'role')
+		.select('username', 'role', 'isLocked')
 		.from('users')
 		.where({ id })
-		.first();
-};
+		.first()
+}
 
 const editUser = async (id, changes) => {
 	await db('users')
 		.where({ id })
-		.update(changes);
+		.update(changes)
 
-	return getSafeUserData(id);
-};
+	return getSafeUserData(id)
+}
 
 const editPermissions = async (id, newPermission) => {
 	await db('users')
 		.where({ id })
-		.update(newPermission);
+		.update(newPermission)
 
-	return getSafeUserData(id);
-};
+	return getSafeUserData(id)
+}
 
-module.exports = { add, findByUsername, findByEmail, editPermissions, editUser };
+const lockAccount = async (id, lockedParameter) => {
+	await db('users')
+		.where({ id })
+		.update(lockedParameter)
+
+	return getSafeUserData(id)
+}
+
+module.exports = { add, findByUsername, findByEmail, editPermissions, editUser, lockAccount }

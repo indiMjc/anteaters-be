@@ -1,20 +1,23 @@
-const Replies = require('../models/ticket-replies-model');
+const Replies = require('../models/ticket-replies-model')
 
-const validateEditReply = async (req, res, next) => {
-	if (!req.locals) return res.status(400).json({ message: 'Could not find credentials' });
+// only allow edit if user is reply author, admin or superUser
+const ifUserHasPermission = (token, reply) => {
+	const { username, isAdmin, superUser } = token
 
-	const { uid, isAdmin, superUser } = req.locals;
+	return username == reply.submitted_by || isAdmin || superUser
+}
+
+module.exports = async (req, res, next) => {
+	if (!req.locals) return res.status(400).json({ message: 'Could not find credentials' })
+
 	try {
-		const reply = Replies.findById(req.params.id);
+		const reply = await Replies.findById(req.params.id)
 
-		// only allow edit if user is reply author, admin or superUser
-		return uid == reply.submitted_by || isAdmin || superUser
+		return ifUserHasPermission(req.locals, reply)
 			? next()
-			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this reply' });
+			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this reply' })
 	} catch (err) {
-		console.log(err);
-		return res.status(500).json({ errMessage: 'Error while validating permissions' });
+		console.log(err)
+		return res.status(500).json({ errMessage: 'Error while validating permissions' })
 	}
-};
-
-module.exports = { validateEditReply };
+}

@@ -5,41 +5,38 @@
     Endpoints:
 
             docs
-    -  [x]   []        edit user
-    -  [x]   []        edit user permissions
     -  [x]   [x]       login
     -  [x]   [x]       register
+    -  [x]    []       edit user (with permission)
+    -  [x]    []       edit user permissions (with permission)
 
-    -  [x]   [x]       add ticket
-    -  [x]   [x]       edit ticket (only if me, superUser, admin or ticket author)
-    -  [x]   [x]       delete ticket (only if me, superUser, admin or ticket author)
-    -  [x]   [x]       get ticket by ticket ID (with replies and assigned devs)
     -  [x]   [x]       get all tickets for project by project ID
-    -  [x]   [x]       get all tickets by author username
+    -   []    []       get all tickets by author UID in token
+    -  [x]   [x]       get ticket by ticket ID
+    -  [x]   [x]       add ticket
+    -  [x]    []       join ticket
+    -  [x]   [x]       edit ticket (with permission)
+    -  [x]   [x]       delete ticket (with permission)
 
-    -  [x]   [x]       get all ticket replies by username
-    -  [x]   [x]       get all ticket replies by ticket ID
-    -  [x]   [x]       reply to ticket
-    -  [x]   [x]       edit reply (only if me, superUser, admin or reply author)
-    -  [x]   [x]       delete reply (only if me, superUser, admin or reply author)
-    -  [x]   [x]       get all replies by username
+    -  [x]   [x]       get all replies by UID in token
+    -   []    []       get all replies by ticket ID
+    -  [x]   [x]       add reply to ticket
+    -  [x]   [x]       edit reply (with permission)
+    -  [x]   [x]       delete reply (with permission)
 
-    -  []    []        get all projects
+    -  [x]    []       get all projects
+    -  [x]   [x]       get project by ID
+    -  [x]   [x]       get project by project name
     -  [x]   [x]       add new project
-    -  [x]   [x]       edit project (only if me, superUser, admin, project manager or stakeholder)
-    -  [x]   [x]       delete project (only if me, superUser, admin, project manager or stakeholder)
-    -  [x]   [x]       get project by ID (with assigned devs)
-    -  [x]   [x]       search for project by project name (with assigned devs)
+    -  [x]    []       join project
+    -  [x]   [x]       edit project (with permission)
+    -  [x]   [x]       delete project (with permission)
 
     Misc:
 
     -  []              normalize data
-    -  []              middleware to validate edit and delete, all but for editing a project
-    -  []              verify delete functions work
-    -  []              make data return exactly what i want, usernames where possbile ect.
     -  []              whitelist jwt algo(s), hardocde into `verify()`
-    -  []              organize middleware
-    -  []              fix ticket replies response when no replies
+    -  []              fix add project function, it doesn't return added project.  OR make sure new DB request happens on FE when project is added
 
 #### FE:
 
@@ -61,7 +58,7 @@
 
 ## BE notes:
 
--  user role is stored in the decoded token and can be accessed via `req.token.role`
+-  user role is stored in the decoded token and can be accessed via `req.locals`
 -  `username` foreign keys on `ticket_replies` and `ticket` tables are nullable to preserve data if a user deletes their account.
 
 ## Permissions:

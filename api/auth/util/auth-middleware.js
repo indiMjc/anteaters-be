@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken')
 
+const invalidToken = res => res.status(401).json({ errMessage: 'Invalid token' })
+
 module.exports = (req, res, next) => {
 	const { authorization } = req.headers
 
@@ -11,19 +13,19 @@ module.exports = (req, res, next) => {
 				if (err) {
 					console.log(err)
 
-					return res.status(401).json({ errMessage: 'Invalid token' })
+					return invalidToken(res)
 				} else {
-					const { superUser, uid } = decodedToken
+					req.locals = decodedToken
 
-					if (superUser || uid == 1) return next()
-
-					return res.status(401).json({ errMessage: 'Sorry, you do not have permission' })
+					next()
 				}
 			})
 		} catch (err) {
 			console.log(err)
 
-			return res.status(401).json({ errMessage: 'Cannot find token' })
+			return invalidToken(res)
 		}
+	} else {
+		return res.status(400).json({ message: 'Please login and try again' })
 	}
 }

@@ -2,49 +2,21 @@ const db = require('../../data/dbConfig');
 
 const findAllUsersReplies = async id => {
 	return await db
-		.select('ticket_replies.*', 'users.username')
+		.select('ticket_replies.*', 'username AS submitted_by', 'tickets.title AS ticket_id')
 		.from('ticket_replies')
-		.join('users', 'ticket_replies.submitted_by', 'users.id')
-		.where('users.id', '=', id)
+		.join('users', 'users.id', 'ticket_replies.submitted_by')
+		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
+		.where('ticket_replies.submitted_by', '=', id)
 		.orderBy('ticket_replies.created_at', 'desc');
 };
 
-const findAllTicketsReplies = async id => {
-	const replies = await db
-		.select('ticket_replies.*')
+const findById = async id => {
+	return await db
+		.select('ticket_replies.*', 'users.username AS submitted_by')
 		.from('ticket_replies')
-		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
-		.whereRaw('tickets.id = ?', [id])
-		.orderBy('ticket_replies.created_at', 'desc');
-
-	// let [replies, devs] = await Promise.all([
-	// 	db
-	// 		.select('ticket_replies.*')
-	// 		.from('ticket_replies')
-	// 		.join('tickets', 'tickets.id', 'ticket_replies.ticket_id')
-	// 		.whereRaw('tickets.id = ?', [id])
-	// 		.orderBy('ticket_replies.created_at', 'desc'),
-
-	// 	db
-	// 		.select('username')
-	// 		.from('users')
-	// 		.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
-	// 		.whereRaw('ticket_devs.id = ?', [id])
-
-	// db
-	// 	.select('ticket_devs.dev_username AS username')
-	// 	.from('ticket_devs')
-	// 	.join('tickets', 'tickets.id', 'ticket_devs.ticket_id')
-	// 	.whereRaw('tickets.id = ?', [id])
-	// ]);
-
-	if (!replies.length) {
-		replies = 'No replies yet';
-
-		return replies;
-	} else {
-		return replies;
-	}
+		.join('users', 'users.id', 'ticket_replies.submitted_by')
+		.where('ticket_replies.id', '=', id)
+		.first();
 };
 
 const addReply = async reply => {
@@ -52,11 +24,7 @@ const addReply = async reply => {
 		.insert(reply)
 		.returning('id');
 
-	const replied = await db('ticket_replies')
-		.where({ id: id[0] })
-		.first();
-
-	return replied;
+	return findById(id[0]);
 };
 
 const editReply = async (id, changes) => {
@@ -64,9 +32,7 @@ const editReply = async (id, changes) => {
 		.where({ id })
 		.update(changes);
 
-	return db('ticket_replies')
-		.where({ id })
-		.first();
+	return findById(id);
 };
 
 const deleteReply = async id => {
@@ -77,7 +43,7 @@ const deleteReply = async id => {
 
 module.exports = {
 	findAllUsersReplies,
-	findAllTicketsReplies,
+	findById,
 	addReply,
 	editReply,
 	deleteReply

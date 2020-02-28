@@ -1,95 +1,103 @@
-const router = require('express').Router();
-const bcrypt = require('bcryptjs');
+const router = require('express').Router()
+const bcrypt = require('bcryptjs')
 
-const Users = require('./auth-model');
+const Users = require('./auth-model')
 
-const { signToken, validateToken } = require('./util');
-const { validateLogin, validateNewUser, validateAdminCreation } = require('../middleware');
+const { authenticate, validateUserType } = require('./util')
+const { signToken, validateToken } = require('./util')
+const { validateLogin, validateNewUser, validateAdminCreation, validateAdmin } = require('../middleware')
+
+const userEnteredEmailAddress = username => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)
 
 router.post('/login', validateLogin, async (req, res) => {
-	let { username, password } = req.body;
+	let { username, password } = req.body
 
-	if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(username)) {
-		try {
-			const user = await Users.findByUsername(username.toLowerCase());
+	try {
+		if (userEnteredEmailAddress(username)) {
+			const user = await Users.findByEmail(username.toLowerCase())
 
-			validateToken(user, password, res);
-		} catch (err) {
-			console.log(err);
-			res.status(500).json({ errMessage: 'Error while logging in' });
+			return validateToken(user, password, res)
 		}
-	} else {
-		try {
-			const user_2 = await Users.findByEmail(username.toLowerCase());
+		const user = await Users.findByUsername(username.toLowerCase())
 
-			validateToken(user_2, password, res);
-		} catch (err_1) {
-			console.log(err_1);
-			res.status(500).json({ errMessage: 'Error while logging in' });
-		}
+		return validateToken(user, password, res)
+	} catch (err) {
+		console.log(err)
+		res.status(500).json({ errMessage: 'Error while logging in' })
 	}
-});
+})
 
 router.post('/register', validateNewUser, (req, res) => {
-	let user = req.body;
-	const hash = bcrypt.hashSync(user.password, 6);
-	user.password = hash;
+	let newUser = req.body
+	const hash = bcrypt.hashSync(newUser.password, Number(process.env.SALT))
 
-	Users.add(user)
+	// cannot sign up as admin or superUser
+	newUser.password = hash
+	newUser.isAdmin = false
+	newUser.superUser = false
+
+	Users.add(newUser)
 		.then(saved => {
-			const token = signToken(saved);
+			const token = signToken(saved)
 
 			res.status(200).json({
 				uid: saved.id,
 				token,
 				message: `Welcome, ${saved.username}`
-			});
+			})
 		})
 		.catch(err => {
-			console.log(err);
-			res.status(500).json({ errMessage: 'Error while registering new user' });
-		});
-});
+			console.log(err)
+			res.status(500).json({ errMessage: 'Error while registering' })
+		})
+})
 
-router.put('/:id', async (req, res) => {
-	const { id } = req.params;
+// PUT - edit user
+router.put('/:id', authenticate, validateUserType, async (req, res) => {
+	try {
+		const user = await Users.editUser(req.params.id, req.userObj)
+
+		return user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' })
+	} catch (err) {
+		console.log(err)
+		return res.status(500).json({ errMessage: 'Error' })
+	}
+})
+
+const tryingToEditMyAccount = (id, token) => id == 1 && token.uid != 1
+
+// PUT - edit user permissions
+router.put('/super/:id', authenticate, validateAdminCreation, async (req, res) => {
+	const { id } = req.params
+
+	if (tryingToEditMyAccount(id, req.locals.uid))
+		return res.status(401).json({ message: 'Sorry, you do not have permission' })
 
 	try {
-		const user = await Users.editUser(id, req.body);
+		const user = await Users.editPermissions(id, req.body)
 
-		if (user) {
-			delete user.id;
-			delete user.password;
-			delete user.email;
-		}
-
-		user
-			? res.status(200).json(user)
-			: res.status(401).json({ message: 'User with specified ID does not exist' });
+		user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' })
 	} catch (err) {
-		console.log(err);
-		res.status(500).json({ errMessage: 'Error while editing user' });
+		console.log(err)
+		res.status(500).json({ errMessage: 'Error' })
 	}
-});
+})
 
-router.put('/permission/:id', validateAdminCreation, async (req, res) => {
-	const { id } = req.params;
+// PUT - lock/unlock non superUser account
+router.put('/lock/:id', authenticate, validateAdmin, async (req, res) => {
+	const { id } = req.params
+
+	if (tryingToEditMyAccount(id, req.locals.uid))
+		return res.status(401).json({ message: 'Sorry, you do not have permission' })
+
 	try {
-		const user = await Users.editPermissions(id, req.body);
+		const user = await Users.lockAccount(id, req.body)
 
-		if (user) {
-			delete user.id;
-			delete user.password;
-			delete user.email;
-		}
-
-		user
-			? res.status(200).json(user)
-			: res.status(401).json({ message: 'User with specified ID does not exist' });
+		user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' })
 	} catch (err) {
-		console.log(err);
-		res.status(500).json({ errMessage: 'Error while editing user permission' });
+		console.log(err)
+		res.status(500).json({ errMessage: 'Error' })
 	}
-});
+})
 
-module.exports = router;
+module.exports = router

@@ -1,3 +1,7 @@
+const bcrypt = require('bcryptjs')
+
+const hashedPassword = () => bcrypt.hashSync(process.env.PWD, Number(process.env.SALT))
+
 exports.seed = function(knex) {
 	return knex('users').then(function() {
 		return knex('users').insert([
@@ -5,7 +9,7 @@ exports.seed = function(knex) {
 				id: 1,
 				email: 'mike@gmail.com',
 				username: 'Mike',
-				password: 'password',
+				password: hashedPassword(),
 				role: 'developer',
 				isAdmin: true,
 				superUser: true,
@@ -15,7 +19,7 @@ exports.seed = function(knex) {
 				id: 2,
 				email: 'bernard@gmail.com',
 				username: 'Bernard',
-				password: 'password',
+				password: hashedPassword(),
 				role: 'developer',
 				isAdmin: true,
 				superUser: true,
@@ -25,9 +29,9 @@ exports.seed = function(knex) {
 				id: 3,
 				email: 'jackson@gmail.com',
 				username: 'Jackson',
-				password: 'password',
+				password: hashedPassword(),
 				role: 'user',
-				isAdmin: false,
+				isAdmin: true,
 				superUser: false,
 				isLocked: false
 			},
@@ -35,9 +39,9 @@ exports.seed = function(knex) {
 				id: 4,
 				email: 'jen@gmail.com',
 				username: 'Jen',
-				password: 'password',
+				password: hashedPassword(),
 				role: 'developer',
-				isAdmin: true,
+				isAdmin: false,
 				superUser: false,
 				isLocked: false
 			},
@@ -45,12 +49,12 @@ exports.seed = function(knex) {
 				id: 5,
 				email: 'april@gmail.com',
 				username: 'April',
-				password: 'password',
+				password: hashedPassword(),
 				role: 'user',
 				isAdmin: false,
 				superUser: false,
 				isLocked: false
 			}
-		]);
-	});
-};
+		])
+	})
+}

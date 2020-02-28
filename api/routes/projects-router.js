@@ -1,11 +1,11 @@
 const router = require('express').Router();
 
-const { validateEditProject, validateDeleteProject } = require('../middleware');
+const { validateEditProject } = require('../middleware');
 
 const Projects = require('../models/projects-model');
 
 // GET - all projects
-router.get('/', async (req, res) => {
+router.get('/', async (__, res) => {
 	try {
 		const projects = await Projects.findAll();
 
@@ -52,12 +52,26 @@ router.post('/', async (req, res) => {
 	}
 });
 
+// POST - join project
+router.post('/join/:id', async (req, res) => {
+	try {
+		const joined = await Projects.joinProject(req.params.id, req.locals.uid);
+
+		res.status(200).json(joined);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ errMessage: 'Error while joining project' });
+	}
+});
+
 // PUT - edit project
 router.put('/:id', validateEditProject, async (req, res) => {
 	try {
-		const project = await Projects.editProject(req.params.id, req.body, req.token);
+		const project = await Projects.editProject(req.params.id, req.body);
 
-		res.status(200).json(project);
+		project
+			? res.status(200).json(project)
+			: res.status(404).json({ message: 'Could not find project with given ID' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ errMessage: 'Edit project failed' });
@@ -65,9 +79,9 @@ router.put('/:id', validateEditProject, async (req, res) => {
 });
 
 // DELETE - delete project
-router.delete('/:id', validateDeleteProject, async (req, res) => {
+router.delete('/:id', validateEditProject, async (req, res) => {
 	try {
-		const deleted = await Projects.deleteProject(req.params.id, req.token);
+		const deleted = await Projects.deleteProject(req.params.id);
 
 		deleted
 			? res.status(200).json({ removed: deleted })

@@ -2,7 +2,7 @@ const db = require('../../data/dbConfig');
 
 const findByProject = async project_id => {
 	const tickets = await db
-		.select('tickets.*', 'users.username as submitted_by', 'projects.name as project_id')
+		.select('tickets.*', 'users.username AS submitted_by', 'projects.name as project_id')
 		.from('tickets')
 		.join('users', 'users.id', 'tickets.submitted_by')
 		.join('projects', 'projects.id', 'tickets.project_id')
@@ -18,36 +18,43 @@ const findByProject = async project_id => {
 
 // prettier-ignore
 const findTicket = async ticket_id => {
-		const [ticket, replies, devs] = await Promise.all([
-			db.select('tickets.*')
+	let [ticket, replies, devs] = await Promise.all([
+		db.select('tickets.*', 'users.username AS submitted_by', 'projects.name AS project_name')
 			.from('tickets')
-			.where({ id: ticket_id })
+			.join('users', 'users.id', 'tickets.submitted_by')
+			.join('projects', 'projects.id', 'tickets.project_id')
+			.where('tickets.id', '=', ticket_id)
 			.first(),
 
-			db.select('reply', 'created_at', 'submitted_by')
-				.from('ticket_replies')
-				.where({ ticket_id }),
+		db.select('ticket_replies.*', 'users.username AS submitted_by')
+			.from('ticket_replies')
+			.join('users', 'users.id', 'ticket_replies.submitted_by')
+			.where({ ticket_id }),
 
-			db.select('username')
-				.from('users')
-				.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
-				.where('ticket_devs.ticket_id', '=', ticket_id)
-		]);
+		db.select('username')
+			.from('users')
+			.join('ticket_devs', 'ticket_devs.dev_id', 'users.id')
+			.where({ ticket_id })
+	]);
 
-		return ticket && {
-				...ticket,
-				replies,
-				devs
-		}
-};
+	if (!devs.length) devs = [{ username: 'No devs joined this ticket yet' }];
 
-const findUserTickets = async submitted_by => {
-	return await db
-		.select('tickets.*')
-		.from('tickets')
-		.join('users', 'tickets.submitted_by', 'users.username')
-		.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by)
-		.orderBy('tickets.created_at', 'desc');
+	if (!replies.length)
+		replies = [
+			{
+				id: null,
+				reply: 'No replies yet',
+				created_at: null,
+				ticket_id: null,
+				submitted_by: null
+			}
+		];
+
+	return ticket && {
+			...ticket,
+			replies,
+			devs
+		};
 };
 
 const editTicket = async (id, changes) => {
@@ -63,9 +70,16 @@ const addTicket = async newTicket => {
 		.insert(newTicket)
 		.returning('id');
 
-	const addedTicket = await findTicket(id[0]);
+	return await findTicket(id[0]);
+};
 
-	return addedTicket;
+const findUserTickets = async submitted_by => {
+	return await db
+		.select('tickets.*')
+		.from('tickets')
+		.join('users', 'tickets.submitted_by', 'users.username')
+		.where(db.raw('LOWER(??)', ['submitted_by']), submitted_by)
+		.orderBy('tickets.created_at', 'desc');
 };
 
 const deleteTicket = async id => {
@@ -82,6 +96,18 @@ const findRepliesByUsername = submitted_by => {
 		.where(db.raw('LOWER(??)', ['users.username']), submitted_by);
 };
 
+const joinTicket = async (ticket_id, dev_id) => {
+	const alreadyJoined = await db('ticket_devs')
+		.whereRaw('ticket_id = ? AND dev_id = ?', [ticket_id, dev_id])
+		.first();
+
+	if (alreadyJoined) return { message: 'User already joined ticket' };
+
+	await db('ticket_devs').insert({ ticket_id, dev_id });
+
+	return findTicket(ticket_id);
+};
+
 module.exports = {
 	findByProject,
 	findTicket,
@@ -89,5 +115,6 @@ module.exports = {
 	editTicket,
 	addTicket,
 	deleteTicket,
-	findRepliesByUsername
+	findRepliesByUsername,
+	joinTicket
 };

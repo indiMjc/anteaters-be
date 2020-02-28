@@ -1,13 +1,14 @@
 const Tickets = require('../models/tickets-model')
 
 // prettier-ignore
-// only allow edit ticket if user is author, stakeholder, project manager, admin or superUser
+// return true if user is ticket author, project stakeholder, project manager, admin or superUser
 const ifUserHasPermission = (token, ticket) => {
-	const { uid, isAdmin, superUser} = token
+	const { uid, isAdmin, superUser } = token
+	const { submitted_by, stakeholder, project_manager } = ticket
 
-	return uid == ticket.submitted_by 
-		|| uid == ticket.stakeholder 
-		|| uid == ticket.project_manager 
+	return uid == submitted_by 
+		|| uid == stakeholder 
+		|| uid == project_manager 
 		|| isAdmin 
 		|| superUser
 }
@@ -21,8 +22,7 @@ module.exports = async (req, res, next) => {
 		return ifUserHasPermission(req.locals, ticket)
 			? next()
 			: res.status(400).json({ message: 'Sorry, you do not have permission to edit this ticket' })
-	} catch (err) {
-		console.log(err)
-		return res.status(500).json({ errMessage: 'Error while validating permissions' })
+	} catch (error) {
+		return res.status(500).json({ errMessage: 'Error while validating permissions', error })
 	}
 }

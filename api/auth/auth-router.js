@@ -30,11 +30,6 @@ router.post('/login', validateLogin, async (req, res) => {
 router.post('/register', validateNewUser, (req, res) => {
 	let newUser = req.body
 	const hash = bcrypt.hashSync(newUser.password, Number(process.env.SALT))
-	console.log(
-		'hash %c --> ',
-		'font-size: 20px; color: black; font-weight: bold; background: linear-gradient(red, black); border: 2px solid black; border-radius: 6px;',
-		hash
-	)
 
 	// cannot sign up as admin or superUser
 	newUser.password = hash

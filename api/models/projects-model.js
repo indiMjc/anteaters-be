@@ -2,28 +2,31 @@ const db = require('../../data/dbConfig')
 
 const waitFor = ms => new Promise(r => setTimeout(r, ms))
 
+// prettier-ignore
 const findAll = async () => {
-	const projects = await db
-		.select('projects.*', 'username AS stakeholder')
-		.from('projects')
-		.join('users', 'users.id', 'projects.stakeholder')
+	const projects = await db('projects')
 
 	const devsAndManager = new Promise(resolve => {
 		projects.forEach(async (project, i) => {
-			const manager = await db
-				.select('username')
-				.from('users')
-				.where('users.id', '=', project.project_manager)
-				.first()
+			const [manager, stakeholder, devs] = await Promise.all([
+				db.select('username')
+					.from('users')
+					.where('users.id', '=', project.project_manager)
+					.first(),
+
+				db.select('username')
+					.from('users')
+					.where('users.id', '=', project.stakeholder)
+					.first(),
+
+				db.select('username')
+					.from('users')
+					.join('project_devs', 'dev_id', 'users.id')
+					.where('project_id', '=', project.id)
+			])
 
 			if (manager) projects[i].project_manager = manager.username
-
-			const devs = await db
-				.select('username')
-				.from('users')
-				.join('project_devs', 'dev_id', 'users.id')
-				.where('project_id', '=', project.id)
-
+			if (stakeholder) projects[i].stakeholder = stakeholder.username
 			project.devs = devs
 
 			await waitFor(1000)
@@ -64,43 +67,45 @@ const findProjectByName = async name => {
 		return {
 			...project,
 			devs
-		};
-	} else {
-		return { message: 'No project found by that name' };
+		}
 	}
 };
 
 // prettier-ignore
 const findProjectById = async id => {
-	// return db('projects').where({ id }).first()
 	const [project, devs] = await Promise.all([
-		db.select('projects.*', 'username AS stakeholder')
-			.from('projects')
-			.join('users', 'users.id', 'projects.stakeholder')
-			.where('projects.id', '=', id)
+		db('projects')
+			.where({ id })
 			.first(),
-
+		
 		db.select('username')
 			.from('users')
 			.join('project_devs', 'dev_id', 'users.id')
 			.where({ project_id: id })
-	]);
+	])
 
-	if (project && project.project_manager != null) {
-		const manager = await db
-			.select('username')
-			.from('users')
-			.where('users.id', '=', project.project_manager)
-			.first();
+	if (project) {
+		const [manager, stakeholder] = await Promise.all([
+			db.select('username')
+				.from('users')
+				.where('users.id', '=', project.project_manager)
+				.first(),
+			
+			db.select('username')
+				.from('users')
+				.where('users.id', '=', project.stakeholder)
+				.first()
+		])
 	
-		project.project_manager = manager.username;
+		if (manager) project.project_manager = manager.username
+		if (stakeholder) project.stakeholder = stakeholder.username
+	
+		return  {
+			...project,
+			devs
+		}
 	}
-
-	return project && {
-		...project,
-		devs
-	};
-};
+}
 
 const addProject = async newProject => {
 	const id = await db('projects')

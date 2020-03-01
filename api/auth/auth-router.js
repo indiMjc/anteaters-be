@@ -64,40 +64,41 @@ router.put('/:id', authenticate, validateUserType, async (req, res) => {
 	}
 })
 
-const tryingToEditMyAccount = (id, token) => id == 1 && token.uid != 1
-
 // PUT - edit user permissions
 router.put('/super/:id', authenticate, validateAdminCreation, async (req, res) => {
 	const { id } = req.params
+	const token = req.locals
 
-	if (tryingToEditMyAccount(id, req.locals.uid))
-		return res.status(401).json({ message: 'Sorry, you do not have permission' })
-
-	try {
-		const user = await Users.editPermissions(id, req.body)
-
-		user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' })
-	} catch (err) {
-		console.log(err)
-		res.status(500).json({ errMessage: 'Error' })
-	}
+	await editingUserPermissions(req, res, id, token)
 })
 
-// PUT - lock/unlock non superUser account
-router.put('/lock/:id', authenticate, validateAdmin, async (req, res) => {
+// PUT - lock/unlock non superUser account with `locked` property in req.query.locked
+router.get('/lock/:id', authenticate, validateAdmin, async (req, res) => {
 	const { id } = req.params
+	const token = req.locals
 
-	if (tryingToEditMyAccount(id, req.locals.uid))
+	await editingUserPermissions(req, res, id, token)
+})
+
+// function verifyToEditOwner(id, token, res) {
+// 	if (id == 1 && token.uid != 1)
+// 		return res.status(401).json({ message: 'Sorry, you do not have permission' })
+// }
+
+async function editingUserPermissions(req, res, id, token) {
+	if (id == 1 && token.uid != 1)
 		return res.status(401).json({ message: 'Sorry, you do not have permission' })
 
 	try {
-		const user = await Users.lockAccount(id, req.body)
+		const user = !req.query.locked
+			? await Users.editPermissions(id, req.body)
+			: await Users.lockAccount(id, req.query.locked)
 
-		user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' })
+		return user ? res.status(200).json(user) : res.status(404).json({ errMessage: 'Error' })
 	} catch (err) {
 		console.log(err)
-		res.status(500).json({ errMessage: 'Error' })
+		return res.status(500).json({ errMessage: 'Error' })
 	}
-})
+}
 
 module.exports = router

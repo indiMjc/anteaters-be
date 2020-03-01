@@ -1,4 +1,4 @@
-const authenticate = require('./auth-middleware');
-const authRouter = require('./auth-router');
+const { authenticate } = require('./util')
+const authRouter = require('./auth-router')
 
-module.exports = { authenticate, authRouter };
+module.exports = { authenticate, authRouter }

@@ -40,6 +40,7 @@
 
 #### FE:
 
+    -  [] check for locked accounts in middleware
     -  [] assign dev to ticket
     -  [] assign project manager to ticket
     -  [] assign stakeholder to ticket

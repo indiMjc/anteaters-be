@@ -46,10 +46,10 @@ const editPermissions = async (id, newPermission) => {
 	return getSafeUserData(id)
 }
 
-const lockAccount = async (id, lockedParameter) => {
+const lockAccount = async (id, isLocked) => {
 	await db('users')
 		.where({ id })
-		.update(lockedParameter)
+		.update({ isLocked })
 
 	return getSafeUserData(id)
 }
